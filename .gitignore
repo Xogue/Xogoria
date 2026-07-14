@@ -1,0 +1,12 @@
+__archive/
+_internal/
+docker/
+docs/
+private/
+.codepin.local.json
+composer.json
+composer.lock
+docker-compose.yml
+Xogoria-Architecture.drawio
+Xogoria-Architecture2.drawio
+Xogoria.code-workspace
