@@ -208,7 +208,7 @@ git clone <your-repository-url> xogoria
 cd xogoria
 ```
 
-Before relying on these instructions from a fresh clone, read [Repository publication notes](#repository-publication-notes). Some setup files are ignored in the current working tree and may not be present on GitHub.
+Before relying on these instructions from a fresh clone, read [Repository publication notes](#repository-publication-notes) and confirm that all required setup files are included in the published repository.
 
 ### 2. Install Composer dependencies
 
@@ -668,17 +668,7 @@ Confirm the correct config was saved, active game/profile names exist, the PHP u
 
 ## Repository publication notes
 
-The current `.gitignore` excludes several files that are normally necessary for a reproducible public repository:
-
-```text
-composer.json
-composer.lock
-docker/
-docker-compose.yml
-docs/
-```
-
-Those files exist in the working copy but are not currently tracked. Before publishing to GitHub, decide which are intended to be public and adjust `.gitignore` accordingly. At minimum, a typical PHP repository should track:
+Before publishing, verify that the files needed to reproduce the application are actually tracked. At minimum, a typical PHP application repository should track:
 
 - `composer.json`
 - `composer.lock` for an application
@@ -690,11 +680,14 @@ Those files exist in the working copy but are not currently tracked. Before publ
 Continue ignoring:
 
 - `private/`
+- `vendor/` (dependencies should be restored with Composer)
 - local IDE/workspace files
 - local-only tool configuration
 - runtime logs and backups
 - archives and internal reports
 - real credentials and tokens
+
+Prefer root-anchored ignore rules when a filename also occurs inside dependencies. For example, ignoring `/composer.json` affects only the repository root, while ignoring `composer.json` can also hide or expose manifests nested under `vendor/` depending on later changes.
 
 Before the first public push, review the entire Git history as well as the current files for secrets. Removing a secret from the latest commit does not remove it from history; rotate any credential that has ever been committed or shared.
 
