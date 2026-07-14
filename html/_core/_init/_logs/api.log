@@ -1,0 +1,2 @@
+{"timestamp":"2026-07-14T12:42:59-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":146}}
+{"timestamp":"2026-07-14T12:44:21-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":146}}

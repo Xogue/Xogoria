@@ -1,0 +1,260 @@
+/* Mobile-first interaction panel */
+.page-interact #header {
+  display: none;
+}
+
+.intTabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 6px 0 10px 0;
+}
+
+.intTabs.cols3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.intTabs.cols2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.intTab {
+  background: #252525;
+  color: #e6eeff;
+  border: 1px solid #1d2630;
+  border-radius: 12px;
+  padding: 6px 0;
+  font-family: 'fr-bold', sans-serif;
+  cursor: pointer;
+}
+
+.intTab.active {
+  background: #cfcfcf;
+  color: #151515;
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.card {
+  background: #242b33;
+  border: 1px solid #00000055;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.cTitle {
+  font-family: 'fr-bold', sans-serif;
+  color: #e6eeff;
+  font-size: 18px;
+}
+
+.cMeta {
+  color: #a9c5ff;
+  font-family: 'fr-bold', sans-serif;
+  margin: 4px 0 8px 0;
+  font-size: 14px;
+}
+
+.cBtn {
+  width: 100%;
+  background: #4d7fe7;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: 'fr-bold', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 1s ease, color 1s ease;
+}
+
+.cBtn:hover {
+  background: #6c97f1;
+}
+
+.cBtn.primary {
+  background: #3aa76d;
+}
+
+.cBtn.primary:hover {
+  background: #44b878;
+}
+
+/* Temporary feedback states applied by JS */
+.cBtn.btn-ok {
+  background: #2e9a5f !important;
+  color: #ffffff !important;
+}
+
+.cBtn.btn-err {
+  background: #c0392b !important;
+  color: #ffffff !important;
+}
+
+/* Cooldown state */
+.cBtn.btn-cd {
+  background: #6b7280 !important;
+  color: #f0f3ff !important;
+  cursor: not-allowed !important;
+}
+
+.cBtn:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+.cBtn.inline {
+  display: inline-block;
+  width: auto;
+}
+
+.spawnWrap {
+  background: #242b33;
+  border: 1px solid #00000055;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.spawnRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 6px;
+  border-top: 1px solid #00000055;
+}
+
+.spawnRow:first-child {
+  border-top: none;
+}
+
+.sLabel {
+  color: #e6eeff;
+  font-family: 'fr-bold', sans-serif;
+}
+
+.sLabel .sCost {
+  color: #a9c5ff;
+  margin-left: 6px;
+  font-size: 13px;
+}
+
+.sCtrls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sBtn {
+  width: 36px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #1d2630;
+  background: #393e48;
+  color: #e6eeff;
+  font-family: 'fr-bold', sans-serif;
+  cursor: pointer;
+}
+
+.sBtn:hover {
+  background: #434a57;
+}
+
+.spawnRow input {
+  width: 64px;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #1d2630;
+  background: #1e1e1e;
+  color: #e6eeff;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.spawnRow input::-webkit-outer-spin-button,
+.spawnRow input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.spawnSummary {
+  margin-top: 8px;
+  text-align: center;
+  color: #e6eeff;
+  font-family: 'fr-bold', sans-serif;
+}
+
+.spawnSummary .sumLine {
+  margin: 4px 0;
+}
+
+.batNameInput {
+  margin: 8px 0;
+  width: 100%;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  display: block;
+  background: #1f222a;
+  color: #e6eeff;
+  border: 1px solid #2f3440;
+  border-radius: 6px;
+}
+
+.batNameInput.invalid {
+  border-color: #e76;
+  color: #e33;
+}
+
+.batHint {
+  min-height: 18px;
+  font-size: 0.9em;
+  color: #e33;
+  visibility: hidden;
+}
+
+.batHint.visible {
+  visibility: visible;
+}
+
+.loginBanner {
+  margin-top: 26px;
+  color: #3e7dff;
+  font-size: 18px;
+}
+
+#agInfo {
+  margin-top: 4px;
+  color: #cde4ff;
+}
+
+#ag_hint {
+  color: #ffb3b3;
+  margin-top: 2px;
+  font-size: 0.95em;
+}
+
+.loginWrap {
+  margin-top: 6px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.intTabs.cols1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.intTabs.cols4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (min-width: 700px) {
+  .cardList {
+    grid-template-columns: 1fr 1fr;
+  }
+}

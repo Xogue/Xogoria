@@ -1,0 +1,63 @@
+.amp {
+    color: #2b67d644;
+    font-family: 'britanic', sans-serif;
+    font-size: 178px;
+    position: absolute;
+    left: 47%;
+    top: 500px;
+    z-index: 1; /* sits beneath overlapping day text */
+}
+
+.scheduleLines {
+    display: flex;              /* robust centering of items */
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    gap: 20px;               /* space between days and times */
+}
+
+.days {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;                /* space between days */
+    text-align: right;
+    position: relative;
+    font-family: 'bronic', sans-serif;
+    font-size: 42px;
+    color: #fff;
+    z-index: 2; /* render above the ampersand */
+}
+
+.times {
+    color: #5b97ec;
+    display: flex;
+    flex-direction: column;
+    gap: 0;                /* space between times */
+    font-family: 'britanic', sans-serif;
+    font-size: 50px;
+    text-align: left;
+}
+
+.time {
+    letter-spacing: -1.5px;
+    margin: -5px auto;
+}
+
+.tz { 
+    letter-spacing: 2px; 
+    font-size: 25px;
+    color: #97c1fc;
+    margin-left: -8px;
+}
+
+.discordLine {
+    margin: 16px auto 28px auto;
+    width: 90%;
+    text-align: center;
+    color: #c1d3ea;
+    font-size: 25px;
+    font-family: 'fr-bold', sans-serif;
+    line-height: 25px;
+}

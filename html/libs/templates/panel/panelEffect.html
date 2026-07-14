@@ -1,0 +1,20 @@
+<div class="card" data-key="{KEY}">
+    <div class="cardLabel">{LABEL}</div>
+    <div class="cardDuration">Duration: 
+        <input type="number" value="{DURATION}" min="1" max="30" data-costPer="{COST}"/>s
+    </div>
+    <div class="extraCost uiHidden">x10 Cost per second over 10</div>
+    <div class="cardCost">Cost: {CURRENT_COST} AGs</div>
+    <div class="cardCooldown">Cooldown: {COOLDOWN}s</div>
+    <button class="cardButton" type="button">Do It!</button>
+    <span class="cardData uiHidden"
+        data-request="interaction"
+        data-type="{TYPE}"
+        data-id="{KEY}"
+        data-label="{LABEL}"
+        data-cost="{COST}"
+        data-duration="{DURATION}"
+        data-cooldown="{COOLDOWN}"
+        data-command="{COMMANDS}"
+    ></span>
+</div>

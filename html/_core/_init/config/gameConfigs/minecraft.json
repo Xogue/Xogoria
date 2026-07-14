@@ -1,0 +1,627 @@
+{
+    "simpleTypes": {
+        "effect": {
+            "speed": {
+                "enabled": true,
+                "label": "Speed",
+                "duration": 1,
+                "cost": 1,
+                "cooldown": 10,
+                "commands": {
+                    "function interact:speed {duration: {DURATION}}": 1
+                }
+            },
+            "levitation": {
+                "enabled": true,
+                "label": "Levitation",
+                "duration": 1,
+                "cost": 5,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:levitation {duration: {DURATION}}": 1
+                }
+            },
+            "resistance": {
+                "enabled": true,
+                "label": "Resistance",
+                "duration": 1,
+                "cost": 2,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:resistance {duration: {DURATION}}": 1
+                }
+            },
+            "slowFalling": {
+                "enabled": true,
+                "label": "Slow Falling",
+                "duration": 1,
+                "cost": 1,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:slow_falling {duration: {DURATION}}": 1
+                }
+            },
+            "haste": {
+                "enabled": true,
+                "label": "Haste",
+                "duration": 1,
+                "cost": 1,
+                "cooldown": 30,
+                "commands": {
+                    "function interact:haste {duration: {DURATION}}": 1
+                }
+            },
+            "strength": {
+                "enabled": true,
+                "label": "Strength",
+                "duration": 1,
+                "cost": 1,
+                "cooldown": 30,
+                "commands": {
+                    "function interact:strength {duration: {DURATION}}": 1
+                }
+            },
+            "slowness": {
+                "enabled": true,
+                "label": "Slowness",
+                "duration": 1,
+                "cost": 1,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:slowness {duration: {DURATION}}": 1
+                }
+            },
+            "regeneration": {
+                "enabled": true,
+                "label": "Regeneration",
+                "duration": 1,
+                "cost": 2,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:regeneration {duration: {DURATION}}": 1
+                }
+            },
+            "poison": {
+                "enabled": true,
+                "label": "Poison",
+                "duration": 1,
+                "cost": 5,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:poison {duration: {DURATION}}": 1
+                }
+            },
+            "miningFatigue": {
+                "enabled": true,
+                "label": "Mining Fatigue",
+                "duration": 1,
+                "cost": 10,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:mining_fatigue {duration: {DURATION}}": 1
+                }
+            }
+        },
+        "sound": {
+            "betty": {
+                "enabled": true,
+                "label": "CowMoo",
+                "cost": 1,
+                "cooldown": 0,
+                "commands": {
+                    "cowMoo": 1
+                }
+            },
+            "cat": {
+                "enabled": true,
+                "label": "CatMeow",
+                "cost": 1,
+                "cooldown": 0,
+                "commands": {
+                    "catMeow": 1
+                }
+            },
+            "mary": {
+                "enabled": true,
+                "label": "SheepBaa",
+                "cost": 1,
+                "cooldown": 0,
+                "commands": {
+                    "sheepBaa": 1
+                }
+            },
+            "2kyears": {
+                "enabled": true,
+                "label": "2kYearsLater",
+                "cost": 3,
+                "cooldown": 2,
+                "commands": {
+                    "2kYearsLater": 1
+                }
+            },
+            "cheer": {
+                "enabled": true,
+                "label": "Cheer",
+                "cost": 3,
+                "cooldown": 10,
+                "commands": {
+                    "cheer": 1
+                }
+            },
+            "haha": {
+                "enabled": true,
+                "label": "NelsonHaHa",
+                "cost": 3,
+                "cooldown": 2,
+                "commands": {
+                    "nelsonHaHa": 1
+                }
+            },
+            "violin": {
+                "enabled": true,
+                "label": "SadViolin",
+                "cost": 3,
+                "cooldown": 5,
+                "commands": {
+                    "sadViolin": 1
+                }
+            },
+            "wahwah": {
+                "enabled": true,
+                "label": "WahWah",
+                "cost": 3,
+                "cooldown": 5,
+                "commands": {
+                    "wahWah": 1
+                }
+            },
+            "wow": {
+                "enabled": true,
+                "label": "OwenWilsonWow",
+                "cost": 3,
+                "cooldown": 0,
+                "commands": {
+                    "owenWilsonWow": 1
+                }
+            },
+            "dave": {
+                "enabled": true,
+                "label": "EndermanCry",
+                "cost": 5,
+                "cooldown": 5,
+                "commands": {
+                    "endermanCry": 1
+                }
+            },
+            "toolbreak": {
+                "enabled": true,
+                "label": "ToolBreak",
+                "cost": 5,
+                "cooldown": 20,
+                "commands": {
+                    "toolBreak": 1
+                }
+            },
+            "ghastper": {
+                "enabled": true,
+                "label": "GhastFireball",
+                "cost": 7,
+                "cooldown": 5,
+                "commands": {
+                    "ghastFireball": 1
+                }
+            },
+            "piggy": {
+                "enabled": true,
+                "label": "AngryPigman",
+                "cost": 7,
+                "cooldown": 5,
+                "commands": {
+                    "angryPigman": 1
+                }
+            },
+            "creeper": {
+                "enabled": true,
+                "label": "CreeperHiss",
+                "cost": 10,
+                "cooldown": 30,
+                "commands": {
+                    "creeperHiss": 1
+                }
+            },
+            "scream": {
+                "enabled": true,
+                "label": "HunterScream",
+                "cost": 10,
+                "cooldown": 60,
+                "commands": {
+                    "hunterScream": 1
+                }
+            }
+        },
+        "prank": {
+            "blockstand": {
+                "enabled": true,
+                "label": "Blockstand",
+                "cost": 10,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:blockstand": 1
+                }
+            }
+        },
+        "spawnPreset": {
+            "yeet": {
+                "enabled": true,
+                "label": "Yeet",
+                "description": "Give Yeet stick + Wandering Trader",
+                "cost": 1,
+                "cooldown": 10,
+                "commands": {
+                    "function interact:yeet": 1
+                }
+            },
+            "swarm": {
+                "enabled": true,
+                "label": "Bat Swarm",
+                "description": "10 Bats",
+                "cost": 10,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:spawn_bat": 10
+                }
+            },
+            "hoard": {
+                "enabled": true,
+                "label": "Hoard",
+                "description": "5 Husks",
+                "cost": 50,
+                "cooldown": 10,
+                "loopCount": 5,
+                "commands": {
+                    "function interact:spawn_husk": 5
+                }
+            },
+            "fight": {
+                "enabled": true,
+                "label": "Fight",
+                "description": "2 Husks & 1 Vex",
+                "cost": 60,
+                "cooldown": 15,
+                "commands": {
+                    "function interact:spawn_husk": 2,
+                    "function interact:spawn_vex": 1
+                }
+            },
+            "ranged": {
+                "enabled": true,
+                "label": "Ranged",
+                "description": "2 Blaze & 3 Skeletons",
+                "cost": 120,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:spawn_blaze": 2,
+                    "function interact:spawn_skeleton": 3
+                }
+            },
+            "army": {
+                "enabled": true,
+                "label": "Army",
+                "description": "15 Husks",
+                "cost": 150,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:spawn_husk": 15
+                }
+            },
+            "battle": {
+                "enabled": true,
+                "label": "Battle",
+                "description": "3 Husks, 2 Vex, 1 Hoglin",
+                "cost": 160,
+                "cooldown": 20,
+                "commands": {
+                    "function interact:spawn_husk": 3,
+                    "function interact:spawn_vex": 2,
+                    "function interact:spawn_hoglin": 1
+                }
+            },
+            "artillery": {
+                "enabled": true,
+                "label": "Artillery",
+                "description": "5 Blaze & 5 Skeletons",
+                "cost": 250,
+                "cooldown": 30,
+                "commands": {
+                    "function interact:spawn_blaze": 5,
+                    "function interact:spawn_skeleton": 5
+                }
+            }
+        }
+    },
+    "specialTypes": {
+        "batClaim": {
+            "enabled": true,
+            "label": "Claim Viewer Bat",
+            "description": "Claim a nearby viewer bat (uses Twitch ID)",
+            "cost": 0,
+            "cooldown": 10,
+            "commands": {
+                "viewer_bat_claim": 1
+            }
+        },
+        "powerSpawn": {
+            "cooldownMin": 20,
+            "cooldownMax": 120,
+            "mobs": {
+                "bat": {
+                    "label": "Bat",
+                    "cost": 1,
+                    "command": "function interact:spawn_bat",
+                    "enabled": true,
+                    "cooldown": 0
+                },
+                "bee": {
+                    "label": "Angry Bee",
+                    "cost": 25,
+                    "command": "function interact:spawn_bee",
+                    "enabled": true,
+                    "cooldown": 10
+                },
+                "husk": {
+                    "label": "Husk",
+                    "cost": 10,
+                    "command": "function interact:spawn_husk",
+                    "enabled": true,
+                    "cooldown": 5
+                },
+                "skeleton": {
+                    "label": "Skeleton",
+                    "cost": 20,
+                    "command": "function interact:spawn_skeleton",
+                    "enabled": true,
+                    "cooldown": 5
+                },
+                "spider": {
+                    "label": "Spider",
+                    "cost": 15,
+                    "command": "function interact:spawn_spider",
+                    "enabled": true,
+                    "cooldown": 10
+                },
+                "blaze": {
+                    "label": "Blaze",
+                    "cost": 30,
+                    "command": "function interact:spawn_blaze",
+                    "enabled": true,
+                    "cooldown": 10
+                },
+                "vex": {
+                    "label": "Vex",
+                    "cost": 60,
+                    "command": "function interact:spawn_vex",
+                    "enabled": true,
+                    "cooldown": 30
+                },
+                "hoglin": {
+                    "label": "Hoglin",
+                    "cost": 50,
+                    "command": "function interact:spawn_hoglin",
+                    "enabled": true,
+                    "cooldown": 30
+                },
+                "creeper": {
+                    "label": "Creeper",
+                    "cost": 80,
+                    "command": "function interact:spawn_creeper",
+                    "enabled": true,
+                    "cooldown": 60
+                }
+            }
+        }
+    },
+    "profiles": {
+        "minecraftCrucible": {
+            "label": "The Chaos Crucible",
+            "tagLine": "Unleash chaos: spawn mobs, affect nearby mobs, and run pranks.",
+            "serverId": "09c85254",
+            "allowedSimpleTypes": {
+                "effect": [
+                    "speed",
+                    "levitation",
+                    "resistance",
+                    "slowFalling",
+                    "haste",
+                    "strength",
+                    "slowness",
+                    "regeneration",
+                    "poison",
+                    "miningFatigue"
+                ],
+                "sound": [
+                    "betty",
+                    "cat",
+                    "mary",
+                    "2kyears",
+                    "cheer",
+                    "haha",
+                    "violin",
+                    "wahwah",
+                    "wow",
+                    "dave",
+                    "toolbreak",
+                    "ghastper",
+                    "piggy",
+                    "creeper",
+                    "scream"
+                ],
+                "prank": [
+                    "blockstand"
+                ],
+                "spawnPreset": [
+                    "yeet",
+                    "swarm",
+                    "hoard",
+                    "fight",
+                    "ranged",
+                    "army",
+                    "battle",
+                    "artillery"
+                ]
+            },
+            "allowedSpecialTypes": {
+                "powerSpawn": [
+                    "bat",
+                    "bee",
+                    "husk",
+                    "skeleton",
+                    "spider",
+                    "blaze",
+                    "vex",
+                    "hoglin",
+                    "creeper"
+                ],
+                "special": [
+                    "batClaim"
+                ]
+            }
+        },
+        "minecraftForever": {
+            "label": "Xogue's Forever World",
+            "tagLine": "Trigger effects, play sounds, run pranks, or spawn mobs directly.",
+            "serverId": "4832aad4",
+            "allowedSimpleTypes": {
+                "effect": [
+                    "speed",
+                    "levitation",
+                    "resistance",
+                    "slowFalling",
+                    "haste",
+                    "strength",
+                    "slowness",
+                    "regeneration",
+                    "poison",
+                    "miningFatigue"
+                ],
+                "prank": [
+                    "blockstand"
+                ],
+                "spawnPreset": [
+                    "yeet",
+                    "swarm",
+                    "hoard",
+                    "fight",
+                    "ranged",
+                    "army",
+                    "battle",
+                    "artillery"
+                ]
+            },
+            "allowedSpecialTypes": {
+                "powerSpawn": [
+                    "bat",
+                    "bee",
+                    "husk",
+                    "skeleton",
+                    "spider",
+                    "blaze",
+                    "vex",
+                    "hoglin",
+                    "creeper"
+                ],
+                "special": [
+                    "batClaim"
+                ]
+            }
+        },
+        "minecraftSubserver": {
+            "label": "Xogue's Sub Server",
+            "tagLine": "Trigger effects, play sounds, run pranks, or spawn mobs directly.",
+            "serverId": "c14cb952",
+            "allowedSimpleTypes": {
+                "effect": [
+                    "speed",
+                    "levitation",
+                    "resistance",
+                    "slowFalling",
+                    "haste",
+                    "strength",
+                    "slowness",
+                    "regeneration",
+                    "poison",
+                    "miningFatigue"
+                ],
+                "sound": [
+                    "betty",
+                    "cat",
+                    "mary",
+                    "2kyears",
+                    "cheer",
+                    "haha",
+                    "violin",
+                    "wahwah",
+                    "wow",
+                    "dave",
+                    "toolbreak",
+                    "ghastper",
+                    "piggy",
+                    "creeper",
+                    "scream"
+                ],
+                "prank": [
+                    "blockstand"
+                ],
+                "spawnPreset": [
+                    "yeet",
+                    "swarm",
+                    "hoard",
+                    "fight",
+                    "ranged",
+                    "army",
+                    "battle",
+                    "artillery"
+                ]
+            },
+            "allowedSpecialTypes": {
+                "powerSpawn": [
+                    "bat",
+                    "bee",
+                    "husk",
+                    "skeleton",
+                    "spider",
+                    "blaze",
+                    "vex",
+                    "hoglin"
+                ],
+                "special": [
+                    "batClaim"
+                ]
+            }
+        },
+        "minecraftOther": {
+            "label": "Not Minecraft",
+            "tagLine": "Play sounds...  That's about it...",
+            "serverId": "",
+            "allowedSimpleTypes": {
+                "sound": [
+                    "betty",
+                    "cat",
+                    "mary",
+                    "2kyears",
+                    "cheer",
+                    "haha",
+                    "violin",
+                    "wahwah",
+                    "wow",
+                    "dave",
+                    "toolbreak",
+                    "ghastper",
+                    "piggy",
+                    "creeper",
+                    "scream"
+                ]
+            },
+            "allowedSpecialTypes": {}
+        }
+    }
+}

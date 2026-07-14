@@ -1,0 +1,131 @@
+/* SHARED-CANDIDATE STYLES
+---------------------------------- */
+
+#navbar {
+	background-image: url("../../_media/images/navBack.png");
+	background-position: 0px -2px;
+	height: 34px;
+	width: 100%;
+	background-repeat: repeat-x;
+	position: relative;
+	z-index: 2;
+	border-bottom: 1px solid #151515;
+}
+
+#navlinks {
+	height: 77px;
+	width: 100%;
+	margin: 0px auto 20px auto;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+    z-index: 1;
+}
+
+.navlink {
+	width: 170px;
+	height: 30px;
+	box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+	border: 1px solid #151515;
+	border-radius: 24px;
+	background-color: #252525;
+	text-align: center;
+	font-family: 'britanic', sans-serif;
+	font-size: 20px;
+    color: #e6eeff;
+	line-height: 30px;
+	position: relative;
+	transition: margin-top 0.3s ease;
+}
+
+#navlinks a,
+#navlinks a:visited,
+#navlinks a:hover,
+#navlinks a:active,
+#navlinks a:focus {
+    text-decoration: none;
+    color: inherit;
+    display: block;          /* make full pill clickable */
+    width: 100%;
+    height: 100%;
+}
+
+.navlink::before,
+.navlink::after {
+	content: "";
+	position: absolute;
+	width: 13px;
+	height: 35px;
+	background-image: var(--chain-img);
+	background-repeat: repeat-y;
+	background-size: 13px auto;
+	background-position: top center;
+	z-index: -1;
+	pointer-events: none;
+	bottom: calc(100% - 6px);
+	transition: height 0.3s ease, background-position 0.3s ease;
+}
+
+.navlink::before { left: 20%; }
+.navlink::after { left: 80%; } 
+
+.navlink.active {
+    background-color: #e6eeff;
+    color: #252525;
+    margin-top: 30px;
+}
+
+.navlink.active::before,
+.navlink.active::after {
+    height: 65px;
+    background-position: center 30px;
+}
+
+.navlink:not(.active):hover {
+    margin-top: 15px;
+    background-color: #a9a9a9;
+    color: #252525;
+}
+.navlink:not(.active):hover::before,
+.navlink:not(.active):hover::after {
+    height: 50px;
+    background-position: center 15px;
+}
+
+#navAuth {
+    display: flex;
+    align-items: baseline;
+    margin: 20px;
+    gap: 15px;
+    font-family: 'fr-bold', sans-serif;
+    font-size: 15px;
+    color: #a9c5ff;
+    position: absolute;
+    top: 178px;
+    right: -10px;
+    z-index: 3;
+}
+
+.navAuthLabel {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.navAuthUser {
+	text-transform: uppercase;
+    color: #e6eeff;
+	font-size: 20px;
+}
+.navAuthLink {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #5080ea;
+    background: #252525;
+    color: #e6eeff;
+    text-decoration: none;
+    font-family: 'fr-bold', sans-serif;
+}
+.navAuthLink:hover {
+    background: #3b6cd0;
+}

@@ -1,0 +1,314 @@
+{
+    "SECTION1": { "-----------------------": "DATA STORE STATUS CODES" },
+    "D100": {
+        "constantName": "DATASTORE__EXPIRE_KEY_SET",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Expiring key set: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D101": {
+        "constantName": "DATASTORE__STABLE_KEY_SET",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Stable key set: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D102": {
+        "constantName": "DATASTORE__TTL_CHECK_SUCCESS",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: TTL check successful for key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D103": {
+        "constantName": "DATASTORE__KEY_FOUND",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Key found: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D104": {
+        "constantName": "DATASTORE__LIST_ADD_SUCCESS",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: List add successful for key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D105": {
+        "constantName": "DATASTORE__LIST_POP_SUCCESS",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: List pop successful for key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D106": {
+        "constantName": "DATASTORE__EXPIRE_KEY_SET_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Failed to set expiring key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D107": {
+        "constantName": "DATASTORE__STABLE_KEY_SET_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Failed to set stable key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D108": {
+        "constantName": "DATASTORE__KEY_NOT_FOUND",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Key not found: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D109": {
+        "constantName": "DATASTORE__TTL_CHECK_ERROR",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Failed to check TTL for key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D110": {
+        "constantName": "DATASTORE__LIST_ADD_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Failed to perform list add on key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+    "D111": {
+        "constantName": "DATASTORE__LIST_POP_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "[ DATA_STORE ]: Failed to perform list pop on key: {KEY}",
+        "replaceMap": {
+            "{KEY}": "key"
+        }
+    },
+
+    "SECTION2": { "-----------------------": "REQUEST CODES" },
+    "REQ100": {
+        "constantName": "REQUEST__MISSING_TYPE",
+        "reportLevel": "error",
+        "logTemplate": "Missing 'type' in request data"
+    },
+    "REQ101": {
+        "constantName": "REQUEST__INVALID_TYPE",
+        "reportLevel": "error",
+        "logTemplate": "Invalid 'type' in request data"
+    },
+
+    "SECTION3": { "-----------------------": "API CODES" },
+    "API100": {
+        "constantName": "API__MISSING_KEY",
+        "reportLevel": "error",
+        "logTemplate": "Denied API request: missing key"
+    },
+    "API101": {
+        "constantName": "API__UNAUTHORIZED_REQUEST",
+        "reportLevel": "error",
+        "logTemplate": "Denied API request: unauthorized. Attempted key: {URL_KEY}, Expected key: {API_KEY}",
+        "replaceMap": {
+            "{URL_KEY}": "urlKey",
+            "{API_KEY}": "apiKey"
+        }
+    },
+    
+    "SECTION4": { "-----------------------": "MYSQL CODES" },
+    "M100": {
+        "constantName": "MYSQL__CONNECTION_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "Failed to connect to MySQL database: {SQL_ERROR_NUM} -> {SQL_ERROR}",
+        "replaceMap": {
+            "{SQL_ERROR_NUM}": "sqlErrorNum",
+            "{SQL_ERROR}": "sqlError"
+        }
+    },
+    
+    "SECTION5": { "-----------------------": "BANK STATUS CODES" },
+    "B100": {
+        "constantName": "BANK__USER_NOT_FOUND",
+        "reportLevel": "error",
+        "logTemplate": "[ BANK ]: Could not find user: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "B101": {
+        "constantName": "BANK__INSUFFICIENT_FUNDS",
+        "reportLevel": "error",
+        "logTemplate": "[ BANK ]: {USER} Tried to use {COST}, but only had {BALANCE}.",
+        "replaceMap": {
+            "{USER}": "user",
+            "{COST}": "cost",
+            "{BALANCE}": "currentBalance"
+        }
+    },
+    "B102": {
+        "constantName": "BANK__DATABASE_ERROR",
+        "reportLevel": "error",
+        "logTemplate": "[ BANK ]: There was some error with the database: User: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+
+    "SECTION6": { "-----------------------": "TWITCH STATUS CODES" },
+    "T100": {
+        "constantName": "TWITCH__MISSING_SESSION_STATE",
+        "reportLevel": "error",
+        "logTemplate": "Denied Twitch request: missing session state"
+    },
+    "T101": {
+        "constantName": "TWITCH__MISSING_REQUEST_STATE",
+        "reportLevel": "error",
+        "logTemplate": "Denied Twitch request: missing request state"
+    },
+    "T102": {
+        "constantName": "TWITCH__INVALID_STATE",
+        "reportLevel": "error",
+        "logTemplate": "Denied Twitch request: invalid state"
+    },
+    "T103": {
+        "constantName": "TWITCH__MISSING_CODE",
+        "reportLevel": "error",
+        "logTemplate": "Denied Twitch request: missing code"
+    },
+    "T104": {
+        "constantName": "TWITCH__INVALID_CODE",
+        "reportLevel": "error",
+        "logTemplate": "Denied Twitch request: invalid code"
+    },
+
+    "SECTION7": { "-----------------------": "ASSETS CODES" },
+    "A100": {
+        "constantName": "ASSET__CSS_FILE_MISSING",
+        "reportLevel": "error",
+        "logTemplate": "Failed loading CSS file: {CSS_FILE}",
+        "replaceMap": {
+            "{CSS_FILE}": "cssFile"
+        }
+    },
+    "A101": {
+        "constantName": "ASSET__JS_FILE_MISSING",
+        "reportLevel": "error",
+        "logTemplate": "Failed loading JS file: {JS_FILE}",
+        "replaceMap": {
+            "{JS_FILE}": "jsFile"
+        }
+    },
+
+    "SECTION8": { "-----------------------": "CURL STATUS CODES" },
+    "CU100": {
+        "constantName": "CURL__URL_ERROR",
+        "reportLevel": "error",
+        "logTemplate": "cURL error for URL {CURL_URL}",
+        "replaceMap": {
+            "{CURL_URL}": "curlUrl"
+        }
+    },
+    "CU101": {
+        "constantName": "CURL__COMMAND_SEND_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "cURL command send failed for server ID {SERVER_ID}: HTTP Code: {CURL_HTTP_CODE}, Response: {CURL_RESPONSE}",
+        "replaceMap": {
+            "{SERVER_ID}": "serverId",
+            "{CURL_HTTP_CODE}": "curlHttpCode",
+            "{CURL_RESPONSE}": "curlResponse"
+        }
+    },
+
+    "SECTION9": { "-----------------------": "INTERACTION STATUS CODES" },
+    "I100": {
+        "constantName": "INTERACTION__NOT_FOUND",
+        "reportLevel": "error",
+        "logTemplate": "[ INTERACTION ]: {USER} Tried interaction: {INTERACTION} from {GAME}. Nothing found.",
+        "replaceMap": {
+            "{USER}": "user",
+            "{INTERACTION}": "interaction",
+            "{GAME}": "game"
+        }
+    },
+    "I101": {
+        "constantName": "INTERACTION__ON_COOLDOWN",
+        "reportLevel": "error",
+        "logTemplate": "[ HytaleRequest ]: {USER} Tried interaction: {INTERACTION}. Interaction is on cooldown.",
+        "replaceMap": {
+            "{USER}": "user",
+            "{INTERACTION}": "interaction",
+            "{COOLDOWN}": "cooldown"
+        }
+    },
+    "I102": {
+        "constantName": "INTERACTION__WRONG_INTERACTION_TYPE",
+        "reportLevel": "error",
+        "logTemplate": "[ INTERACTION ]: {USER} Tried interaction: {INTERACTION} from {GAME}. Wrong interaction type.",
+        "replaceMap": {
+            "{USER}": "user",
+            "{GAME}": "game",
+            "{INTERACTION}": "interaction",
+            "{INTERACTION_TYPE}": "interactionType"
+        }
+    },
+    
+    "SECTION10": { "-----------------------": "USER STATUS CODES" },
+    "U100": {
+        "constantName": "USER__NOT_FOUND",
+        "reportLevel": "error",
+        "logTemplate": "User not found: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "U101": {
+        "constantName": "USER__INVALID_SESSION",
+        "reportLevel": "error",
+        "logTemplate": "Invalid user session: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "U102": {
+        "constantName": "USER__INSERT_FAILED",
+        "reportLevel": "error",
+        "logTemplate": "Failed to insert user: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "U103": {
+        "constantName": "USER__INSERT_SUCCESS",
+        "reportLevel": "error",
+        "logTemplate": "User inserted successfully: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "U104": {
+        "constantName": "USER__LOGOUT_SUCCESS",
+        "reportLevel": "error",
+        "logTemplate": "User logged out successfully: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    },
+    "U105": {
+        "constantName": "USER__MISSING_BALANCE",
+        "reportLevel": "error",
+        "logTemplate": "User logout failed: {USER}",
+        "replaceMap": {
+            "{USER}": "user"
+        }
+    }
+}

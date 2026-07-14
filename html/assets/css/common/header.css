@@ -1,0 +1,136 @@
+#header {
+	background-image: url("../../_media/images/headerBack.png");
+	height: 219px;
+	width: 100%;
+	position: relative;
+	z-index: 3;
+}
+
+#circleLogo {
+    --x-size: 220px;
+    height: 100%;
+    width: 100%;
+    top: 15px;
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    place-items: center;
+}
+
+#circleLogo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--x-size);
+    height: var(--x-size);
+    transform: translate(-50%, -50%);
+    background-image: url("../../_media/images/headerLogo.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    z-index: 2;
+    pointer-events: none; /* keep underlying links clickable */
+}
+
+.socialLink {
+    height: 40px;
+    width: 165px;
+    margin: 8px;
+    background-color: #252525;
+    color: #e6eeff;
+    font-family: 'britanic', sans-serif;
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 400;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.socialLink > div {
+    position: absolute;
+    top: 50%;
+    width: 55px;
+    height: 55px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 90% auto;
+}
+
+.platform {
+    padding-left: 35px;
+    right: 165px;
+    top: 42px;
+    text-align: left;
+    justify-content: flex-start;
+}
+.platform > div {
+    left: 0;
+    transform: translate(-50%, -50%);
+}
+
+.extra {
+    padding-right: 35px;
+    left: 175px;
+    top: -70px;
+    text-align: right;
+    justify-content: flex-end;
+}
+.extra > div {
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+#twitch { background-image: url("../../_media/images/twitchLogo.png"); }
+#youtube { background-image: url("../../_media/images/youtubeLogo.png"); }
+#patreon { background-image: url("../../_media/images/patreonLogo.png"); }
+#discord { background-image: url("../../_media/images/discordLogo.png"); }
+
+.clipsHeaderButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(var(--x-size) / 2 - 50px));
+    min-width: 200px;
+    padding: 4px 24px 6px 24px;
+    background: #1f3c88;
+    color: #e6eeff;
+    font-family: 'bronic', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 999px;
+    border: 1px solid #0f1422;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+    z-index: 3;
+}
+
+.clipsHeaderButton::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 5px;
+    width: 60%;
+    height: 3px;
+    background: #4d7fe7;
+    border-radius: 2px;
+    opacity: 0.95;
+}
+
+.clipsHeaderButton:hover {
+    background: #4d7fe7;
+    color: #fff;
+}
+
+.clipsHeaderButton.active {
+    background: #f5b54b;
+    border-color: #fcd177;
+    color: #151515;
+}

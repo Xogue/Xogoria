@@ -1,0 +1,104 @@
+{
+    "users": {
+        "label": "Users",
+        "description": "Twitch identities, roles, and Airo Gem balances.",
+        "table": "users",
+        "primaryKey": "platformUserId",
+        "fields": {
+            "platform": {"label": "Platform", "type": "text", "required": true},
+            "platformUserId": {"label": "User ID", "type": "text", "required": true, "immutable": true},
+            "username": {"label": "Username", "type": "text", "required": true},
+            "displayName": {"label": "Display name", "type": "text"},
+            "gemBalance": {"label": "Airo Gems", "type": "integer"},
+            "role": {"label": "Role", "type": "select", "options": ["none", "moderator", "admin", "owner"]}
+        }
+    },
+    "commands": {
+        "label": "Commands",
+        "description": "Chat commands shown in the command collection.",
+        "table": "collectCommands",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "name": {"label": "Name", "type": "text", "required": true},
+            "description": {"label": "Description", "type": "textarea"},
+            "category": {"label": "Category", "type": "text"},
+            "perms": {"label": "Permissions", "type": "text"},
+            "enabled": {"label": "Enabled", "type": "boolean"}
+        }
+    },
+    "quotes": {
+        "label": "Quotes",
+        "description": "Collected stream quotes.",
+        "table": "collectQuotes",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "text": {"label": "Quote", "type": "textarea", "required": true},
+            "speaker": {"label": "Speaker", "type": "text"},
+            "game": {"label": "Game", "type": "text"},
+            "date": {"label": "Date", "type": "date"},
+            "favorite": {"label": "Favorite", "type": "boolean"}
+        }
+    },
+    "objectives": {
+        "label": "Objectives",
+        "description": "Randomized gameplay objectives.",
+        "table": "collectObjectives",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "requirement": {"label": "Requirement", "type": "textarea", "required": true},
+            "active": {"label": "Active", "type": "boolean"}
+        }
+    },
+    "monsters": {
+        "label": "Monster names",
+        "description": "Custom names collected for in-game monsters.",
+        "table": "collectMonsterNames",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "gameName": {"label": "Game", "type": "text", "required": true},
+            "customName": {"label": "Custom name", "type": "text", "required": true}
+        }
+    },
+    "chapters": {
+        "label": "Lore chapters",
+        "description": "Story chapters and their text. Audio and streams remain linked by chapter ID.",
+        "table": "legendsChapters",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "chapterNumber": {"label": "Chapter", "type": "integer", "required": true},
+            "title": {"label": "Title", "type": "text", "required": true},
+            "body": {"label": "Story", "type": "textarea", "required": true}
+        }
+    },
+    "audio": {
+        "label": "Lore audio",
+        "description": "Audio clips attached to lore chapters.",
+        "table": "legendsAudio",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "chapterId": {"label": "Chapter ID", "type": "integer", "required": true},
+            "label": {"label": "Label", "type": "text"},
+            "url": {"label": "URL", "type": "url", "required": true},
+            "sortOrder": {"label": "Order", "type": "integer"}
+        }
+    },
+    "streams": {
+        "label": "Lore streams",
+        "description": "Stream recordings attached to lore chapters.",
+        "table": "legendsStreams",
+        "primaryKey": "id",
+        "fields": {
+            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
+            "chapterId": {"label": "Chapter ID", "type": "integer", "required": true},
+            "url": {"label": "URL", "type": "url", "required": true},
+            "date": {"label": "Date", "type": "date"},
+            "sortOrder": {"label": "Order", "type": "integer"}
+        }
+    }
+}

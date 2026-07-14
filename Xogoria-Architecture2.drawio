@@ -1,0 +1,301 @@
+<mxfile host="app.diagrams.net" agent="Codex" compressed="false" pages="4">
+  <diagram id="runtime-flow" name="1 - API Runtime Flow">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Xogoria API — current request flow" style="text;html=1;fontSize=24;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="client" value="&lt;b&gt;Browser / bot / external caller&lt;/b&gt;&lt;br&gt;GET, form POST, or JSON POST" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="&lt;b&gt;html/api/xogoriaApi.php&lt;/b&gt;&lt;br&gt;refresh identity → select worker → process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="310" y="125" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="session" value="&lt;b&gt;includes/session.php&lt;/b&gt;&lt;br&gt;starts session&lt;br&gt;loads Composer classmap&lt;br&gt;constructs CoreController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="310" y="260" width="250" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="request" value="&lt;b&gt;RequestData&lt;/b&gt;&lt;br&gt;$_GET / $_POST / php://input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="630" y="80" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sessiondata" value="&lt;b&gt;SessionData&lt;/b&gt;&lt;br&gt;Twitch identity from $_SESSION" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="630" y="180" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="input" value="&lt;b&gt;InputDataContext&lt;/b&gt;&lt;br&gt;request values + session fallback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="880" y="125" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="identity" value="&lt;b&gt;UserContext refresh&lt;/b&gt;&lt;br&gt;lookup by platform ID, then username" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="80" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="router" value="&lt;b&gt;CoreController::getContextWorker()&lt;/b&gt;&lt;br&gt;match request, then prime contexts" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="190" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="collection" value="&lt;b&gt;CollectionWorker&lt;/b&gt;&lt;br&gt;name / objective / quote&lt;br&gt;→ MySqlManager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="190" y="480" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="currency" value="&lt;b&gt;CurrencyWorker&lt;/b&gt;&lt;br&gt;check / set / add / deduct&lt;br&gt;→ user balance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="480" y="480" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="interaction" value="&lt;b&gt;InteractionWorker&lt;/b&gt;&lt;br&gt;resolve game interaction&lt;br&gt;→ panel commands" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="770" y="480" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="configure" value="&lt;b&gt;ConfigureWorker&lt;/b&gt;&lt;br&gt;set active game + profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="480" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="result" value="&lt;b&gt;WorkerResult&lt;/b&gt;&lt;br&gt;success / value / message&lt;br&gt;shared result contract" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="650" y="670" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="MySQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="panel" value="Game panel API&lt;br&gt;/servers/{id}/command" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="650" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="client" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="require_once" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="api" target="session">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="request" target="input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="sessiondata" target="input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="refresh" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="input" target="identity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="input" target="router">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="collection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="router" target="collection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="currency" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="router" target="currency">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="interaction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="router" target="interaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="configure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="router" target="configure">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="collection" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="interaction" target="panel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="collection" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="currency" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="interaction" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="configure" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dependency-map" name="2 - Component Map">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2" value="Xogoria — component and dependency map" style="text;html=1;fontSize=24;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="&lt;b&gt;Presentation / entry points&lt;/b&gt;&lt;br&gt;Public PHP pages&lt;br&gt;Admin pages&lt;br&gt;API endpoints&lt;br&gt;Browser JavaScript" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="230" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="bootstrap" value="&lt;b&gt;Bootstrap&lt;/b&gt;&lt;br&gt;session.php&lt;br&gt;Composer classmap&lt;br&gt;CoreController" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="100" width="230" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="controllers" value="&lt;b&gt;Controllers&lt;/b&gt;&lt;br&gt;DataController&lt;br&gt;UserController&lt;br&gt;TwitchController" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="640" y="100" width="230" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="contexts" value="&lt;b&gt;Contexts / request state&lt;/b&gt;&lt;br&gt;ContextManager&lt;br&gt;InputDataContext + WorkerContext&lt;br&gt;User / Twitch / DataStore contexts&lt;br&gt;RequestData + SessionData" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="940" y="100" width="270" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="workers" value="&lt;b&gt;Worker dispatch&lt;/b&gt;&lt;br&gt;WorkerInterface&lt;br&gt;CollectionWorker&lt;br&gt;CurrencyWorker&lt;br&gt;InteractionWorker&lt;br&gt;ConfigureWorker&lt;br&gt;WorkerResult" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="100" width="240" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="managers" value="&lt;b&gt;Domain / orchestration managers&lt;/b&gt;&lt;br&gt;Config + Game&lt;br&gt;MySql + Interaction&lt;br&gt;Template + Asset&lt;br&gt;Collection + Lore&lt;br&gt;Cooldown" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="400" width="270" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="domain" value="&lt;b&gt;Domain model&lt;/b&gt;&lt;br&gt;Game → Profile&lt;br&gt;InteractType → Interaction&lt;br&gt;Collections → elements&lt;br&gt;LoreStory → chapter/audio/stream&lt;br&gt;Special interactions" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="690" y="400" width="270" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="infra" value="&lt;b&gt;Infrastructure adapters&lt;/b&gt;&lt;br&gt;MySqlBridge (mysqli)&lt;br&gt;Twitch bridges&lt;br&gt;CurlController&lt;br&gt;DataStore (Redis)&lt;br&gt;JsonHandler / FileMap&lt;br&gt;ReportLogger / ResponseSender" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="400" width="290" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="external" value="&lt;b&gt;External systems / files&lt;/b&gt;&lt;br&gt;MySQL database&lt;br&gt;Redis&lt;br&gt;Twitch OAuth + Helix&lt;br&gt;Game panel command API&lt;br&gt;JSON config + private config&lt;br&gt;HTML templates + logs" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="720" width="290" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="&lt;b&gt;Arrow meaning&lt;/b&gt;&lt;br&gt;solid = constructs or calls&lt;br&gt;dashed = reads/writes or adapts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="40" y="760" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="pages" target="bootstrap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="bootstrap" target="controllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="controllers" target="contexts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="contexts" target="workers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="bootstrap" target="managers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="workers" target="managers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="managers" target="domain">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="managers" target="infra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d9" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;" edge="1" parent="1" source="infra" target="external">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d10" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="controllers" target="infra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="refactor-canvas" name="3 - Refactor Canvas">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rt" value="Refactor canvas — duplicate this page and rearrange freely" style="text;html=1;fontSize=24;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="800" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="current" value="&lt;b&gt;CURRENT ENTRY&lt;/b&gt;&lt;br&gt;xogoriaApi.php&lt;br&gt;1. bootstrap whole app&lt;br&gt;2. refresh user&lt;br&gt;3. route request&lt;br&gt;4. prime mutable worker&lt;br&gt;5. process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="110" width="250" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="target" value="&lt;b&gt;POSSIBLE TARGET FLOW&lt;/b&gt;&lt;br&gt;HTTP Request&lt;br&gt;→ Request DTO + validation&lt;br&gt;→ explicit handler/router&lt;br&gt;→ domain service&lt;br&gt;→ typed result&lt;br&gt;→ HTTP response serializer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="100" width="270" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="hot1" value="&lt;b&gt;1. CoreController owns too much&lt;/b&gt;&lt;br&gt;Composition root, service locator, router, and facade are combined. Nearly every request constructs managers and external adapters." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="90" width="300" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hot2" value="&lt;b&gt;2. Context lifetime is unclear&lt;/b&gt;&lt;br&gt;ContextManager getters return newly built contexts but do not assign them to cached fields. Multiple UserContext instances and DB lookups can occur." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="90" width="310" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hot3" value="&lt;b&gt;3. Dispatch failure path&lt;/b&gt;&lt;br&gt;Unknown request maps to null, then prime() is called unconditionally. Make unsupported requests an explicit result." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="280" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot4" value="&lt;b&gt;4. Result/response boundary&lt;/b&gt;&lt;br&gt;Workers construct WorkerResult with data, but the scanned class has no constructor and the API entry point does not explicitly serialize/send the result." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="280" width="310" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot5" value="&lt;b&gt;5. Currency dependency mismatch&lt;/b&gt;&lt;br&gt;CurrencyWorker receives UserContext but mutation methods call an undeclared $bank. Define one balance service/repository contract." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="460" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot6" value="&lt;b&gt;6. Authentication / authorization seam&lt;/b&gt;&lt;br&gt;Identity is refreshed before dispatch, while worker-level checks vary. Central request policy would make allowed callers and actions visible." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="460" width="310" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1" value="&lt;b&gt;Low-risk first slice&lt;/b&gt;&lt;br&gt;Formalize request validation + unsupported-request response + WorkerResult serialization. Preserve worker behavior." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="90" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2" value="&lt;b&gt;Second slice&lt;/b&gt;&lt;br&gt;Make contexts request-scoped and single-instance. Inject an explicit UserRepository / BalanceService." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="510" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="phase3" value="&lt;b&gt;Third slice&lt;/b&gt;&lt;br&gt;Split app construction from routing. Lazily build only the handler dependencies required by the request." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="930" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="free" value="&lt;b&gt;Design parking lot&lt;/b&gt;&lt;br&gt;Drag notes here, duplicate shapes, and connect proposed ownership boundaries." style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#ffffff;strokeColor=#999999;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="650" width="220" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="current" target="hot1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="hot1" target="hot2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="hot2" target="target">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rp1" value="then" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="phase1" target="phase2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rp2" value="then" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="phase2" target="phase3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Copy of 3 - Refactor Canvas" id="T-AvesTt69ESvMAbeCFD">
+    <mxGraphModel dx="1571" dy="931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-0" />
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-1" parent="hLtUt27z7DBIgUFHUdXL-0" />
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-2" parent="hLtUt27z7DBIgUFHUdXL-1" style="text;html=1;fontSize=24;fontStyle=1;align=left;" value="Refactor canvas — duplicate this page and rearrange freely" vertex="1">
+          <mxGeometry height="40" width="800" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-3" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="&lt;b&gt;CURRENT ENTRY&lt;/b&gt;&lt;br&gt;xogoriaApi.php&lt;br&gt;1. bootstrap whole app&lt;br&gt;2. refresh user&lt;br&gt;3. route request&lt;br&gt;4. prime mutable worker&lt;br&gt;5. process" vertex="1">
+          <mxGeometry height="150" width="250" x="60" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-4" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" value="&lt;b&gt;POSSIBLE TARGET FLOW&lt;/b&gt;&lt;br&gt;HTTP Request&lt;br&gt;→ Request DTO + validation&lt;br&gt;→ explicit handler/router&lt;br&gt;→ domain service&lt;br&gt;→ typed result&lt;br&gt;→ HTTP response serializer" vertex="1">
+          <mxGeometry height="180" width="270" x="1250" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-5" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;1. CoreController owns too much&lt;/b&gt;&lt;br&gt;Composition root, service locator, router, and facade are combined. Nearly every request constructs managers and external adapters." vertex="1">
+          <mxGeometry height="140" width="300" x="390" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-6" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;2. Context lifetime is unclear&lt;/b&gt;&lt;br&gt;ContextManager getters return newly built contexts but do not assign them to cached fields. Multiple UserContext instances and DB lookups can occur." vertex="1">
+          <mxGeometry height="140" width="310" x="760" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-7" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;3. Dispatch failure path&lt;/b&gt;&lt;br&gt;Unknown request maps to null, then prime() is called unconditionally. Make unsupported requests an explicit result." vertex="1">
+          <mxGeometry height="130" width="300" x="390" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-8" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;4. Result/response boundary&lt;/b&gt;&lt;br&gt;Workers construct WorkerResult with data, but the scanned class has no constructor and the API entry point does not explicitly serialize/send the result." vertex="1">
+          <mxGeometry height="130" width="310" x="760" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-9" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;5. Currency dependency mismatch&lt;/b&gt;&lt;br&gt;CurrencyWorker receives UserContext but mutation methods call an undeclared $bank. Define one balance service/repository contract." vertex="1">
+          <mxGeometry height="130" width="300" x="390" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-10" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;6. Authentication / authorization seam&lt;/b&gt;&lt;br&gt;Identity is refreshed before dispatch, while worker-level checks vary. Central request policy would make allowed callers and actions visible." vertex="1">
+          <mxGeometry height="130" width="310" x="760" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-11" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Low-risk first slice&lt;/b&gt;&lt;br&gt;Formalize request validation + unsupported-request response + WorkerResult serialization. Preserve worker behavior." vertex="1">
+          <mxGeometry height="120" width="320" x="90" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-12" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Second slice&lt;/b&gt;&lt;br&gt;Make contexts request-scoped and single-instance. Inject an explicit UserRepository / BalanceService." vertex="1">
+          <mxGeometry height="120" width="320" x="510" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-13" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Third slice&lt;/b&gt;&lt;br&gt;Split app construction from routing. Lazily build only the handler dependencies required by the request." vertex="1">
+          <mxGeometry height="120" width="320" x="930" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-14" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#ffffff;strokeColor=#999999;fontColor=#666666;" value="&lt;b&gt;Design parking lot&lt;/b&gt;&lt;br&gt;Drag notes here, duplicate shapes, and connect proposed ownership boundaries." vertex="1">
+          <mxGeometry height="220" width="220" x="1320" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-15" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-16" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-17" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-18" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-11" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="hLtUt27z7DBIgUFHUdXL-12" value="then">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-19" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-12" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="hLtUt27z7DBIgUFHUdXL-13" value="then">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

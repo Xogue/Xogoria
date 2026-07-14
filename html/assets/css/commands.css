@@ -1,0 +1,111 @@
+.uiSectionBody { 
+  width: 45%; 
+  text-align: left;
+}
+
+/* -----------------------------------------
+   Filters (two columns)
+   ----------------------------------------- */
+#commandsFilters {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  min-width: 500px;
+  margin: 18px auto 0 auto;
+}
+
+.filtersHeader {
+  width: 83%;
+  max-width: 1000px;
+  margin: 55px auto 6px auto; /* lowered header */
+}
+
+.filtersHeaderBar {
+  width: 75%;
+  margin: 25px auto 0 auto; 
+  height: 34px;
+  border-radius: 20px;
+  border: 1px solid #151515;
+  background: #252525;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  color: #4d7fe7;
+  font-family: 'bronic', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.filtersHeaderBar .label.left  { grid-column: 1; }
+.filtersHeaderBar .label.right { grid-column: 2; }
+
+.filtersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  justify-items: center;
+  width: 55%;
+  margin: auto;
+}
+
+.filterCol {
+  position: relative;
+  width: 100%;
+}
+
+.cmdTabs {
+  width: 80%;
+  margin: 12px auto 0 auto;
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 20px;
+}
+
+.cmdLink {
+  display: inline-block;
+  min-width: 185px;
+  padding: 0 18px;
+  background: #393e48;
+  color: #e6eeff;
+  font-family: 'bronic', sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  border-radius: 18px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.28);
+  margin-top: 0; /* no movement */
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.cmdLink::before,
+.cmdLink::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  width: 13px;
+  height: 26px; /* connect visually to header plate */
+  background-image: var(--chain-img);
+  background-repeat: repeat-y;
+  background-size: 13px auto;
+  background-position: top center;
+  z-index: -1;
+}
+
+.cmdLink::before { left: 20%; transform: translateX(-50%); }
+.cmdLink::after  { left: 80%; transform: translateX(-50%); }
+
+.cmdLink:hover:not(.active) {
+  background: #404f59;
+}
+
+.active {
+  background: #e6eeff;
+  color: #151515;
+  border-color: #000;
+}

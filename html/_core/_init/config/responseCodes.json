@@ -1,0 +1,12 @@
+{
+    "SECTION1": { "-----------------------": "CURRENCY RESPONSES" },
+    "C100R": { 
+        "constantName": "R_CURRENCY__GEMS_ADD",
+        "messageTemplate": "You found {foundGems} gems! Your new total is {totalGems}",
+        "replaceMap": {
+            "{foundGems}": "foundGems",
+            "{totalGems}": "totalGems"
+        }
+    }
+    
+}

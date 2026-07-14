@@ -1,0 +1,366 @@
+/* =========================================
+   Clips Manager (Admin)
+   ========================================= */
+
+#adminHero {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  min-width: 500px;
+  margin: 20px auto 0 auto;
+}
+
+#adminHero .banner {
+  background: #1f3c88;
+  color: #fff;
+  font-family: 'bronic', sans-serif;
+  font-size: 64px;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 10px 32px 18px 32px;
+  border-radius: 38px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+  text-shadow:
+    -1px 0 1px #000,
+     0 1px 1px #000,
+     1px 0 1px #000,
+     0 -1px 1px #000;
+  position: relative;
+}
+
+#adminHero .banner::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+  width: 60%;
+  height: 4px;
+  background: #4d7fe7;
+  border-radius: 3px;
+  opacity: 0.9;
+}
+
+.adminWrap {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto 60px auto;
+  padding: 0 12px;
+}
+
+.panel { position: relative; margin: 10px auto 24px auto; padding-top: 0; }
+.panelLabel {
+  display: inline-block;
+  background: #2f5eb6;
+  color: #e6eeff;
+  font-family: 'bronic', sans-serif;
+  font-size: 18px;
+  border: 1px solid #5080ea;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+  padding: 6px 12px;
+  margin-left: 12px;
+}
+.panelBody {
+  color: #e6eeff;
+  font-family: 'fr-bold', sans-serif;
+  padding: 0 16px;
+  position: relative;
+}
+
+.formRow { display: block; margin: 20px 0; }
+.formRow label {
+  display: block;
+  color: #a9c5ff;
+  margin-bottom: 6px;
+  font-family: 'fr-bold', sans-serif;
+}
+.formRow input[type="text"],
+.formRow input[type="password"],
+.formRow input[type="date"],
+.formRow textarea,
+.formRow select {
+  width: 96.5%;
+  background: #242b33;
+  border: 1px solid #151515;
+  color: #e6eeff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'fr-bold', sans-serif;
+  letter-spacing: 0.3px;
+}
+.formActions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.alert {
+  margin: 10px auto 14px auto;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: 'fr-bold', sans-serif;
+  text-align: center;
+  width: fit-content;
+}
+.alert.error   { background: #3c1818; border: 1px solid #7a2b2b; color: #f2b8b8; }
+.alert.success { background: #183c22; border: 1px solid #2b7a3d; color: #b8f2c6; }
+
+/* In the Clip Manager, show alerts as overlays so they do not
+   push the rest of the content down when they appear. */
+#clipAdminAlert,
+#clipAdminSuccess {
+  position: absolute;
+  top: 6px;
+  right: 16px;
+  margin: 0;
+  z-index: 20;
+}
+
+.clipAdminLayout {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 18px;
+}
+
+.clipAdminLeft, .clipAdminRight {
+  min-width: 0;
+}
+
+.clipAdminTabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.clipAdminTabs .tabBtn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #151515;
+  background: #252525;
+  color: #c1d3ea;
+  font-family: 'fr-bold', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clipAdminTabs .tabBtn.active {
+  background: #4d7fe7;
+  color: #fff;
+}
+
+.clipAdminTabs .queueBadge {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #7a2b2b;
+  color: #f2b8b8;
+  font-family: 'fr-bold', sans-serif;
+  font-size: 13px;
+}
+
+.clipAdminView {
+  margin-top: 4px;
+}
+
+.clipAdminPlayer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.clipAdminPlayer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.clipAdminFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e6eeff;
+  font-family: 'bronic', sans-serif;
+  font-size: 22px;
+}
+
+.clipAdminCurrentMeta .metaRow {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.clipAdminCurrentMeta label {
+  color: #a9c5ff;
+  margin-right: 6px;
+}
+
+.clipAdminCurrentMeta input[type="text"],
+.clipAdminCurrentMeta input[type="number"] {
+  width: 100%;
+  background: #242b33;
+  border: 1px solid #151515;
+  color: #e6eeff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: 'fr-bold', sans-serif;
+}
+
+.clipAdminCurrentMeta .metaRow.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.clipAdminCurrentMeta .formActions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.btnPrimary, .btnLink {
+  display: inline-block;
+  background: #2f5eb6;
+  color: #e6eeff;
+  border: 1px solid #5080ea;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-family: 'fr-bold', sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btnPrimary[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.btnPrimary:hover:not([disabled]), .btnLink:hover:not([disabled]) {
+  background: #3b6cd0;
+}
+
+.btnLink.danger {
+  background: #7a2b2b;
+  border-color: #a04848;
+}
+
+.btnLink.danger:hover:not([disabled]) {
+  background: #8c3434;
+}
+
+.clipAdminListHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.clipAdminListHeader select {
+  background: #242b33;
+  border: 1px solid #151515;
+  color: #e6eeff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-family: 'fr-bold', sans-serif;
+}
+
+.clipAdminList {
+  max-height: 430px;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid #151515;
+  background: #151515;
+}
+
+.clipAdminItem {
+  padding: 8px 10px;
+  border-bottom: 1px solid #20262f;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.clipAdminItem:last-child {
+  border-bottom: none;
+}
+
+.clipAdminItem:hover {
+  background: #202733;
+}
+
+.clipAdminItem.active {
+  background: #2f5eb6;
+}
+
+.clipAdminItem.newClip {
+  border-left: 4px solid #ffd15c;
+  background: #222530;
+}
+
+.clipAdminItemTitle {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clipAdminItemMeta {
+  font-size: 11px;
+  color: #9fb1d4;
+  display: flex;
+  justify-content: space-between;
+}
+
+.clipAdminItemBadges {
+  font-size: 11px;
+}
+
+.clipAdminItemBadges .fav {
+  color: #ffd15c;
+}
+
+.clipAdminItemBadges .disabled {
+  color: #f2b8b8;
+}
+
+@media (max-width: 980px) {
+  #adminHero { max-width: 95%; min-width: 0; }
+  .clipAdminLayout {
+    grid-template-columns: 1fr;
+  }
+  .clipAdminList {
+    max-height: 260px;
+  }
+}
+.clipDeletionList {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.clipDeletionItem {
+    display: grid;
+    gap: 5px;
+    padding: 12px;
+    border: 1px solid var(--admin-border, #304158);
+    border-radius: 7px;
+    background: var(--admin-panel, #151c27);
+}
+
+.clipDeletionItem span {
+    color: var(--admin-muted, #9eafc5);
+}
+
+.clipDeletionItem a {
+    color: var(--admin-accent, #6ba5ff);
+}

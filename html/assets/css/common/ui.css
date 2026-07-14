@@ -1,0 +1,665 @@
+/* ==========================================================================
+   UI (shared/reusable)
+   Anything prefixed with "ui" is intended to be used across multiple pages.
+   ========================================================================== */
+
+/* ------------------------------
+  Common Variables
+  ------------------------------ */
+:root {
+  /* Color Palette */
+  --uiText: #e6eeff;
+  --uiMuted: #98a9c9;
+
+  --uiAlmostBlack: #151515;
+  --uiDarkerGrey: #1f1f1f;
+  --uiDarkGrey: #242b33;
+  --uiMediumGrey: #29313c;
+  --uiMediumLightGrey: #313b4c;
+
+  --uiBorderDark: #151515;
+  --uiBorderSoft: #00000055;
+
+  --uiBlue: #2f5eb6;
+  --uiLightBlue: #5080ea;
+
+  --uiGreenBg: #183c22;
+  --uiGreenBorder: #2b7a3d;
+  --uiGreenText: #b8f2c6;
+
+  --uiRedBg: #3c1818;
+  --uiRedBorder: #7a2b2b;
+  --uiRedText: #f2b8b8;
+
+  /* Image URLs */
+  --chain-img: url("../../_media/images/chain.png");
+
+  /* Element Sizes */
+  --chain-attach-offset: 217px; /* small tuck under pill tops */
+}
+
+@font-face {
+    font-family: 'britanic';
+    src: url('../../_media/fonts/britanic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'bronic';
+    src: url('../../_media/fonts/bronic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'fr-bold';
+    src: url('../../_media/fonts/fr-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; }
+
+/* ------------------------------
+   Core Element Styles
+  ------------------------------ */
+html {
+	  background-color: var(--uiAlmostBlack); /* fallback to mitigate white flash */
+	  background-image: url("../../_media/images/pageBack.png");
+	  background-repeat: repeat;
+    scroll-behavior: smooth;
+    padding-bottom: 300px;
+}
+
+body {
+	  margin: 0px;
+	  font-family: 'britanic', sans-serif;
+    background: transparent; 
+}
+
+body > * {
+    opacity: 0;
+    animation: app-fade-in 500ms ease-out 0s forwards;
+}
+
+@keyframes app-fade-in { 
+  from { opacity: 0; } 
+  to { opacity: 1; } 
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body > * { animation: none; opacity: 1; }
+}
+
+/* ------------------------------
+   Utilities
+   ------------------------------ */
+.uiHidden { display: none !important; }
+.uiInvisible { opacity: 0; transition: all 0.5s ease; }
+
+.streamStatusBadge {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  max-width: min(320px, calc(100vw - 20px));
+  padding: 5px 9px;
+  border: 1px solid #1d2630;
+  border-radius: 8px;
+  background: rgba(21, 21, 21, 0.88);
+  color: var(--uiText);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  font-family: 'fr-bold', sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.uiAbsolute{ position: absolute; }
+.ui0FromLeft{ left: 0; }
+.ui0FromRight{ right: 0; }
+.ui5FromLeft { left: 5px; }
+.ui5FromRight { right: 5px; }
+.ui10FromLeft { left: 10px; }
+.ui10FromRight { right: 10px; }
+.ui25FromLeft { left: 25px; }
+.ui25FromRight { right: 25px; }
+.ui50FromLeft { left: 50px; }
+.ui50FromRight { right: 50px; }
+
+.uiCenter { left: 50%; transform: translateX(-50%); }
+
+.uiVeryShortChain {
+  --chain-min-length: 10px;
+  --chain-max-length: 15px;
+}
+
+.uiShortChain {
+  --chain-min-length: 110px;
+  --chain-max-length: 150px;
+}
+
+.uiMediumChain {
+  --chain-min-length: 140px;
+  --chain-max-length: 220px;
+}
+
+.uiLongChain {
+  --chain-min-length: 200px;
+  --chain-max-length: 300px;
+}
+
+.uiVeryLongChain {
+  --chain-min-length: 300px;
+  --chain-max-length: 400px;
+}
+
+.uiSetWidth51 { width: 51% !important; }
+.uiSetWidth48 { width: 48% !important; }
+.uiSetWidth40 { width: 40% !important; }
+
+/* ------------------------------
+   JS Set & Controlled
+  ------------------------------- */
+
+/* --chain-length: Created by JS. Used here */
+
+/* ------------------------------
+   Headings
+   ------------------------------ */
+
+#uiPageBanner {
+  position: relative;
+  width: 900px;
+  margin: 40px auto 0 auto; /* remove large gap so chains can meet headers */
+  overflow: visible; /* allow bolt chains to extend below */
+}
+
+.uiPageTitle {
+  background: linear-gradient(180deg, #1f3c88 0%, #0e1b2a 100%);
+  color: #fff;
+  font-family: 'bronic', sans-serif;
+  font-size: 80px;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 10px 40px 12px 40px;
+  border-radius: 55px;
+  box-shadow: inset 0px 0px 15px 5px rgba(0, 0, 0, 0.45);
+  text-shadow: -1px 0 1px #000, 0 1px 1px #000, 1px 0 1px #000, 0 -1px 1px #000;
+  position: relative; /* anchor blue underline */
+}
+
+#uiSubBanner {
+  position: relative;
+  width: 750px;
+  margin: 5px auto 0 auto;
+  overflow: visible; /* allow bolt chains to extend below */
+}
+
+.uiSubTitle {
+  margin: -14px auto 0 auto;
+  height: 38px;
+  border-radius: 22px;
+  background: #252525;
+  display: grid;
+  place-items: center;
+  color: #4d7fe7;
+  font-family: 'bronic', sans-serif;
+  font-size: 32px;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.uiSubDescription {
+  width: 30%;
+  margin: 20px auto 12px auto;
+  color: #e6eeff;
+  text-align: center;
+  font-family: 'fr-bold', sans-serif;
+  font-size: 18px;
+}
+
+.uiSectionHang { 
+  width: 32%;
+  position: relative;
+  padding-top: calc(var(--chain-inner-h) - var(--chain-attach-offset)); 
+  margin: 50px auto 28px auto;
+}
+
+.title span {
+  color: var(--uiText);
+}
+
+.uiSectionPill {
+    margin: 0 auto;
+    height: 44px;
+    border-radius: 22px / 22px;
+    background-color: #252525;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    display: grid;
+    place-items: center;
+    position: relative;
+    /* Lift pill to meet inner chains without altering chain lengths */
+    top: calc(-1 * (var(--chain-inner-h) - var(--chain-attach-offset)));
+    z-index: 1;
+}
+
+.uiSectionPill > span {
+    color: #4d7fe7;
+    font-family: 'bronic', sans-serif;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+.uiSectionDescription {
+    width: 80%;
+    margin: 8px auto 0 auto;
+    color: #c1d3ea;
+    font-family: 'fr-bold', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.uiSectionPillShelf {
+  width: 70%;
+  min-width: 500px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.uiSectionPillHang {
+  width: 300px;
+  height: 30px;
+  border: 1px solid #151515;
+  border-radius: 24px;
+  background-color: #252525;
+  color: #e6eeff;
+  font-family: 'britanic', sans-serif;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 20px;
+  transition: margin-top 0.5s ease;
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.uiSectionPillHang::before,
+.uiSectionPillHang::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    width: 13px;
+    height: 20px;
+    background-image: var(--chain-img);
+    background-repeat: repeat-y;
+    background-size: 13px auto;
+    background-position: top center;
+    transition: height 0.5s ease, background-position 0.5s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.uiSectionPillHang::before { left: 20%; transform: translateX(-50%); }
+.uiSectionPillHang::after { left: 80%; transform: translateX(-50%); }
+
+.uiSectionPillHang.active {
+    background-color: #e6eeff;
+    color: #252525;
+    margin-top: 30px;
+}
+
+.uiSectionPillHang.active::before,
+.uiSectionPillHang.active::after { height: 30px; }
+
+.uiSectionPillHang:not(.active):hover,
+.uiSectionPillHang:not(.active):hover {
+    background-color: #a9a9a9;
+    color: #252525;
+    margin-top: 25px;
+}
+
+.uiSectionPillHang:not(.active):hover::before,
+.uiSectionPillHang:not(.active):hover::after { height: 25px; }
+
+.uiSectionBody {
+  width: 35%;
+  max-width: 1000px; 
+  margin: 45px auto 40px auto; 
+  text-align: center;
+  font-family: 'fr-bold', sans-serif;
+  color: #e6eeff;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+/* ------------------------------
+   Decorations
+   ----------------------------- */
+
+.uiHorizontalPlate {
+  position: absolute;
+  bottom: -16px;
+  width: 92px;
+  height: 28px;
+  background: linear-gradient(180deg, #343a43 0%, #13161a 100%);
+  border: 1px solid #151515;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  z-index: 2; /* plates appear on top of banner */
+}
+
+.uiVerticalPlate {
+  position: absolute;
+  bottom: -9px;
+  width: 15px;
+  height: 55px;
+  background: linear-gradient(180deg, #343a43 0%, #13161a 100%);
+  border: 1px solid #151515;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  z-index: 2; /* plates appear on top of banner */
+}
+
+.uiLeftBolt, .uiRightBolt, .uiTopBolt, .uiBottomBolt {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 40% 40%, #3f424c 0 4px, #0f0f0f 5px 10px);
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.uiLeftBolt { top: 10px; left: 10px }
+.uiRightBolt { top: 10px; right: 10px }
+.uiTopBolt { top: 10px; left: 55%; transform: translateX(-50%); }
+.uiBottomBolt { bottom: 10px; left: 55%; transform: translateX(-50%); }
+
+.uiChain {
+  position: absolute;
+  top: 21px;
+  width: 16px;
+  height: var(--chain-length);
+  background-image: var(--chain-img);
+  background-repeat: repeat-y;
+  background-size: 13px auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------
+   Panels
+   ------------------------------ */
+.uiPanel {
+  position: relative;
+  margin: 10px auto 24px auto;
+  padding-top: 12px;
+}
+
+.uiPanelLabel {
+  display: inline-block;
+  background: var(--uiBlue);
+  color: var(--uiText);
+  font-family: 'bronic', sans-serif;
+  font-size: 18px;
+  border: 1px solid var(--uiLightBlue);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+  padding: 6px 12px;
+  margin-left: 12px;
+}
+
+.uiPanelBody {
+  color: var(--uiText);
+  font-family: 'fr-bold', sans-serif;
+  padding: 16px;
+}
+
+/* ------------------------------
+   Alerts
+   ------------------------------ */
+.uiAlert {
+  margin: 40px auto 0px auto;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: 'fr-bold', sans-serif;
+  text-align: center;
+  width: fit-content;
+}
+
+.uiAlert.uiAlertSuccess {
+  background: var(--uiGreenBg);
+  border: 1px solid var(--uiGreenBorder);
+  color: var(--uiGreenText);
+}
+
+.uiAlert.uiAlertError {
+  background: var(--uiRedBg);
+  border: 1px solid var(--uiRedBorder);
+  color: var(--uiRedText);
+}
+
+/* ------------------------------
+   Buttons
+   ------------------------------ */
+.uiButton {
+  display: inline-block;
+  color: var(--uiText);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-family: 'fr-bold', sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.uiButton[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.uiButtonPrimary {
+  background: var(--uiBlue);
+  border-color: var(--uiLightBlue);
+}
+
+.uiButtonPrimary:hover:not([disabled]) {
+  background: #3b6cd0;
+}
+
+.uiButtonDanger {
+  background: #7a2b2b;
+  border-color: #a04848;
+}
+
+.uiButtonDanger:hover:not([disabled]) {
+  background: #8c3434;
+}
+
+.uiButtonSmall {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* ------------------------------
+   Forms
+   ------------------------------ */
+.uiFormRow {
+  display: block;
+  margin: 20px 0;
+}
+
+.uiFormRow label {
+  display: block;
+  color: #a9c5ff;
+  margin-bottom: 6px;
+}
+
+.uiFormRowSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 820px) {
+  .uiFormRowSplit { grid-template-columns: 1fr; }
+}
+
+.uiCheckboxRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ------------------------------
+   Tables
+   - uiTable: shared look
+   - uiTableAdmin: admin inline-edit tables
+   ------------------------------ */
+.uiTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 10px auto;
+  color: var(--uiText);
+}
+
+.uiTable thead th {
+  background: #2f3b52;
+  color: #a9c5ff;
+  text-align: left;
+  padding: 10px 12px;
+  font-family: 'fr-bold', sans-serif;
+}
+
+.uiTable thead th:first-child { border-top-left-radius: 10px; }
+.uiTable thead th:last-child  { border-top-right-radius: 10px; }
+
+.uiTable tbody td {
+  background: var(--uiDarkGrey);
+  padding: 8px 12px;
+  border-top: 1px solid var(--uiBorderSoft);
+  font-family: 'fr-bold', sans-serif;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+}
+
+.uiTable tbody tr:nth-child(even) td { background: var(--uiMediumGrey); }
+.uiTable tbody tr:hover td { background: var(--uiMediumLightGrey); }
+
+.uiTable .empty {
+  text-align: center;
+  color: var(--uiMuted);
+  font-family: 'fr-bold', sans-serif;
+}
+
+/* Admin inline-edit table helpers (optional; migrate gradually) */
+.uiTableAdminRowEditing { background: rgba(63, 163, 255, 0.05); }
+
+
+.collection {
+  margin: 0 auto;
+}
+
+.controls {
+  width: 100%;
+  margin: 0 auto 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.collectionSearch {
+  width: 85%;
+  max-width: 1260px;
+  padding: 5px 10px;
+  border: 1px solid #1d2630;
+  border-radius: 10px;
+  background: #1f1f1f;
+  color: #e6eeff;
+  outline: none;
+  font-size: 18px;
+}
+
+.collectionSearch::placeholder { color: #98a9c9; }
+
+.searchWrap {
+  position: relative;
+  display: inline-block;
+  flex: 1 1 auto;
+}
+
+.clearSearch {
+  position: absolute;
+  right: 17%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #985555;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+}
+
+.clearSearch:hover { color: #e6eeff; }
+
+.favPill {
+  display: inline-block;
+  min-width: 170px;
+  padding: 0 16px;
+  height: 30px;
+  line-height: 30px;
+  background: #1f1f1f;
+  color: #e6eeff;
+  font-family: 'bronic', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+  border: 1px solid #151515;
+  border-radius: 18px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.28);
+  cursor: pointer;
+}
+
+.favPill:hover { background: #4a4a4a; }
+.favPill.active { background: #cfcfcf; color: #151515; }
+
+.pagination {
+  width: 75%;
+  margin: 8px auto 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+  gap: 10px;
+}
+
+.pageButton {
+  background: #393e48;
+  color: #e6eeff;
+  border: 1px solid #151515;
+  border-radius: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'bronic', sans-serif;
+}
+
+.pageButton:hover { background: #4a4a4a; }
+
+.pageInfo {
+  text-align: center;
+  color: #a9c5ff;
+  font-family: 'fr-bold', sans-serif;
+}

@@ -1,0 +1,614 @@
+<mxfile host="app.diagrams.net" agent="Codex" compressed="false" pages="6">
+  <diagram id="runtime-flow" name="1 - API Runtime Flow">
+    <mxGraphModel dx="1414" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=24;fontStyle=1;align=left;verticalAlign=middle;" value="Xogoria API — current request flow" vertex="1">
+          <mxGeometry height="40" width="700" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="&lt;b&gt;Browser / bot / external caller&lt;/b&gt;&lt;br&gt;GET, form POST, or JSON POST" vertex="1">
+          <mxGeometry height="80" width="210" x="40" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="&lt;b&gt;html/api/xogoriaApi.php&lt;/b&gt;&lt;br&gt;refresh identity → select worker → process" vertex="1">
+          <mxGeometry height="90" width="250" x="310" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="session" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;includes/session.php&lt;/b&gt;&lt;br&gt;starts session&lt;br&gt;loads Composer classmap&lt;br&gt;constructs CoreController" vertex="1">
+          <mxGeometry height="100" width="250" x="310" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="request" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;RequestData&lt;/b&gt;&lt;br&gt;$_GET / $_POST / php://input" vertex="1">
+          <mxGeometry height="70" width="190" x="630" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="sessiondata" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;SessionData&lt;/b&gt;&lt;br&gt;Twitch identity from $_SESSION" vertex="1">
+          <mxGeometry height="70" width="190" x="630" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" value="&lt;b&gt;InputDataContext&lt;/b&gt;&lt;br&gt;request values + session fallback" vertex="1">
+          <mxGeometry height="90" width="220" x="880" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="identity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;UserContext refresh&lt;/b&gt;&lt;br&gt;lookup by platform ID, then username" vertex="1">
+          <mxGeometry height="70" width="220" x="1160" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="router" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" value="&lt;b&gt;CoreController::getContextWorker()&lt;/b&gt;&lt;br&gt;match request, then prime contexts" vertex="1">
+          <mxGeometry height="130" width="220" x="1160" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="collection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;CollectionWorker&lt;/b&gt;&lt;br&gt;name / objective / quote&lt;br&gt;→ MySqlManager" vertex="1">
+          <mxGeometry height="90" width="220" x="190" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="currency" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;CurrencyWorker&lt;/b&gt;&lt;br&gt;check / set / add / deduct&lt;br&gt;→ user balance" vertex="1">
+          <mxGeometry height="90" width="220" x="480" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="interaction" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;InteractionWorker&lt;/b&gt;&lt;br&gt;resolve game interaction&lt;br&gt;→ panel commands" vertex="1">
+          <mxGeometry height="90" width="220" x="770" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="configure" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;ConfigureWorker&lt;/b&gt;&lt;br&gt;set active game + profile" vertex="1">
+          <mxGeometry height="90" width="220" x="1060" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="result" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" value="&lt;b&gt;WorkerResult&lt;/b&gt;&lt;br&gt;success / value / message&lt;br&gt;shared result contract" vertex="1">
+          <mxGeometry height="90" width="250" x="650" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="db" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;" value="MySQL" vertex="1">
+          <mxGeometry height="80" width="120" x="80" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="panel" parent="1" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" value="Game panel API&lt;br&gt;/servers/{id}/command" vertex="1">
+          <mxGeometry height="100" width="200" x="1020" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="session" value="require_once">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="sessiondata" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="identity" value="refresh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="router" value="request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="collection" value="collection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="currency" value="currency">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="interaction" value="interaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="configure" value="configure">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="collection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="interaction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="panel">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="590" />
+              <mxPoint x="1120" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="collection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="630" />
+              <mxPoint x="775" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="currency" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="interaction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="configure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1170" y="630" />
+              <mxPoint x="775" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dependency-map" name="2 - Component Map">
+    <mxGraphModel dx="1571" dy="931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2" parent="1" style="text;html=1;fontSize=24;fontStyle=1;align=left;" value="Xogoria — component and dependency map" vertex="1">
+          <mxGeometry height="40" width="700" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Presentation / entry points&lt;/b&gt;&lt;br&gt;Public PHP pages&lt;br&gt;Admin pages&lt;br&gt;API endpoints&lt;br&gt;Browser JavaScript" vertex="1">
+          <mxGeometry height="160" width="230" x="40" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="bootstrap" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Bootstrap&lt;/b&gt;&lt;br&gt;session.php&lt;br&gt;Composer classmap&lt;br&gt;CoreController" vertex="1">
+          <mxGeometry height="160" width="230" x="340" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="controllers" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Controllers&lt;/b&gt;&lt;br&gt;DataController&lt;br&gt;UserController&lt;br&gt;TwitchController" vertex="1">
+          <mxGeometry height="160" width="230" x="640" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="contexts" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Contexts / request state&lt;/b&gt;&lt;br&gt;ContextManager&lt;br&gt;InputDataContext + WorkerContext&lt;br&gt;User / Twitch / DataStore contexts&lt;br&gt;RequestData + SessionData" vertex="1">
+          <mxGeometry height="190" width="270" x="940" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="workers" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Worker dispatch&lt;/b&gt;&lt;br&gt;WorkerInterface&lt;br&gt;CollectionWorker&lt;br&gt;CurrencyWorker&lt;br&gt;InteractionWorker&lt;br&gt;ConfigureWorker&lt;br&gt;WorkerResult" vertex="1">
+          <mxGeometry height="210" width="240" x="1280" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="managers" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Domain / orchestration managers&lt;/b&gt;&lt;br&gt;Config + Game&lt;br&gt;MySql + Interaction&lt;br&gt;Template + Asset&lt;br&gt;Collection + Lore&lt;br&gt;Cooldown" vertex="1">
+          <mxGeometry height="200" width="270" x="340" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="domain" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Domain model&lt;/b&gt;&lt;br&gt;Game → Profile&lt;br&gt;InteractType → Interaction&lt;br&gt;Collections → elements&lt;br&gt;LoreStory → chapter/audio/stream&lt;br&gt;Special interactions" vertex="1">
+          <mxGeometry height="200" width="270" x="690" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="infra" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;Infrastructure adapters&lt;/b&gt;&lt;br&gt;MySqlBridge (mysqli)&lt;br&gt;Twitch bridges&lt;br&gt;CurlController&lt;br&gt;DataStore (Redis)&lt;br&gt;JsonHandler / FileMap&lt;br&gt;ReportLogger / ResponseSender" vertex="1">
+          <mxGeometry height="220" width="290" x="1040" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="external" parent="1" style="swimlane;html=1;rounded=1;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingTop=36;spacingLeft=12;" value="&lt;b&gt;External systems / files&lt;/b&gt;&lt;br&gt;MySQL database&lt;br&gt;Redis&lt;br&gt;Twitch OAuth + Helix&lt;br&gt;Game panel command API&lt;br&gt;JSON config + private config&lt;br&gt;HTML templates + logs" vertex="1">
+          <mxGeometry height="210" width="290" x="1040" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" value="&lt;b&gt;Arrow meaning&lt;/b&gt;&lt;br&gt;solid = constructs or calls&lt;br&gt;dashed = reads/writes or adapts" vertex="1">
+          <mxGeometry height="100" width="230" x="40" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" edge="1" parent="1" source="pages" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="bootstrap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" edge="1" parent="1" source="bootstrap" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="controllers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" edge="1" parent="1" source="controllers" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="contexts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" edge="1" parent="1" source="contexts" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="workers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" edge="1" parent="1" source="bootstrap" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="managers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="475" y="300" />
+            </Array>
+            <mxPoint x="1280" y="300" as="sourcePoint" />
+            <mxPoint x="475" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d7" edge="1" parent="1" source="managers" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="domain">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d8" edge="1" parent="1" source="managers" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="infra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d9" edge="1" parent="1" source="infra" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;" target="external">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d10" edge="1" parent="1" source="controllers" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" target="infra">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="180" />
+              <mxPoint x="890" y="320" />
+              <mxPoint x="1185" y="320" />
+            </Array>
+            <mxPoint x="860" y="210" as="sourcePoint" />
+            <mxPoint x="1175" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="refactor-canvas" name="3 - Current Flow Discontinuities">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rt" value="Observed current-flow discontinuities" style="text;html=1;fontSize=24;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="800" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="current" value="&lt;b&gt;CURRENT ENTRY&lt;/b&gt;&lt;br&gt;xogoriaApi.php&lt;br&gt;1. bootstrap whole app&lt;br&gt;2. refresh user&lt;br&gt;3. route request&lt;br&gt;4. prime mutable worker&lt;br&gt;5. process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="110" width="250" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="target" value="&lt;b&gt;CURRENT API END&lt;/b&gt;&lt;br&gt;$workerResult is assigned locally&lt;br&gt;No echo or JSON serialization follows in xogoriaApi.php&lt;br&gt;PHP request then ends" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="100" width="270" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="hot1" value="&lt;b&gt;1. CoreController owns too much&lt;/b&gt;&lt;br&gt;Composition root, service locator, router, and facade are combined. Nearly every request constructs managers and external adapters." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="90" width="300" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hot2" value="&lt;b&gt;2. Context lifetime is unclear&lt;/b&gt;&lt;br&gt;ContextManager getters return newly built contexts but do not assign them to cached fields. Multiple UserContext instances and DB lookups can occur." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="90" width="310" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hot3" value="&lt;b&gt;3. Dispatch failure path&lt;/b&gt;&lt;br&gt;Unknown request maps to null, then prime() is called unconditionally on that value." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="280" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot4" value="&lt;b&gt;4. Result/response boundary&lt;/b&gt;&lt;br&gt;Workers construct WorkerResult with data, but the scanned class has no constructor and the API entry point does not explicitly serialize/send the result." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="280" width="310" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot5" value="&lt;b&gt;5. Currency dependency mismatch&lt;/b&gt;&lt;br&gt;CurrencyWorker receives UserContext, while its mutation methods call an undeclared $bank property." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="390" y="460" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hot6" value="&lt;b&gt;6. Authentication / authorization seam&lt;/b&gt;&lt;br&gt;Identity is refreshed before dispatch. CurrencyWorker checks login; Collection, Interaction, and Configure workers do not." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="460" width="310" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1" value="&lt;b&gt;Rendered-page output&lt;/b&gt;&lt;br&gt;Managers assemble HTML from MySQL rows, domain elements, and template files; PHP echoes it into pages." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="90" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2" value="&lt;b&gt;Worker output&lt;/b&gt;&lt;br&gt;Workers return WorkerResult objects to xogoriaApi.php; the entry point stores the object without emitting it." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="510" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="phase3" value="&lt;b&gt;External side effects&lt;/b&gt;&lt;br&gt;MySQL writes, game-panel commands, Twitch calls, Redis queue operations, files/logs, redirects, and Backblaze uploads." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="930" y="700" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="free" value="&lt;b&gt;Scope note&lt;/b&gt;&lt;br&gt;These boxes describe observed code paths only. No intended or proposed routing is represented." style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#ffffff;strokeColor=#999999;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="650" width="220" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="current" target="hot1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="hot1" target="hot2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="hot2" target="target">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rp1" value="separate output path" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;" edge="1" parent="1" source="phase1" target="phase2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rp2" value="side effects may occur" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;" edge="1" parent="1" source="phase2" target="phase3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Copy of 3 - Current Flow Discontinuities" id="T-AvesTt69ESvMAbeCFD">
+    <mxGraphModel dx="1571" dy="931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-0" />
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-1" parent="hLtUt27z7DBIgUFHUdXL-0" />
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-2" parent="hLtUt27z7DBIgUFHUdXL-1" style="text;html=1;fontSize=24;fontStyle=1;align=left;" value="Observed current-flow discontinuities — working copy" vertex="1">
+          <mxGeometry height="40" width="800" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-3" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="&lt;b&gt;CURRENT ENTRY&lt;/b&gt;&lt;br&gt;xogoriaApi.php&lt;br&gt;1. bootstrap whole app&lt;br&gt;2. refresh user&lt;br&gt;3. route request&lt;br&gt;4. prime mutable worker&lt;br&gt;5. process" vertex="1">
+          <mxGeometry height="150" width="250" x="60" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-4" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="&lt;b&gt;CURRENT API END&lt;/b&gt;&lt;br&gt;$workerResult is assigned locally&lt;br&gt;No echo or JSON serialization follows in xogoriaApi.php&lt;br&gt;PHP request then ends" vertex="1">
+          <mxGeometry height="180" width="270" x="1250" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-5" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;1. CoreController owns too much&lt;/b&gt;&lt;br&gt;Composition root, service locator, router, and facade are combined. Nearly every request constructs managers and external adapters." vertex="1">
+          <mxGeometry height="140" width="300" x="390" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-6" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;2. Context lifetime is unclear&lt;/b&gt;&lt;br&gt;ContextManager getters return newly built contexts but do not assign them to cached fields. Multiple UserContext instances and DB lookups can occur." vertex="1">
+          <mxGeometry height="140" width="310" x="760" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-7" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;3. Dispatch failure path&lt;/b&gt;&lt;br&gt;Unknown request maps to null, then prime() is called unconditionally on that value." vertex="1">
+          <mxGeometry height="130" width="300" x="390" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-8" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;4. Result/response boundary&lt;/b&gt;&lt;br&gt;Workers construct WorkerResult with data, but the scanned class has no constructor and the API entry point does not explicitly serialize/send the result." vertex="1">
+          <mxGeometry height="130" width="310" x="760" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-9" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;5. Currency dependency mismatch&lt;/b&gt;&lt;br&gt;CurrencyWorker receives UserContext, while its mutation methods call an undeclared $bank property." vertex="1">
+          <mxGeometry height="130" width="300" x="390" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-10" parent="hLtUt27z7DBIgUFHUdXL-1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;6. Authentication / authorization seam&lt;/b&gt;&lt;br&gt;Identity is refreshed before dispatch. CurrencyWorker checks login; Collection, Interaction, and Configure workers do not." vertex="1">
+          <mxGeometry height="130" width="310" x="760" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-11" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Rendered-page output&lt;/b&gt;&lt;br&gt;Managers assemble HTML from MySQL rows, domain elements, and template files; PHP echoes it into pages." vertex="1">
+          <mxGeometry height="120" width="320" x="90" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-12" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Worker output&lt;/b&gt;&lt;br&gt;Workers return WorkerResult objects to xogoriaApi.php; the entry point stores the object without emitting it." vertex="1">
+          <mxGeometry height="120" width="320" x="510" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-13" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;External side effects&lt;/b&gt;&lt;br&gt;MySQL writes, game-panel commands, Twitch calls, Redis queue operations, files/logs, redirects, and Backblaze uploads." vertex="1">
+          <mxGeometry height="120" width="320" x="930" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-14" parent="hLtUt27z7DBIgUFHUdXL-1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#ffffff;strokeColor=#999999;fontColor=#666666;" value="&lt;b&gt;Scope note&lt;/b&gt;&lt;br&gt;These boxes describe observed code paths only. No intended routing is represented." vertex="1">
+          <mxGeometry height="220" width="220" x="1320" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-15" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-16" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-17" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" target="hLtUt27z7DBIgUFHUdXL-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-18" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-11" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;" target="hLtUt27z7DBIgUFHUdXL-12" value="separate output path">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hLtUt27z7DBIgUFHUdXL-19" edge="1" parent="hLtUt27z7DBIgUFHUdXL-1" source="hLtUt27z7DBIgUFHUdXL-12" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;" target="hLtUt27z7DBIgUFHUdXL-13" value="side effects may occur">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="source-core-output" name="4 - Shared Inputs to Outputs">
+    <mxGraphModel dx="1768" dy="1048" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="s0" />
+        <mxCell id="s1" parent="s0" />
+        <mxCell id="st" parent="s1" style="text;html=1;fontSize=24;fontStyle=1;align=left;" value="Shared xogoriaApi pipeline — actual sources, packet fields, and outputs" vertex="1">
+          <mxGeometry height="40" width="1000" x="30" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="snote" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontColor=#555555;" value="Solid arrows are observed calls or data movement. Red terminal boxes are where the current path stops or fails before producing the output expected by its caller." vertex="1">
+          <mxGeometry height="55" width="620" x="1120" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="srcJson" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;JSON POST source&lt;/b&gt;&lt;br&gt;InteractCard.js&lt;br&gt;interactPanel.js&lt;br&gt;Content-Type: application/json" vertex="1">
+          <mxGeometry height="110" width="230" x="30" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="srcGet" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;GET source&lt;/b&gt;&lt;br&gt;ui.js stream-status poll&lt;br&gt;URL: ?type=streamStatus" vertex="1">
+          <mxGeometry height="90" width="230" x="30" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="srcForm" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Form POST / direct caller&lt;/b&gt;&lt;br&gt;RequestData accepts $_POST&lt;br&gt;No active first-party caller to xogoriaApi.php found using this shape" vertex="1">
+          <mxGeometry height="110" width="230" x="30" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="srcSession" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;PHP session source&lt;/b&gt;&lt;br&gt;twitchUserId&lt;br&gt;twitchLoginName&lt;br&gt;twitchDisplayName" vertex="1">
+          <mxGeometry height="105" width="230" x="30" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="requestData" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;RequestData&lt;/b&gt;&lt;br&gt;GET when method is not POST&lt;br&gt;POST fields when $_POST is nonempty&lt;br&gt;otherwise decoded JSON body" vertex="1">
+          <mxGeometry height="130" width="250" x="330" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="inputData" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;InputDataContext&lt;/b&gt;&lt;br&gt;Common: request, type, action, apiKey&lt;br&gt;Identity: userId, username, displayName&lt;br&gt;Interaction: duration, cost, cooldown&lt;br&gt;Currency: amount&lt;br&gt;Collection: monster, objective, quote" vertex="1">
+          <mxGeometry height="180" width="300" x="650" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="sessionFallback" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="SessionData supplies identity only when matching request identity field is empty" vertex="1">
+          <mxGeometry height="85" width="250" x="350" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="refresh" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;refreshUserIdentity()&lt;/b&gt;&lt;br&gt;UserContext queries MySQL by ID; username fallback is attempted only after a nonempty ID" vertex="1">
+          <mxGeometry height="105" width="270" x="680" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="dispatch" parent="s1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;request selector&lt;/b&gt;&lt;br&gt;collection | currency | interaction | configure&lt;br&gt;anything else → null" vertex="1">
+          <mxGeometry height="150" width="250" x="1030" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="wc" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;collection&lt;/b&gt;&lt;br&gt;action name/objective/quote&lt;br&gt;detail from matching field&lt;br&gt;MySqlManager → MySQL SELECT" vertex="1">
+          <mxGeometry height="105" width="250" x="1370" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="wcur" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;currency&lt;/b&gt;&lt;br&gt;action + amount&lt;br&gt;login check&lt;br&gt;check reads UserContext balance&lt;br&gt;mutations call undeclared $bank" vertex="1">
+          <mxGeometry height="120" width="250" x="1370" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="wi" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;interaction&lt;/b&gt;&lt;br&gt;type + action + duration/cost/cooldown&lt;br&gt;Game → InteractType → Interaction&lt;br&gt;commands → InteractionManager" vertex="1">
+          <mxGeometry height="120" width="250" x="1370" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="wcfg" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;configure&lt;/b&gt;&lt;br&gt;type=game&lt;br&gt;action=game-profile&lt;br&gt;ConfigStore updates active game/profile" vertex="1">
+          <mxGeometry height="105" width="250" x="1370" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="bad" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;other / missing request&lt;/b&gt;&lt;br&gt;null is returned, then prime() is invoked on null" vertex="1">
+          <mxGeometry height="90" width="250" x="1035" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="outDb" parent="s1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#f5f5f5;strokeColor=#666666;" value="&lt;b&gt;MySQL output&lt;/b&gt;&lt;br&gt;collection rows&lt;br&gt;user identity/balance" vertex="1">
+          <mxGeometry height="100" width="120" x="1660" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="outPanel" parent="s1" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" value="&lt;b&gt;Game panel HTTP API&lt;/b&gt;&lt;br&gt;one command POST per generated command" vertex="1">
+          <mxGeometry height="110" width="150" x="1640" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="result" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;WorkerResult object&lt;/b&gt;&lt;br&gt;returned by every worker&lt;br&gt;assigned to $workerResult in API script" vertex="1">
+          <mxGeometry height="100" width="250" x="1370" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="httpEnd" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;HTTP response body&lt;/b&gt;&lt;br&gt;xogoriaApi.php does not echo WorkerResult or call getWorkerAsJson(); current body has no explicit result output" vertex="1">
+          <mxGeometry height="80" width="380" x="1370" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="sequence" parent="s1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" value="&lt;b&gt;Observed InteractCard sequence&lt;/b&gt;&lt;br&gt;1. JSON interaction request → panel commands&lt;br&gt;2. separate JSON currency/deductCost request&lt;br&gt;3. browser updates balance text locally without reading either response" vertex="1">
+          <mxGeometry height="140" width="300" x="650" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="se1" edge="1" parent="s1" source="srcJson" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="requestData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se2" edge="1" parent="s1" source="srcGet" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="requestData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se3" edge="1" parent="s1" source="srcForm" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="requestData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se4" edge="1" parent="s1" source="requestData" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="inputData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se5" edge="1" parent="s1" source="srcSession" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="sessionFallback">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se6" edge="1" parent="s1" source="sessionFallback" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="inputData" value="identity fallback">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="670" y="583" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="se7" edge="1" parent="s1" source="inputData" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="refresh" value="all API requests">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se8" edge="1" parent="s1" source="inputData" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="dispatch" value="request field">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se9" edge="1" parent="s1" source="dispatch" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="wc" value="collection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se10" edge="1" parent="s1" source="dispatch" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="wcur" value="currency">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se11" edge="1" parent="s1" source="dispatch" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="wi" value="interaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se12" edge="1" parent="s1" source="dispatch" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="wcfg" value="configure">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se13" edge="1" parent="s1" source="dispatch" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#b85450;" target="bad" value="default">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se14" edge="1" parent="s1" source="wc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="outDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se15" edge="1" parent="s1" source="wi" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="outPanel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se16" edge="1" parent="s1" source="wc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se17" edge="1" parent="s1" source="wcur" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se18" edge="1" parent="s1" source="wi" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se19" edge="1" parent="s1" source="wcfg" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="se20" edge="1" parent="s1" source="result" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;strokeColor=#b85450;" target="httpEnd" value="not emitted">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="other-source-output" name="5 - Other Source to Output Paths">
+    <mxGraphModel dx="1768" dy="1048" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="o0" />
+        <mxCell id="o1" parent="o0" />
+        <mxCell id="ot" parent="o1" style="text;html=1;fontSize=24;fontStyle=1;align=left;" value="Other current source-to-output paths (outside the shared worker pipeline)" vertex="1">
+          <mxGeometry height="40" width="1100" x="30" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lane1" parent="o1" style="swimlane;html=1;rounded=1;horizontal=0;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" value="SERVER-RENDERED PAGES" vertex="1">
+          <mxGeometry height="150" width="1720" x="30" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="opages" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" value="Browser GET&lt;br&gt;about / collections / commands / features / lore / interact / admin" vertex="1">
+          <mxGeometry height="80" width="230" x="90" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="oboot" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="session.php&lt;br&gt;CoreController + managers" vertex="1">
+          <mxGeometry height="80" width="210" x="390" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="odata" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="MySqlManager fetchData&lt;br&gt;or config/game objects" vertex="1">
+          <mxGeometry height="80" width="220" x="680" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="oassemble" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Collection/Lore/Game managers&lt;br&gt;+ domain elements&lt;br&gt;+ HTML templates" vertex="1">
+          <mxGeometry height="90" width="240" x="980" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ohtml" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="PHP echo → HTML response&lt;br&gt;Browser DOM; page JS filters/tabs locally" vertex="1">
+          <mxGeometry height="80" width="300" x="1320" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="lane2" parent="o1" style="swimlane;html=1;rounded=1;horizontal=0;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" value="COMMAND FILTER AJAX" vertex="1">
+          <mxGeometry height="130" width="1720" x="30" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="ocmdsrc" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" value="commands.js category/perms click" vertex="1">
+          <mxGeometry height="60" width="220" x="100" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="ocmdapi" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="GET libs/AjaxCommandList.php&lt;br&gt;?category=...&amp;perms=..." vertex="1">
+          <mxGeometry height="70" width="250" x="430" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ocmdmgr" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="MySQL allCommands → CollectionManager filter → templates" vertex="1">
+          <mxGeometry height="70" width="310" x="800" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ocmdout" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="echo HTML fragment → jQuery replaces command list span" vertex="1">
+          <mxGeometry height="70" width="340" x="1260" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lane3" parent="o1" style="swimlane;html=1;rounded=1;horizontal=0;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="TWITCH LOGIN" vertex="1">
+          <mxGeometry height="160" width="1720" x="30" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="oauthsrc" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" value="Login link GET&lt;br&gt;TwitchAuthStart.php&lt;br&gt;optional returnTo" vertex="1">
+          <mxGeometry height="80" width="220" x="90" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="oauthredirect" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="TwitchAppBridge&lt;br&gt;HTTP redirect to Twitch OAuth" vertex="1">
+          <mxGeometry height="80" width="230" x="390" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="oauthcb" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Twitch callback code&lt;br&gt;→ access token&lt;br&gt;→ Helix user data" vertex="1">
+          <mxGeometry height="90" width="230" x="710" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="oauthstate" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="TwitchUserBridge writes $_SESSION&lt;br&gt;UserController selects/inserts local MySQL user" vertex="1">
+          <mxGeometry height="90" width="280" x="1020" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="oauthout" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="Success: redirect to stored target&lt;br&gt;Failure: session error + log + redirect with reason" vertex="1">
+          <mxGeometry height="90" width="280" x="1390" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="lane4" parent="o1" style="swimlane;html=1;rounded=1;horizontal=0;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" value="CLIPS" vertex="1">
+          <mxGeometry height="220" width="1720" x="30" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="oclipsrc" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" value="Browser/admin jQuery&lt;br&gt;GET clip list&lt;br&gt;POST approve/deny/update/delete/normalize&lt;br&gt;overlay GET/POST play count" vertex="1">
+          <mxGeometry height="125" width="260" x="75" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="oclipapi" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Code files:&lt;br&gt;api/clips/clipsApi.php&lt;br&gt;clipsAdmin.php&lt;br&gt;clipsPlay.php&lt;br&gt;&lt;br&gt;JS currently calls ../api/clips.php and ../api/clips_admin.php" vertex="1">
+          <mxGeometry height="155" width="280" x="405" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="oclipprocess" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Twitch clip API + stored metadata&lt;br&gt;Admin updates streamClips&lt;br&gt;Approve downloads Twitch MP4&lt;br&gt;Normalize runs ffmpeg" vertex="1">
+          <mxGeometry height="125" width="280" x="770" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="oclipstores" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="MySQL streamClips&lt;br&gt;temp files&lt;br&gt;Backblaze upload/localUrl&lt;br&gt;Twitch API" vertex="1">
+          <mxGeometry height="125" width="230" x="1135" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="oclipout" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="API response helpers are called for errors.&lt;br&gt;The scanned clipsApi.php and clipsAdmin.php paths do not show a final success response call after processing." vertex="1">
+          <mxGeometry height="125" width="270" x="1440" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="lane5" parent="o1" style="swimlane;html=1;rounded=1;horizontal=0;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" value="SOUND QUEUE POLL" vertex="1">
+          <mxGeometry height="150" width="1720" x="30" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="osoundsrc" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" value="External GET&lt;br&gt;api/soundQueue/pop.php&lt;br&gt;X-API-Key + timeout" vertex="1">
+          <mxGeometry height="80" width="230" x="100" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="osoundauth" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Header key compared with ProfileData::$webApiKey" vertex="1">
+          <mxGeometry height="80" width="260" x="430" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="osoundqueue" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="SoundQueueManager::blockAndPop(timeout)&lt;br&gt;+ count()" vertex="1">
+          <mxGeometry height="80" width="290" x="800" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="osoundout" parent="o1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="ApiResponder JSON&lt;br&gt;ok, item/null, count, message&lt;br&gt;or auth failure" vertex="1">
+          <mxGeometry height="80" width="300" x="1240" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="oe1" edge="1" parent="o1" source="opages" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oboot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe2" edge="1" parent="o1" source="oboot" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="odata">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe3" edge="1" parent="o1" source="odata" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oassemble">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe4" edge="1" parent="o1" source="oassemble" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="ohtml">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe5" edge="1" parent="o1" source="ocmdsrc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="ocmdapi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe6" edge="1" parent="o1" source="ocmdapi" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="ocmdmgr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe7" edge="1" parent="o1" source="ocmdmgr" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="ocmdout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe8" edge="1" parent="o1" source="oauthsrc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oauthredirect">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe9" edge="1" parent="o1" source="oauthredirect" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oauthcb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe10" edge="1" parent="o1" source="oauthcb" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oauthstate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe11" edge="1" parent="o1" source="oauthstate" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oauthout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe12" edge="1" parent="o1" source="oclipsrc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oclipapi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe13" edge="1" parent="o1" source="oclipapi" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oclipprocess">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe14" edge="1" parent="o1" source="oclipprocess" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oclipstores">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe15" edge="1" parent="o1" source="oclipstores" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="oclipout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe16" edge="1" parent="o1" source="osoundsrc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="osoundauth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe17" edge="1" parent="o1" source="osoundauth" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="osoundqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oe18" edge="1" parent="o1" source="osoundqueue" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="osoundout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

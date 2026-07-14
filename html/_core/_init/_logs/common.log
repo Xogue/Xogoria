@@ -1,0 +1,7 @@
+[ INFO ] [ 06-23-2026 21:43:54 ] interpreting data: 2089 - (/_core/_init/_status/StatereportLogger.php)
+[ INFO ] [ 06-23-2026 21:43:54 ] interpreting data: true - (/_core/_init/_status/StatereportLogger.php)
+{"timestamp":"2026-07-12T12:11:55-05:00","level":"error","channel":"common","message":"The mysqli PHP extension is not installed","context":[]}
+{"timestamp":"2026-07-12T12:13:03-05:00","level":"error","channel":"common","message":"The mysqli PHP extension is not installed","context":[]}
+{"timestamp":"2026-07-12T12:48:25-05:00","level":"error","channel":"common","message":"The mysqli PHP extension is not installed","context":[]}
+{"timestamp":"2026-07-12T12:49:09-05:00","level":"error","channel":"common","message":"The mysqli PHP extension is not installed","context":[]}
+{"timestamp":"2026-07-12T12:49:41-05:00","level":"error","channel":"common","message":"The mysqli PHP extension is not installed","context":[]}

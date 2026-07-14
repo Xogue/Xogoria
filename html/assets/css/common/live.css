@@ -1,0 +1,67 @@
+/* SHARED-CANDIDATE STYLES
+---------------------------------- */
+
+/* Live banner shown above hero when streaming */
+#liveBanner {
+  position: relative;
+  width: 700px;
+  margin: 0 auto 60px auto;
+}
+
+#liveBanner .liveInner {
+  position: relative;
+  background: linear-gradient(180deg, #334865 0%, #0e1b2a 100%);
+  color: #e6eeff;
+  border: 2px solid #1d2630;
+  border-radius: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.45);
+}
+
+#liveBanner .liveInner::after {
+    content: '';
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: -6px;
+    height: 10px;
+    background: #0e1423;
+    border-radius: 4px;
+}
+
+#liveBanner .liveText {
+  font-family: 'bronic', sans-serif;
+  font-size: 50px;
+  letter-spacing: 3px;
+  text-shadow: -1px 0 1px #000, 0 1px 1px #000, 1px 0 1px #000, 0 -1px 1px #000;
+}
+
+#liveBanner .liveCta {
+  display: inline-block;
+  font-family: 'fr-bold', sans-serif;
+  font-size: 18px;
+  color: #e6eeff;
+  text-decoration: none;
+  padding: 4px 16px;
+  background: linear-gradient(180deg, #2f5eb6 0%, #264b90 100%);
+  border: 1px solid #5080ea;
+  border-radius: 18px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+}
+#liveBanner .liveCta:hover { background: #3c6fd4; }
+
+#liveBanner .liveDot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #f26a6a 0, #c23a3a 60%, #8a2323 100%);
+  box-shadow: 0 0 10px rgba(255, 60, 60, 0.8);
+  animation: live-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%   { transform: scale(1); box-shadow: 0 0 8px rgba(255,60,60,0.6); }
+  50%  { transform: scale(1.2); box-shadow: 0 0 16px rgba(255,60,60,1); }
+  100% { transform: scale(1); box-shadow: 0 0 8px rgba(255,60,60,0.6); }
+}

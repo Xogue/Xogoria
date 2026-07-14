@@ -1,0 +1,78 @@
+{
+    "simpleTypes": {
+        "cameraEffect": {
+            "shakeHim": {
+                "enabled": true,
+                "label": "Shake Him",
+                "cost": 20,
+                "cooldown": 10,
+                "commands": {
+                    "shakeHim": 1
+                }
+            }
+        },
+        "viewerTroll": {
+            "smackHim": {
+                "enabled": true,
+                "label": "Smack Him",
+                "cost": 10,
+                "cooldown": 10,
+                "commands": {
+                    "smackHim": 1
+                }
+            }
+        },
+        "mobSpawn": {
+            "bat": {
+                "enabled": true,
+                "label": "Spawn Bat",
+                "cost": 5,
+                "cooldown": 10,
+                "commands": {
+                    "spawnBat": 1
+                }
+            },
+            "bear": {
+                "enabled": true,
+                "label": "Spawn Bear",
+                "cost": 50,
+                "cooldown": 60,
+                "commands": {
+                    "spawnBear": 1
+                }
+            },
+            "wolf": {
+                "enabled": true,
+                "label": "Spawn Wolf",
+                "cost": 50,
+                "cooldown": 60,
+                "commands": {
+                    "spawnWolf": 1
+                }
+            }
+        }
+    },
+    "specialTypes": {},
+    "profiles": {
+        "hytaleForever": {
+            "label": "Xogue's Hytale Forever World!",
+            "tagLine": "For now, shake the camera. later...  Everything!",
+            "level": "normal",
+            "serverId": "c04fa7c7",
+            "allowedSimpleTypes": {
+                "cameraEffect": [
+                    "shakeHim"
+                ],
+                "viewerTroll": [
+                    "smackHim"
+                ],
+                "mobSpawn": [
+                    "bat",
+                    "bear",
+                    "wolf"
+                ]
+            },
+            "allowedSpecialTypes": {}
+        }
+    }
+}

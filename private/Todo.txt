@@ -1,0 +1,10 @@
+be explicit with types in function args and declaration and elsewhere
+reword the access level (public, private, protected) of the functions and document them in their own sections.
+normalize names (you have some of the sql files in each domain plural and some singular)
+go through all the files and see what php can be moved to other files (lore.php -> MySqlCatalog maybe?)
+The bridges folder files havent really been messed with much. They need to be researched and understood, then refactored.
+Find a way to get a list of commands from streamerBot and automatically register them to the database instead of having to add them all manually. also make sure you can find a way to add a description too while inserting (maybe a streamerbot variable named description that isnt used by anything but this system?)
+Change StatusResponder to allow for different logging levels. currently it only logs as Info.
+Search through things to see what else uses the tracker directly. The only time the tracker should be used is in StatusResponder and while the Status Response system is being configured
+The API request system might be off. evaluate it after minecraft stuff is added back in. Hytale seems to require a lot more than APIRequest which is extends from. It might be worth adding another class to extend instead. maybe the class it extends from can be extended from APIrequest to nest it a bit.
+create custom "Array" classes that do not inherit from ArrayObject, but contain an array with an add function that does type checking so you can restrict what goes into it.
