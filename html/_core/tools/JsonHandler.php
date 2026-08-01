@@ -3,6 +3,7 @@
 class JsonHandler {
     private string $filename;
 
+    // PUBLIC FUNCTIONS
     public function safeLoad( string $filename ): array {
         $this->filename = $filename;
         if ( $this->checkReadable( $filename ) ) {
@@ -15,7 +16,7 @@ class JsonHandler {
             }
         }
 
-        return [];
+        return [ ];
     }
 
     public function safeWrite( string $filename, array $data ) {
@@ -31,23 +32,25 @@ class JsonHandler {
     // PRIVATE FUNCTIONS
     private function checkReadable( string $filename ): bool {
         if ( !is_readable( $filename ) ) {
-            throw new RuntimeException('File not readable: ' . $filename);
+            throw new RuntimeException( "File not readable: " . $filename );
             return false;
         }
 
         return true;
     }
+
     private function checkWritable( string $filename ): bool {
         if ( !is_writable( $filename ) ) {
-            throw new RuntimeException('File not writable: ' . $filename);
+            throw new RuntimeException( "File not writable: " . $filename );
             return false;
         }
 
         return true;
     }
+
     private function wasRead( string $fileContents ): bool {
         if ( !$fileContents ) {
-            throw new RuntimeException('Failed to read file: ' . $this->filename);
+            throw new RuntimeException( "Failed to read file: " . $this->filename );
             return false;
         }
 
@@ -56,7 +59,13 @@ class JsonHandler {
 
     private function wasDecoded( mixed $data ): bool {
         if ( !$data ) {
-            throw new RuntimeException('Failed to decode JSON from file: ' . $this->filename . ' Error: ' . json_last_error_msg());
+            throw new RuntimeException(
+                "Failed to decode JSON from file: " .
+                    $this->filename .
+                    " Error: " .
+                    json_last_error_msg( ),
+            );
+
             return false;
         }
 
@@ -65,11 +74,16 @@ class JsonHandler {
 
     private function wasEncoded( string $jsonData ): bool {
         if ( !$jsonData ) {
-            throw new RuntimeException('Failed to encode JSON for file: ' . $this->filename . ' Error: ' . json_last_error_msg());
+            throw new RuntimeException(
+                "Failed to encode JSON for file: " .
+                    $this->filename .
+                    " Error: " .
+                    json_last_error_msg( ),
+            );
+
             return false;
         }
 
         return true;
     }
-
 }

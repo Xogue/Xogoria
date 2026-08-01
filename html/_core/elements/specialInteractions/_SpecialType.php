@@ -1,4 +1,3 @@
 <?php
 
-interface SpecialType {
-}
+interface SpecialType { }

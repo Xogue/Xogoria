@@ -1,45 +1,40 @@
 <?php
-    require_once __DIR__ . '/includes/session.php';
+    require_once __DIR__ . "/includes/session.php";
 
-    $cssAssets = [
-    'ui',
-	'header',
-	'nav',
-	'live',
-	'commands',
-    ];
+    $cssAssets = [ "ui", "header", "nav", "live", "commands" ];
+    $jsAssets = [ "jquery", "ui", "commands" ];
 
-    $jsAssets = [
-    'jquery',
-	'ui',
-    'commands'
-    ];
+    // COLLECT DATA
+    $mySqlManager = $webController->getMySqlManager( );
+    $commands = $mySqlManager->fetchData( "allCommands" );
 
-    $mySqlManager = $webController->getMySqlManager();
-    $collectionManager = $webController->getCollectionManager();
+    // COMPILE LOCAL COLLECTIONS
+    $collectionManager = $webController->getCollectionManager( );
+    $collectionManager->insertCommands( $commands );
 
-    $commands = $mySqlManager->fetchData('allCommands');
-    $collectionManager->insertCommands($commands);
-    $commandHtml = $collectionManager->assembleCommands();
+    // ASSEMBLE HTML
+    $commandHtml = $collectionManager->assembleCommands( );
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php
-        require $headFilepath;
-        $assetManager->useCSS( $cssAssets );
-        $assetManager->useJS( $jsAssets );
-    ?>
-</head>
-<body>
-	<?php require $headerFilepath; ?>
-	<?php require $navFilepath; ?>
-    <div id="uiPageBanner">
-        <div class="uiPageTitle">Xogoria's Commands</div>
-    </div>
+    <head>
+        <?php
+            require $headFilepath;
+            $assetManager->useCSS( $cssAssets );
+            $assetManager->useJS( $jsAssets );
+        ?>
+    </head>
+    <body>
+        <?php
+            require $headerFilepath;
+            require $navFilepath;
+        ?>
+        <div id="uiPageBanner">
+            <div class="uiPageTitle">Xogoria's Commands</div>
+        </div>
 
-    <div id="uiSubBanner">
-        <div class="uiSubTitle">What Can You Do?</div>
+        <div id="uiSubBanner">
+            <div class="uiSubTitle">What Can You Do?</div>
             <div class="uiHorizontalPlate ui25FromLeft">
                 <span class="uiLeftBolt">
                     <span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
@@ -88,23 +83,23 @@
     </div>
 
     <div class="uiSectionHang uiSetWidth51">
-		<div class="uiSectionPill">
-			<span class="title"><span>All</span> Commands for <span>Everyone</span></span>
-		</div>
-		<div class="uiVerticalPlate ui0FromLeft">
-			<span class="uiTopBolt"></span>
-			<span class="uiBottomBolt">
-				<span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
-			</span>
-		</div>
-		<div class="uiVerticalPlate ui0FromRight">
-			<span class="uiTopBolt"></span>
-			<span class="uiBottomBolt">
-				<span class="uiChain uiCenter uiVeryLongChain" aria-hidden="true"></span>
-				<span class="uiChain uiCenter uiVeryLongChain" aria-hidden="true"></span>
-			</span>
-		</div>
-	</div>
+        <div class="uiSectionPill">
+            <span class="title"><span>All</span> Commands for <span>Everyone</span></span>
+        </div>
+        <div class="uiVerticalPlate ui0FromLeft">
+            <span class="uiTopBolt"></span>
+            <span class="uiBottomBolt">
+                <span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
+            </span>
+        </div>
+        <div class="uiVerticalPlate ui0FromRight">
+            <span class="uiTopBolt"></span>
+            <span class="uiBottomBolt">
+                <span class="uiChain uiCenter uiVeryLongChain" aria-hidden="true"></span>
+                <span class="uiChain uiCenter uiVeryLongChain" aria-hidden="true"></span>
+            </span>
+        </div>
+    </div>
 
     <div class="uiSectionBody">
         <span><?php echo $commandHtml; ?></span>

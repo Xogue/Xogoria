@@ -3,16 +3,18 @@
 class DataStore {
     private static ?Redis $redis = null;
 
-    public function __construct(private DataStoreContext $context) {
-        $this->connect();
-    }
+    // MAGIC FUNCTIONS
+    public function __construct( private DataStoreContext $context ) { $this->connect( ); }
 
-    public function __destruct() {
+    public function __destruct( ) {
         if ( self::$redis !== null ) {
-            self::$redis->close();
+            self::$redis->close( );
             self::$redis = null;
         }
     }
+
+    // PUBLIC FUNCTIONS
+    public function getListLength( string $key ): int { return self::$redis->lLen( $key ); }
 
     public function setExpiringKey( string $key, int $expiration, string $value ): bool {
         $success = self::$redis->setex( $key, $expiration, $value );
@@ -30,7 +32,9 @@ class DataStore {
     }
 
     public function getKey( string $key ): string {
-        if ( self::$redis->exists( $key ) === 0 ) { return ''; }
+        if ( self::$redis->exists( $key ) === 0 ) {
+            return "";
+        }
         return self::$redis->get( $key );
     }
 
@@ -40,21 +44,21 @@ class DataStore {
     }
 
     public function getFirstFromList( string $key, int $timeout = 0 ): string {
-        $value = self::$redis->blPop( [$key], $timeout );
-        if ( $value === false ) { return ''; }
-        return $value[1];
-    }
-
-    public function getListLength(string $key): int {
-        return self::$redis->lLen($key);
+        $value = self::$redis->blPop( [ $key ], $timeout );
+        if ( $value === false ) {
+            return "";
+        }
+        return $value[ 1 ];
     }
 
     // PRIVATE FUNCTIONS
-    private function connect(): void {
-        if ( self::$redis !== null ) {return;}
+    private function connect( ): void {
+        if ( self::$redis !== null ) {
+            return;
+        }
 
-        self::$redis = new Redis();
-        self::$redis->connect( $this->context->getHost(), $this->context->getPort(), 0.2 );
-        self::$redis->ping();
+        self::$redis = new Redis( );
+        self::$redis->connect( $this->context->getHost( ), $this->context->getPort( ), 0.2 );
+        self::$redis->ping( );
     }
 }

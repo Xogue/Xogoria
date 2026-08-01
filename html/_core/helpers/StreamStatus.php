@@ -14,112 +14,127 @@ class StreamStatus {
 
     private bool $isLive = false;
 
-    public function __construct() {
-        $this->logger = new Logger();
-        $this->privateLoader = new PrivateLoader('twitch');
-        $this->dataStore = new DataStore();
+    // MAGIC FUNCTIONS
+    public function __construct( ) {
+        $this->logger = new Logger( );
+        $this->privateLoader = new PrivateLoader( "twitch" );
+        $this->dataStore = new DataStore( );
+        $this->clientId = $this->privateLoader->getDetail( "clientId" );
+        $this->token = $this->privateLoader->getDetail( "token" );
+        $this->streamChannel = $this->privateLoader->getDetail( "botChannel" );
 
-        $this->clientId = $this->privateLoader->getDetail('clientId');
-        $this->token = $this->privateLoader->getDetail('token');
-        $this->streamChannel = $this->privateLoader->getDetail('botChannel');
-        $this->streamUrl = $this->privateLoader->getDetail('streamUrl') . rawurlencode($this->streamChannel);
+        $this->streamUrl =
+            $this->privateLoader->getDetail( "streamUrl" ) . rawurlencode( $this->streamChannel );
     }
 
-    public function isLive(): bool {
-        if ($this->shouldCheckStatus()) {
-            $this->checkStatus();
+    // PUBLIC FUNCTIONS
+    public function isLive( ): bool {
+        if ( $this->shouldCheckStatus( ) ) {
+            $this->checkStatus( );
         }
-        
+
         return $this->isLive;
     }
 
-    public function getStatus(): string {
-        if (!$this->shouldCheckStatus()) {
-            return $this->isLive ? 'live' : 'offline';
+    public function getStatus( ): string {
+        if ( !$this->shouldCheckStatus( ) ) {
+            return $this->isLive ? "live" : "offline";
         }
 
-        if ($this->dataStore->getKey('streamStatus:checking') !== '') {
-            return 'checking';
+        if ( $this->dataStore->getKey( "streamStatus:checking" ) !== "" ) {
+            return "checking";
         }
 
-        $this->dataStore->setExpiringKey('streamStatus:checking', 15, 'checking');
-        $this->checkStatus();
+        $this->dataStore->setExpiringKey( "streamStatus:checking", 15, "checking" );
+        $this->checkStatus( );
 
-        return $this->isLive ? 'live' : 'offline';
+        return $this->isLive ? "live" : "offline";
     }
 
-    private function wentLive(): void {
+    // PRIVATE FUNCTIONS
+    private function wentLive( ): void {
         $this->isLive = true;
-        $this->dataStore->setExpiringKey('lastChecked', self::TTL, 'live');
-    }
-    
-    private function wentOffline(): void {
-        $this->isLive = false;
-        $this->dataStore->setExpiringKey('lastChecked', self::TTL, 'offline');
+        $this->dataStore->setExpiringKey( "lastChecked", self::TTL, "live" );
     }
 
-    private function shouldCheckStatus(): bool {
-        $lastChecked = $this->dataStore->getKey('lastChecked');
-        if ($lastChecked === '') {
+    private function wentOffline( ): void {
+        $this->isLive = false;
+        $this->dataStore->setExpiringKey( "lastChecked", self::TTL, "offline" );
+    }
+
+    private function shouldCheckStatus( ): bool {
+        $lastChecked = $this->dataStore->getKey( "lastChecked" );
+        if ( $lastChecked === "" ) {
             return true;
         }
 
-        $this->isLive = $lastChecked === 'live';
+        $this->isLive = $lastChecked === "live";
         return false;
     }
 
-    private function checkStatus(): bool {
-        $tokenKey = 'twitch:streamStatus:appToken';
-        $cachedToken = $this->dataStore->getKey($tokenKey);
-        $accessToken = $cachedToken !== '' ? $cachedToken : $this->token;
+    private function checkStatus( ): bool {
+        $tokenKey = "twitch:streamStatus:appToken";
+        $cachedToken = $this->dataStore->getKey( $tokenKey );
+        $accessToken = $cachedToken !== "" ? $cachedToken : $this->token;
 
-        $fetchStatus = function (string $token): CurlResponse {
-            return CurlController::get($this->streamUrl)
-                ->headers([
-                    'Client-ID' => $this->clientId,
-                    'Authorization' => 'Bearer ' . $token,
-                ])
-                ->timeout(6)
-                ->send();
+        $fetchStatus = function ( string $token ): CurlResponse {
+            return CurlController::get( $this->streamUrl )
+                ->headers( [
+                    "Client-ID" => $this->clientId,
+                    "Authorization" => "Bearer " . $token,
+                ] )
+                ->timeout( 6 )
+                ->send( );
         };
 
-        $response = $fetchStatus($accessToken);
+        $response = $fetchStatus( $accessToken );
 
-        if ($response->statusCode() === 401) {
-            $tokenData = (new TwitchBridge())->getAppAccessToken();
-            if ($tokenData === null) {
-                $this->logger->error('Failed to fetch live status', ['channel' => $this->streamChannel, 'response' => $response->summary()]);
+        if ( $response->statusCode( ) === 401 ) {
+            $tokenData = new TwitchBridge( )->getAppAccessToken( );
+            if ( $tokenData === null ) {
+                $this->logger->error( "Failed to fetch live status", [
+                    "channel" => $this->streamChannel,
+                    "response" => $response->summary( ),
+                ] );
+
                 return false;
             }
 
-            $this->token = (string) $tokenData['access_token'];
-            $expiresIn = max(60, ((int) ($tokenData['expires_in'] ?? 3600)) - 300);
-            $this->dataStore->setExpiringKey($tokenKey, $expiresIn, $this->token);
-            $response = $fetchStatus($this->token);
+            $this->token = (string) $tokenData[ "access_token" ];
+            $expiresIn = max( 60, ( (int) ( $tokenData[ "expires_in" ] ?? 3600 ) ) - 300 );
+            $this->dataStore->setExpiringKey( $tokenKey, $expiresIn, $this->token );
+            $response = $fetchStatus( $this->token );
         }
 
-        if (!$response->isOk()) {
-            $this->logger->error('Failed to fetch live status', ['channel' => $this->streamChannel, 'response' => $response->summary()]);
+        if ( !$response->isOk( ) ) {
+            $this->logger->error( "Failed to fetch live status", [
+                "channel" => $this->streamChannel,
+                "response" => $response->summary( ),
+            ] );
+
             return false;
         }
 
-        $data = $response->json();
-        if ($data === null) {
-            $this->logger->error('Failed to decode live status response', ['channel' => $this->streamChannel]);
+        $data = $response->json( );
+        if ( $data === null ) {
+            $this->logger->error( "Failed to decode live status response", [
+                "channel" => $this->streamChannel,
+            ] );
+
             return false;
         }
 
-        if (isset($data['data']) && count($data['data']) > 0) {
-            if ($data['data'][0]['type'] === 'live') {
-                $this->wentLive();
+        if ( isset( $data[ "data" ] ) && count( $data[ "data" ] ) > 0 ) {
+            if ( $data[ "data" ][ 0 ][ "type" ] === "live" ) {
+                $this->wentLive( );
                 return true;
             } else {
-                $this->wentOffline();
+                $this->wentOffline( );
                 return false;
             }
         }
 
-        $this->wentOffline();
+        $this->wentOffline( );
         return false;
     }
 }

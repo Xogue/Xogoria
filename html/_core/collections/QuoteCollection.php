@@ -2,13 +2,9 @@
 
 class QuoteCollection {
     /** @var Quote[] */
-    private array $quotes = [];
+    private array $quotes = [ ];
 
-    public function add(Quote $quote): void {
-        $this->quotes[] = $quote;
-    }
-
-    public function getAll(): array {
-        return $this->quotes;
-    }
+    // PUBLIC FUNCTIONS
+    public function getAll( ): array { return $this->quotes; }
+    public function add( Quote $quote ): void { $this->quotes[ ] = $quote; }
 }

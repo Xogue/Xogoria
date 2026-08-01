@@ -5,18 +5,18 @@ class TwitchController {
     private TwitchUserBridge $twitchUserBridge;
     private TwitchClipBridge $twitchClipBridge;
 
-    public function __construct(DataController $dataController) {
-        $this->twitchAppBridge = new TwitchAppBridge($dataController->getTwitchAppContext());
-        $this->twitchUserBridge = new TwitchUserBridge($dataController->getTwitchUserContext());
-        $this->twitchClipBridge = new TwitchClipBridge();
+    // MAGIC FUNCTIONS
+    public function __construct( DataController $dataController ) {
+        $this->twitchAppBridge = new TwitchAppBridge( $dataController->getTwitchAppContext( ) );
+        $this->twitchUserBridge = new TwitchUserBridge( $dataController->getTwitchUserContext( ) );
+        $this->twitchClipBridge = new TwitchClipBridge( );
     }
 
-    public function getUserBridge() {
-        return $this->twitchUserBridge;
-    }
+    // PUBLIC FUNCTIONS
+    public function getUserBridge( ) { return $this->twitchUserBridge; }
+    public function startLogin( ) { $this->twitchAppBridge->sendForCode( ); }
+    public function getPostLoginRedirect( ) { return $this->twitchAppBridge->getPostLoginRedirect( ); }
+    public function getAccessCode( ) { return $this->twitchAppBridge->getAccessToken( ); }
 
-    public function startLogin() { $this->twitchAppBridge->sendForCode(); }
-    public function getPostLoginRedirect() { return $this->twitchAppBridge->getPostLoginRedirect(); }
-    public function getAccessCode() { return $this->twitchAppBridge->getAccessToken(); }
-    public function getUserData(string $accessToken) { return $this->twitchUserBridge->getUserData($accessToken); }
+    public function getUserData( string $accessToken ) { return $this->twitchUserBridge->getUserData( $accessToken ); }
 }

@@ -1,24 +1,28 @@
 <?php
-require_once dirname(__DIR__) . '/includes/session.php';
+require_once dirname( __DIR__ ) . "/includes/session.php";
 
+$filters = [ ];
+$category = $_GET[ "category" ];
+$perms = $_GET[ "perms" ];
 
-$filters = [];
-$category = $_GET["category"];
-$perms = $_GET["perms"];
-
-if ($category != "all") {
-    $filters['category'] = $category;
-}
-if ($perms != "everyone") {
-    $filters['perms'] = $perms;
+if ( $category != "all" ) {
+    $filters[ "category" ] = $category;
 }
 
-$mySqlManager = $webController->getMySqlManager();
-$collectionManager = $webController->getCollectionManager();
+if ( $perms != "everyone" ) {
+    $filters[ "perms" ] = $perms;
+}
 
-$commands = $mySqlManager->fetchData('allCommands');
-$collectionManager->insertCommands($commands);
-$commandHtml = $collectionManager->assembleCommands($filters);
+// COLLECT DATA
+$mySqlManager = $webController->getMySqlManager( );
+$commands = $mySqlManager->fetchData( "allCommands" );
+
+// COMPILE LOCAL COLLECTIONS
+$collectionManager = $webController->getCollectionManager( );
+$collectionManager->insertCommands( $commands );
+
+// ASSEMBLE HTML
+$commandHtml = $collectionManager->assembleCommands( $filters );
 
 echo $commandHtml;
 ?>

@@ -2,13 +2,9 @@
 
 class ObjectiveCollection {
     /** @var Objective[] */
-    private array $objectives = [];
+    private array $objectives = [ ];
 
-    public function add(Objective $objective): void {
-        $this->objectives[] = $objective;
-    }
-
-    public function getAll(): array {
-        return $this->objectives;
-    }
+    // PUBLIC FUNCTIONS
+    public function getAll( ): array { return $this->objectives; }
+    public function add( Objective $objective ): void { $this->objectives[ ] = $objective; }
 }
