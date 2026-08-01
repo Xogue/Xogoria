@@ -49,7 +49,7 @@
                     <span class="day">Mondays</span>
                 </div>
                 <div class="times">
-                    <span class="time">4:00 PM <span class="tz">CDT</span></span>
+                    <span class="time">2:00 PM <span class="tz">CDT</span></span>
                 </div>
             </div>
             <div class="discordLine">Join the discord to hear about extra unplanned streams!</div>

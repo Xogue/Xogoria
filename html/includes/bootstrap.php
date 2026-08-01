@@ -12,6 +12,5 @@ if ( !defined( "XOG_ROOT" ) ) {
     require_once XOG_ROOT . "/../vendor/autoload.php";
 }
 
-$displayErrors = getenv( "XOG_DISPLAY_ERRORS" ) === "1";
-ini_set( "display_errors", $displayErrors ? "1" : "0" );
+ini_set( "display_errors", "1" );
 error_reporting( E_ALL );
