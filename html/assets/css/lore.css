@@ -1,187 +1,192 @@
 :root {
-  --jsBoltChainLength: 15px;
+    --jsBoltChainLength: 15px;
 }
 
 .uiSubDescription {
-  width: 25%;
+    width: 25%;
 }
 
 .chapter .uiLeftBolt {
-  top: 17px;
-  left: 8px;
-  width: 15px;
-  height: 15px;
-  background: radial-gradient(circle at 44% 44%, #717274 0 6px, #0f0f0f 7px 10px);
+    top: 17px;
+    left: 8px;
+    width: 15px;
+    height: 15px;
+    background: radial-gradient(circle at 44% 44%, #717274 0 6px, #0f0f0f 7px 10px);
 }
 
 .jsStateSymbol {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: 'britanic', sans-serif;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "britanic", sans-serif;
 }
 
 #lore {
-  text-align: left; /* override .storyBody center */
+    text-align: left; /* override .storyBody center */
 
-  --cta-width: 75%;
-  --cta-height: 30px; /* a bit smaller */
-  --line-thickness: 5px; /* slightly thicker again */
-  --line-nudge: 5px;      /* move line a bit further down */
-  --fade-size: 120px;     /* fade starts this far from bottom */
-  --page-img-bg: #2B2F37; /* approx avg of _assets/images/pageBack.png */
+    --cta-width: 75%;
+    --cta-height: 30px; /* a bit smaller */
+    --line-thickness: 5px; /* slightly thicker again */
+    --line-nudge: 5px; /* move line a bit further down */
+    --fade-size: 120px; /* fade starts this far from bottom */
+    --page-img-bg: #2b2f37; /* approx avg of _assets/images/pageBack.png */
 }
 
 .timeline {
-  margin: 20px auto 30px auto;
-  padding: 0;
-  position: relative;
-  width: 100%;
-  min-width: 500px;
+    margin: 20px auto 30px auto;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    min-width: 500px;
 }
 
-.chapter { 
-  position: relative;
-  background: var(--uiDarkGrey);
-  margin: 0; 
+.chapter {
+    position: relative;
+    background: var(--uiDarkGrey);
+    margin: 0;
 }
 
 .chapter:nth-child(even) {
-  background: var(--uiMediumGrey);
+    background: var(--uiMediumGrey);
 }
 
 .chapter:hover {
-  background: var(--uiMediumLightGrey);
+    background: var(--uiMediumLightGrey);
 }
 
 .chapter::before {
-  content: "";
-  position: absolute;
-  top: 25px;
-  left: 7px;
-  width: 13px;
-  height: var(--jsBoltChainLength);
-  background-image: var(--chain-img);
-  background-repeat: repeat-y;
-  background-size: 13px auto;
-  background-position: top center;
-  opacity: 1;
-  transition: bottom 0.25s ease;
-  pointer-events: none;
-  z-index: 3;
-  overflow: visible;
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: 7px;
+    width: 13px;
+    height: var(--jsBoltChainLength);
+    background-image: var(--chain-img);
+    background-repeat: repeat-y;
+    background-size: 13px auto;
+    background-position: top center;
+    opacity: 1;
+    transition: bottom 0.25s ease;
+    pointer-events: none;
+    z-index: 3;
+    overflow: visible;
 }
 
-.chapter:last-child::before{
-  height: 55px;
+.chapter:last-child::before {
+    height: 55px;
 }
 
-.subChapter { 
-  position: relative;
-  background: var(--uiDarkGrey);
-  margin: 0;
-  width: 90%;
-  left: 10%;
+.subChapter {
+    position: relative;
+    background: var(--uiDarkGrey);
+    margin: 0;
+    width: 90%;
+    left: 10%;
 }
 
 .subChapter:hover {
-  background: var(--uiMediumLightGrey);
+    background: var(--uiMediumLightGrey);
 }
 
 .chapterLink,
 .subChapterLink {
-  font-family: 'britanic', sans-serif;
-  font-size: 20px;
-  letter-spacing: 1.5px;
-  color: var(--uiText);
-  cursor: pointer;
-  position: relative;
-  display: block;
-  padding: 10px 30px;
-  line-height: 22px;
-  border: 1px solid var(--uiBorderSoft);
-  border-radius: 10px;
+    font-family: "britanic", sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    color: var(--uiText);
+    cursor: pointer;
+    position: relative;
+    display: block;
+    padding: 10px 30px;
+    line-height: 22px;
+    border: 1px solid var(--uiBorderSoft);
+    border-radius: 10px;
 }
 
 .subChapter .subChapterLink {
-  padding-left: 15px;
-  line-height: 8px;
+    padding-left: 15px;
+    line-height: 8px;
 }
 
 .chapterContent {
-  margin: 0;
-  position: relative;
-  padding: 12px 12px 16px 35px;
-  font-size: 14px;
-  background: var(--uiDarkGrey);
-  border: 1px solid var(--uiBorderSoft);
-  border-radius: 10px;
-  color: var(--uiText);
+    margin: 0;
+    position: relative;
+    padding: 12px 12px 16px 35px;
+    font-size: 14px;
+    background: var(--uiDarkGrey);
+    border: 1px solid var(--uiBorderSoft);
+    border-radius: 10px;
+    color: var(--uiText);
 }
 
 hr {
-  border: none;
-  height: 2px;
-  width: 80%;
-  background-color: var(--uiLightBlue);
-  margin-top: 15px;
+    border: none;
+    height: 2px;
+    width: 80%;
+    background-color: var(--uiLightBlue);
+    margin-top: 15px;
 }
 
 .chapterStreams {
-  font-family: 'britanic', sans-serif;
-  font-size: 25px;
-  display: block;
-  color: var(--uiLightBlue);
-  padding: 15px 0;
+    font-family: "britanic", sans-serif;
+    font-size: 25px;
+    display: block;
+    color: var(--uiLightBlue);
+    padding: 15px 0;
 }
 
 .chapterStreams div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
 
 .watchStream {
-  padding: 6px 10px;
-  margin: 15px 0 0 0;
-  background: linear-gradient(180deg, rgba(37,37,37,0.94) 0%, rgba(52,58,68,0.92) 100%);
-  border: 1px solid #1d2630;
-  border-radius: 25px;
-  color: var(--uiText);
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  transition: background 0.2s ease, color 0.2s ease, transform 0.06s ease;
-  cursor: pointer;
-  font-family: 'fr-bold', sans-serif;
-  font-size: 16px;
+    padding: 6px 10px;
+    margin: 15px 0 0 0;
+    background: linear-gradient(180deg, rgba(37, 37, 37, 0.94) 0%, rgba(52, 58, 68, 0.92) 100%);
+    border: 1px solid #1d2630;
+    border-radius: 25px;
+    color: var(--uiText);
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.06s ease;
+    cursor: pointer;
+    font-family: "fr-bold", sans-serif;
+    font-size: 16px;
 }
 
 .watchStream:hover {
-  background: linear-gradient(180deg, rgba(46,46,46,0.96) 0%, rgba(58,63,73,0.90) 100%);
-  color: var(--uiLightBlue);
+    background: linear-gradient(180deg, rgba(46, 46, 46, 0.96) 0%, rgba(58, 63, 73, 0.9) 100%);
+    color: var(--uiLightBlue);
 }
 
 .readLore {
-  padding: 6px 10px;
-  margin: 10px auto;
-  display: block;
-  width: 60%;
-  background: linear-gradient(180deg, rgba(27, 31, 34, 0.94) 0%, rgba(38, 43, 53, 0.92) 100%);
-  border: 1px solid #1d2630;
-  border-radius: 25px;
-  color: var(--uiLightBlue);
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  transition: background 0.2s ease, color 0.2s ease, transform 0.06s ease;
-  cursor: pointer;
-  font-family: 'fr-bold', sans-serif;
-  font-size: 16px;
+    padding: 6px 10px;
+    margin: 10px auto;
+    display: block;
+    width: 60%;
+    background: linear-gradient(180deg, rgba(27, 31, 34, 0.94) 0%, rgba(38, 43, 53, 0.92) 100%);
+    border: 1px solid #1d2630;
+    border-radius: 25px;
+    color: var(--uiLightBlue);
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.06s ease;
+    cursor: pointer;
+    font-family: "fr-bold", sans-serif;
+    font-size: 16px;
 }
 
 .readLore:hover {
-  background: linear-gradient(180deg, rgba(37, 37, 37, 0.94) 0%, rgba(52, 58, 68, 0.92) 100%);
-  color: var(--uiText);
-
+    background: linear-gradient(180deg, rgba(37, 37, 37, 0.94) 0%, rgba(52, 58, 68, 0.92) 100%);
+    color: var(--uiText);
 }

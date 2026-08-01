@@ -5,12 +5,21 @@
         "table": "users",
         "primaryKey": "platformUserId",
         "fields": {
-            "platform": {"label": "Platform", "type": "text", "required": true},
-            "platformUserId": {"label": "User ID", "type": "text", "required": true, "immutable": true},
-            "username": {"label": "Username", "type": "text", "required": true},
-            "displayName": {"label": "Display name", "type": "text"},
-            "gemBalance": {"label": "Airo Gems", "type": "integer"},
-            "role": {"label": "Role", "type": "select", "options": ["none", "moderator", "admin", "owner"]}
+            "platform": { "label": "Platform", "type": "text", "required": true },
+            "platformUserId": {
+                "label": "User ID",
+                "type": "text",
+                "required": true,
+                "immutable": true
+            },
+            "username": { "label": "Username", "type": "text", "required": true },
+            "displayName": { "label": "Display name", "type": "text" },
+            "gemBalance": { "label": "Airo Gems", "type": "integer" },
+            "role": {
+                "label": "Role",
+                "type": "select",
+                "options": ["none", "moderator", "admin", "owner"]
+            }
         }
     },
     "commands": {
@@ -19,12 +28,17 @@
         "table": "collectCommands",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "name": {"label": "Name", "type": "text", "required": true},
-            "description": {"label": "Description", "type": "textarea"},
-            "category": {"label": "Category", "type": "text"},
-            "perms": {"label": "Permissions", "type": "text"},
-            "enabled": {"label": "Enabled", "type": "boolean"}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "name": { "label": "Name", "type": "text", "required": true },
+            "description": { "label": "Description", "type": "textarea" },
+            "category": { "label": "Category", "type": "text" },
+            "perms": { "label": "Permissions", "type": "text" },
+            "enabled": { "label": "Enabled", "type": "boolean" }
         }
     },
     "quotes": {
@@ -33,12 +47,17 @@
         "table": "collectQuotes",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "text": {"label": "Quote", "type": "textarea", "required": true},
-            "speaker": {"label": "Speaker", "type": "text"},
-            "game": {"label": "Game", "type": "text"},
-            "date": {"label": "Date", "type": "date"},
-            "favorite": {"label": "Favorite", "type": "boolean"}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "text": { "label": "Quote", "type": "textarea", "required": true },
+            "speaker": { "label": "Speaker", "type": "text" },
+            "game": { "label": "Game", "type": "text" },
+            "date": { "label": "Date", "type": "date" },
+            "favorite": { "label": "Favorite", "type": "boolean" }
         }
     },
     "objectives": {
@@ -47,9 +66,18 @@
         "table": "collectObjectives",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "requirement": {"label": "Requirement", "type": "textarea", "required": true},
-            "active": {"label": "Active", "type": "boolean"}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "requirement": {
+                "label": "Requirement",
+                "type": "textarea",
+                "required": true
+            },
+            "active": { "label": "Active", "type": "boolean" }
         }
     },
     "monsters": {
@@ -58,9 +86,14 @@
         "table": "collectMonsterNames",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "gameName": {"label": "Game", "type": "text", "required": true},
-            "customName": {"label": "Custom name", "type": "text", "required": true}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "gameName": { "label": "Game", "type": "text", "required": true },
+            "customName": { "label": "Custom name", "type": "text", "required": true }
         }
     },
     "chapters": {
@@ -69,10 +102,19 @@
         "table": "legendsChapters",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "chapterNumber": {"label": "Chapter", "type": "integer", "required": true},
-            "title": {"label": "Title", "type": "text", "required": true},
-            "body": {"label": "Story", "type": "textarea", "required": true}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "chapterNumber": {
+                "label": "Chapter",
+                "type": "integer",
+                "required": true
+            },
+            "title": { "label": "Title", "type": "text", "required": true },
+            "body": { "label": "Story", "type": "textarea", "required": true }
         }
     },
     "audio": {
@@ -81,11 +123,20 @@
         "table": "legendsAudio",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "chapterId": {"label": "Chapter ID", "type": "integer", "required": true},
-            "label": {"label": "Label", "type": "text"},
-            "url": {"label": "URL", "type": "url", "required": true},
-            "sortOrder": {"label": "Order", "type": "integer"}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "chapterId": {
+                "label": "Chapter ID",
+                "type": "integer",
+                "required": true
+            },
+            "label": { "label": "Label", "type": "text" },
+            "url": { "label": "URL", "type": "url", "required": true },
+            "sortOrder": { "label": "Order", "type": "integer" }
         }
     },
     "streams": {
@@ -94,11 +145,20 @@
         "table": "legendsStreams",
         "primaryKey": "id",
         "fields": {
-            "id": {"label": "ID", "type": "integer", "immutable": true, "generated": true},
-            "chapterId": {"label": "Chapter ID", "type": "integer", "required": true},
-            "url": {"label": "URL", "type": "url", "required": true},
-            "date": {"label": "Date", "type": "date"},
-            "sortOrder": {"label": "Order", "type": "integer"}
+            "id": {
+                "label": "ID",
+                "type": "integer",
+                "immutable": true,
+                "generated": true
+            },
+            "chapterId": {
+                "label": "Chapter ID",
+                "type": "integer",
+                "required": true
+            },
+            "url": { "label": "URL", "type": "url", "required": true },
+            "date": { "label": "Date", "type": "date" },
+            "sortOrder": { "label": "Order", "type": "integer" }
         }
     }
 }

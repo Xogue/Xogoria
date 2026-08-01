@@ -1,346 +1,349 @@
 #interactPanel {
-  width: 100%;
-  max-width: 640px;
-  margin: 0 auto 25px auto;
-  padding: 8px 10px;
-  text-align: center;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 25px auto;
+    padding: 8px 10px;
+    text-align: center;
 }
 
 .title {
-  font-family: 'bronic', sans-serif;
-  font-size: 40px;
-  color: #e6eeff;
-  text-align: center;
+    font-family: "bronic", sans-serif;
+    font-size: 40px;
+    color: #e6eeff;
+    text-align: center;
 }
 
 .tagLine {
-  font-family: 'fr-bold', sans-serif;
-  color: #a9c5ff;
-  text-align: center;
-  margin: 4px 0 10px 0;
+    font-family: "fr-bold", sans-serif;
+    color: #a9c5ff;
+    text-align: center;
+    margin: 4px 0 10px 0;
 }
 
 .errorBanner {
-  background: #461919;
-  border: 1px solid #a13a3a;
-  color: #ffd7d7;
-  padding: 10px;
-  margin: 10px 0;
+    background: #461919;
+    border: 1px solid #a13a3a;
+    color: #ffd7d7;
+    padding: 10px;
+    margin: 10px 0;
 }
 
 .userInfo {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 70%;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70%;
+    margin: 0 auto;
 }
 
 .loginBanner,
 .gemInfo {
-  color: #ffffff;
-  font-size: 18px;
-  text-align: center;
-  margin-top: 20px;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .loginBanner strong {
-  color: #6296fc;
-  font-size: 40px;
+    color: #6296fc;
+    font-size: 40px;
 }
 
 .gemInfo strong {
-  color: #dd9b37;
-  font-size: 40px;
+    color: #dd9b37;
+    font-size: 40px;
 }
 
 .adminPanel {
-  height: 22px;
-  width: 505px;
-  background: #252525;
-  color: #e6eeff;
-  border-radius: 20px;
-  font-family: 'britanic', sans-serif;
-  font-size: 18px;
-  letter-spacing: 1px;
-  margin: 20px auto 0;
-  padding-bottom: 16px;
-  transition: background 0.3s, color 0.3s, height 1s;
-  overflow: hidden;
+    height: 22px;
+    width: 505px;
+    background: #252525;
+    color: #e6eeff;
+    border-radius: 20px;
+    font-family: "britanic", sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin: 20px auto 0;
+    padding-bottom: 16px;
+    transition:
+        background 0.3s,
+        color 0.3s,
+        height 1s;
+    overflow: hidden;
 }
 
 .adminPanel.active {
-  background: #1c2235;
-  height: 200px;
+    background: #1c2235;
+    height: 200px;
 }
 
 .adminPanelTitle {
-  display: inline-block;
-  height: 22px;
-  width: 500px;
-  background: #252525;
-  border: 2px solid #1e4e83;
-  border-radius: 20px;
-  padding: 6px 0;
-  font-family: 'britanic', sans-serif;
-  font-size: 18px;
-  letter-spacing: 1px;
-  cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    width: 500px;
+    background: #252525;
+    border: 2px solid #1e4e83;
+    border-radius: 20px;
+    padding: 6px 0;
+    font-family: "britanic", sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
 }
 
 .gameSelect {
-  margin: 10px 20px;
-  text-align: left;
-} 
+    margin: 10px 20px;
+    text-align: left;
+}
 
 .gameSelect select {
-  width: 60%;
-  background: #1c2235;
-  color: #daa617;
-  padding: 5px;
-  border: 1px solid #1d2630;
-  font-family: 'britanic', sans-serif;
-  font-size: 16px;
-  border-bottom: 1px solid #daa61755;
-  margin: 0;
+    width: 60%;
+    background: #1c2235;
+    color: #daa617;
+    padding: 5px;
+    border: 1px solid #1d2630;
+    font-family: "britanic", sans-serif;
+    font-size: 16px;
+    border-bottom: 1px solid #daa61755;
+    margin: 0;
 }
 
 .gameSelect button {
-  width: 140px;
-  background: #1c2235;
-  color: #e6eeff;
-  padding: 5px;
-  font-family: 'britanic', sans-serif;
-  font-size: 16px;
-  border-radius: 12px;
-  border: 2px solid #daa61755;
-  margin: 0 10px;
+    width: 140px;
+    background: #1c2235;
+    color: #e6eeff;
+    padding: 5px;
+    font-family: "britanic", sans-serif;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid #daa61755;
+    margin: 0 10px;
 }
 
 .gameSelect button:hover {
-  background: #28314d;
+    background: #28314d;
 }
 
 .gameSelect button:active {
-  background: #3b4c7e;
+    background: #3b4c7e;
 }
 
 .typeShelf {
-  text-align: center;
+    text-align: center;
 }
 
 .typeButton {
-  width: 170px;
-  background: #252525;
-  color: #e6eeff;
-  border: 1px solid #1d2630;
-  border-radius: 12px;
-  padding: 6px 0;
-  font-family: 'britanic', sans-serif;
-  font-size: 18px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  margin: 0 5px;
+    width: 170px;
+    background: #252525;
+    color: #e6eeff;
+    border: 1px solid #1d2630;
+    border-radius: 12px;
+    padding: 6px 0;
+    font-family: "britanic", sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin: 0 5px;
 }
 
 .typeButton.active {
-  background: #8eddf5;
-  color: #2c2c2c;
+    background: #8eddf5;
+    color: #2c2c2c;
 }
 
 .typeButton:not(.active):hover {
-  background: #cfcfcf;
-  color: #151515;
+    background: #cfcfcf;
+    color: #151515;
 }
 
 .navAuthLink {
-  display: inline-block;
-  padding: 7px 20px;
-  border-radius: 999px;
-  border: 1px solid #5080ea;
-  background: #252525;
-  color: #e6eeff;
-  text-decoration: none;
-  font-family: 'fr-bold', sans-serif;
-  margin: 15px auto 0 auto;
+    display: inline-block;
+    padding: 7px 20px;
+    border-radius: 999px;
+    border: 1px solid #5080ea;
+    background: #252525;
+    color: #e6eeff;
+    text-decoration: none;
+    font-family: "fr-bold", sans-serif;
+    margin: 15px auto 0 auto;
 }
 
 .interactions {
-  width: 700px;
-  margin: 20px auto;
+    width: 700px;
+    margin: 20px auto;
 }
 
 .intTabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin: 6px 0 10px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin: 6px 0 10px 0;
 }
 
 .intTabs.cols3 {
-  grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .intTabs.cols2 {
-  grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .intTab {
-  background: #252525;
-  color: #e6eeff;
-  border: 1px solid #1d2630;
-  border-radius: 12px;
-  padding: 6px 0;
-  font-family: 'fr-bold', sans-serif;
-  cursor: pointer;
+    background: #252525;
+    color: #e6eeff;
+    border: 1px solid #1d2630;
+    border-radius: 12px;
+    padding: 6px 0;
+    font-family: "fr-bold", sans-serif;
+    cursor: pointer;
 }
 
 .intTab.active {
-  background: #cfcfcf;
-  color: #151515;
+    background: #cfcfcf;
+    color: #151515;
 }
 
 .cardList {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
 }
 
 .card {
-  position: relative;
-  background: #242b33;
-  border: 1px solid #00000055;
-  border-radius: 12px;
-  padding: 10px 12px 10px 12px;
-  height: 120px;
+    position: relative;
+    background: #242b33;
+    border: 1px solid #00000055;
+    border-radius: 12px;
+    padding: 10px 12px 10px 12px;
+    height: 120px;
 }
 
 .cardLabel {
-  font-family: 'fr-bold', sans-serif;
-  color: #e6eeff;
-  font-size: 18px;
-  margin-bottom: 10px;
+    font-family: "fr-bold", sans-serif;
+    color: #e6eeff;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 .cardDescription {
-  position: absolute;
-  bottom: 0;
-  color: #19a384;
-  font-family: 'fr-bold', sans-serif;
-  margin: 4px 0 2px 0;
-  font-size: 15px;
+    position: absolute;
+    bottom: 0;
+    color: #19a384;
+    font-family: "fr-bold", sans-serif;
+    margin: 4px 0 2px 0;
+    font-size: 15px;
 }
 
 .cardDuration {
-  position: absolute;
-  top: 40px;
-  color: #a9c5ff;
-  font-family: 'fr-bold', sans-serif;
-  margin: 4px 0 8px 0;
-  font-size: 15px;
+    position: absolute;
+    top: 40px;
+    color: #a9c5ff;
+    font-family: "fr-bold", sans-serif;
+    margin: 4px 0 8px 0;
+    font-size: 15px;
 }
 
 .cardDuration input {
-  appearance: textfield;
-  -moz-appearance: textfield;
-  width: 40px;
-  color: #daa617;
-  background: #242b33;
-  font-family: 'fr-bold', sans-serif;
-  font-size: 14px;
-  border: none;
-  border-bottom: 1px solid #daa61755;
+    appearance: textfield;
+    -moz-appearance: textfield;
+    width: 40px;
+    color: #daa617;
+    background: #242b33;
+    font-family: "fr-bold", sans-serif;
+    font-size: 14px;
+    border: none;
+    border-bottom: 1px solid #daa61755;
 }
 
 .cardDuration input::-webkit-outer-spin-button,
 .cardDuration input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .cardCost {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  color: #daa617;
-  font-family: 'fr-bold', sans-serif;
-  margin: 4px 0 8px 0;
-  font-size: 16px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: #daa617;
+    font-family: "fr-bold", sans-serif;
+    margin: 4px 0 8px 0;
+    font-size: 16px;
 }
 
 .extraCost {
-  color: #39d9f5;
-  position: absolute;
-  right: 10px;
-  top: -10px;
+    color: #39d9f5;
+    position: absolute;
+    right: 10px;
+    top: -10px;
 }
 
 .cardCooldown {
-  position: absolute;
-  top: 40px;
-  right: 10px;
-  color: #a9c5ff;
-  font-family: 'fr-bold', sans-serif;
-  margin: 4px 0 8px 0;
-  font-size: 15px;
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    color: #a9c5ff;
+    font-family: "fr-bold", sans-serif;
+    margin: 4px 0 8px 0;
+    font-size: 15px;
 }
 
 .highlight {
-  color: #eeff00;
+    color: #eeff00;
 }
 
 .cardButton {
-  position: absolute;
-  bottom: 30px;
-  width: 93%;
-  background: #4d7fe7;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-family: 'fr-bold', sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 1s ease, color 1s ease;
+    position: absolute;
+    bottom: 30px;
+    width: 93%;
+    background: #4d7fe7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: "fr-bold", sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition:
+        background-color 1s ease,
+        color 1s ease;
 }
 
 .cardButton:hover {
-  background: #6c97f1;
+    background: #6c97f1;
 }
 
 .cardButton:disabled {
-  opacity: 0.85;
-  cursor: not-allowed;
+    opacity: 0.85;
+    cursor: not-allowed;
 }
 
 .cardButton.interactionSuccess {
-  background: #2e9a5f !important;
-  color: #ffffff !important;
+    background: #2e9a5f !important;
+    color: #ffffff !important;
 }
 
 .cardButton.interactionFailure {
-  background: #c0392b !important;
-  color: #ffffff !important;
+    background: #c0392b !important;
+    color: #ffffff !important;
 }
 
 .cardButton.interactionCooldown {
-  background: #6b7280 !important;
-  color: #f0f3ff !important;
-  cursor: not-allowed !important;
+    background: #6b7280 !important;
+    color: #f0f3ff !important;
+    cursor: not-allowed !important;
 }
 
-
-
 .intTabs.cols1 {
-  grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, 1fr);
 }
 
 .intTabs.cols4 {
-  grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 @media (min-width: 700px) {
-  .cardList {
-    grid-template-columns: 1fr 1fr;
-  }
+    .cardList {
+        grid-template-columns: 1fr 1fr;
+    }
 }
