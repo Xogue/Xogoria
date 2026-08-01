@@ -3,3 +3,4 @@ _internal/
 private/
 .codepin.local.json
 Xogoria-Architecture.drawio
+html/_core/_init/_logs/api.log

@@ -3,20 +3,36 @@
 class FileMap implements Iterator {
     private string $rootPath;
     private array $treeArray = [ ];
+    private array $keys = [ ];
+    private int $position = 0;
 
+    // MAGIC FUNCTIONS
     public function __construct( string $rootPath ) {
         $this->rootPath = rtrim( $rootPath, "/\\" ) . DIRECTORY_SEPARATOR;
         $this->populateTree( $this->rootPath, $this->treeArray );
     }
+
+    // PUBLIC FUNCTIONS
+    public function current( ): mixed { return $this->treeArray[ $this->keys[ $this->position ] ]; }
+    public function key( )    : mixed { return $this->keys[ $this->position ]; }
+    public function next( )   : void  { $this->position++; }
+    public function valid( )  : bool  { return isset( $this->keys[ $this->position ] ); }
+
     public function findFullFilepath( string $filename ): ?string { return $this->searchTree( $this->treeArray, $filename ); }
+    public function copyTree( string $destination ) { $this->copyDirectory( $this->rootPath, $destination ); }
 
     public function findRelativeFilepath( string $filename, string $basePath = XOG_ROOT ): ?string {
         $fullPath = $this->findFullFilepath( $filename );
         $pathPiece = explode( $basePath, $fullPath )[ 1 ];
         return rtrim( $basePath, "/" ) . "/" . $pathPiece;
     }
-    public function copyTree( string $destination ) { $this->copyDirectory( $this->rootPath, $destination ); }
 
+    public function rewind( ): void {
+        $this->keys = array_keys( $this->treeArray );
+        $this->position = 0;
+    }
+
+    // PRIVATE FUNCTIONS
     private function scanDirectory( string $directory ): null|array|bool {
         $items = scandir( $directory );
         return $items;
@@ -81,16 +97,4 @@ class FileMap implements Iterator {
             }
         }
     }
-
-    private array $keys = [ ];
-    private int $position = 0;
-
-    public function rewind( ): void {
-        $this->keys = array_keys( $this->treeArray );
-        $this->position = 0;
-    }
-    public function current( ): mixed { return $this->treeArray[ $this->keys[ $this->position ] ]; }
-    public function key( )    : mixed { return $this->keys[ $this->position ]; }
-    public function next( )   : void  { $this->position++; }
-    public function valid( )  : bool  { return isset( $this->keys[ $this->position ] ); }
 }
