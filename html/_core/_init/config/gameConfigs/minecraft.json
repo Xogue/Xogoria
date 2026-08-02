@@ -609,6 +609,9 @@
                     "blaze",
                     "vex",
                     "hoglin"
+                ],
+                "special": [
+                    "batClaim"
                 ]
             }
         },
