@@ -58,81 +58,81 @@
                                 <?php
                                     foreach ( $gameManager->getAllGames( ) as $gameName => $game ):
                                         foreach ( $game->getProfiles( ) as $profileName => $profile ) {
-
-                                        $optionValue = $gameName . ";" . $profileName;
-                                        $optionLabel = ucfirst( $gameName ) . " - " . ucfirst( $profile->getLabel( ) ); ?>
-                                        <option value="<?php echo $optionValue; ?>" data-game="<?php echo $gameName; ?>" data-profile="<?php echo $profileName; ?>"><?php echo $optionLabel; ?></option>
-                                        <?php
-                                            }
-                                            endforeach; ?>
-                                    </select>
-                                    <button class="setGame" type="button">Set & Refresh</button>
-                                </div>
-                            </div>
-                                    <?php endif; ?>
-
-
-                                <div class="typeShelf">
-                                    <?php
-                                        $first = true;
-                                        foreach ( $simpleTypes as $typeName => $type ) {
-                                            $categoryTitle = ucfirst( $typeName );
-                                            echo '<button class="typeButton' . ( $first ? " active" : "" ) . '" data-tab="' . $typeName . '">' . $categoryTitle . "</button>";
-                                            $first = false;
-                                        }
-                                    ?>
-                                </div>
-
-                                <?php foreach ( $interactTypes as $typeName => $type ): ?>
-                                    <section class="interactions uiHidden" data-tab="<?php echo $typeName; ?>">
-                                        <div class="cardList">
-                                            <?php foreach ( $type->getInteractions( ) as $key => $interaction ) {
-                                                if ( $interaction->isEnabled( ) ) {
-                                                    echo $interaction->getPanelHtml( );
-                                                }
-                                            } ?>
-                                        </div>
-                                    </section>
-                                <?php endforeach; ?>
-
-                                <div class="spawnWrap uiHidden">
-                                    <div class="spawnRows">
-                                        <?php if ( isset( $profileInteractions[ "spawn" ] ) ) {
-                                            $mobs = $profileInteractions[ "spawn" ][ "mobs" ]->getAllChildren( );
-                                            $replaceKeys = [ "{KEY}", "{LABEL}", "{COST}" ];
-                                            foreach ( $mobs as $mobKey => $mob ) {
-                                                if ( $mob->isEnabled( ) ) {
-                                                    $label = isset( $mob[ "label" ] ) ? $mob[ "label" ] : ucfirst( $mobKey );
-                                                    $replaceValues = [ $mobKey, $label, $mob[ "cost" ] ];
-                                                    echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpawnController" ) );
-                                                }
-                                            }
-                                        } ?>
-                                    </div>
-                                    <div class="spawnSummary">
-                                        <div class="sumLine">Total Mobs: <span id="sum_count">0</span></div>
-                                        <div class="sumLine">Total Cost: <span id="sum_cost">0</span> AGs</div>
-                                        <div class="sumLine">Cooldown: <span id="sum_cd">0s</span></div>
-                                        <button id="spawnBtn" class="cBtn primary" type="button">Spawn Them</button>
-                                    </div>
-                                </div>
-
-
-                                <section class="intPanel" data-tab="special" hidden>
-                                    <div class="cardList mb-10">
-                                        <?php if ( isset( $profileInteractions[ "special" ] ) ) {
-                                            $batClaim = $profileInteractions[ "special" ][ "batClaim" ];
-                                            $replaceKeys = [ "{COOLDOWN}", "{BLOCKED}", "{LABEL}", "{DESCRIPTION}" ];
-                                            $replaceValues = [ $batClaim->getCooldown( ), implode( ", ", getBlockedWords( ) ), $batClaim->getLabel( ), $batClaim->getDescription( ) ];
-                                            echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpecial" ) );
-                                        } ?>
-                                    </div>
-                                </section>
-                <?php else: ?>
-                    <a class="navAuthLink" href="<?php echo $twitchAuthStart . urlencode( $requestUri ); ?>">Login with Twitch</a>
+                                            $optionValue = $gameName . ";" . $profileName;
+                                            $optionLabel = ucfirst( $gameName ) . " - " . ucfirst( $profile->getLabel( ) ); ?>
+                                            <option value="<?php echo $optionValue; ?>" data-game="<?php echo $gameName; ?>"
+                                                data-profile="<?php echo $profileName; ?>"><?php echo $optionLabel; ?>
+                                            </option>
+                                        <?php } ?>
+                                    <?php endforeach; ?>
+                            </select>
+                            <button class="setGame" type="button">Set & Refresh</button>
+                        </div>
+                    </div>
                 <?php endif; ?>
-            </div>
+
+
+                <div class="typeShelf">
+                    <?php
+                        $first = true;
+                        foreach ( $simpleTypes as $typeName => $type ) {
+                            $categoryTitle = ucfirst( $typeName );
+                            echo '<button class="typeButton' . ( $first ? " active" : "" ) . '" data-tab="' . $typeName . '">' . $categoryTitle . "</button>";
+                            $first = false;
+                        }
+                    ?>
+                </div>
+
+                <?php foreach ( $interactTypes as $typeName => $type ): ?>
+                    <section class="interactions uiHidden" data-tab="<?php echo $typeName; ?>">
+                        <div class="cardList">
+                            <?php foreach ( $type->getInteractions( ) as $key => $interaction ) {
+                                if ( $interaction->isEnabled( ) ) {
+                                    echo $interaction->getPanelHtml( );
+                                }
+                            } ?>
+                        </div>
+                    </section>
+                <?php endforeach; ?>
+
+                <div class="spawnWrap uiHidden">
+                    <div class="spawnRows">
+                        <?php if ( isset( $profileInteractions[ "spawn" ] ) ) {
+                            $mobs = $profileInteractions[ "spawn" ][ "mobs" ]->getAllChildren( );
+                            $replaceKeys = [ "{KEY}", "{LABEL}", "{COST}" ];
+                            foreach ( $mobs as $mobKey => $mob ) {
+                                if ( $mob->isEnabled( ) ) {
+                                    $label = isset( $mob[ "label" ] ) ? $mob[ "label" ] : ucfirst( $mobKey );
+                                    $replaceValues = [ $mobKey, $label, $mob[ "cost" ] ];
+                                    echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpawnController" ) );
+                                }
+                            }
+                        } ?>
+                    </div>
+                    <div class="spawnSummary">
+                        <div class="sumLine">Total Mobs: <span id="sum_count">0</span></div>
+                        <div class="sumLine">Total Cost: <span id="sum_cost">0</span> AGs</div>
+                        <div class="sumLine">Cooldown: <span id="sum_cd">0s</span></div>
+                        <button id="spawnBtn" class="cBtn primary" type="button">Spawn Them</button>
+                    </div>
+                </div>
+
+
+                <section class="intPanel" data-tab="special" hidden>
+                    <div class="cardList mb-10">
+                        <?php if ( isset( $profileInteractions[ "special" ] ) ) {
+                            $batClaim = $profileInteractions[ "special" ][ "batClaim" ];
+                            $replaceKeys = [ "{COOLDOWN}", "{BLOCKED}", "{LABEL}", "{DESCRIPTION}" ];
+                            $replaceValues = [ $batClaim->getCooldown( ), implode( ", ", getBlockedWords( ) ), $batClaim->getLabel( ), $batClaim->getDescription( ) ];
+                            echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpecial" ) );
+                        } ?>
+                    </div>
+                </section>
+            <?php else: ?>
+                <a class="navAuthLink" href="<?php echo $twitchAuthStart . urlencode( $requestUri ); ?>">Login with Twitch</a>
+            <?php endif; ?>
         </div>
-    </body>
+    </div>
+</body>
 
 </html>

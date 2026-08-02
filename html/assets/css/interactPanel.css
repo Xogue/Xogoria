@@ -3,7 +3,6 @@
     max-width: 640px;
     margin: 0 auto 25px auto;
     padding: 8px 10px;
-    text-align: center;
 }
 
 .title {
@@ -70,6 +69,7 @@
         color 0.3s,
         height 1s;
     overflow: hidden;
+    text-align: center;
 }
 
 .adminPanel.active {
