@@ -131,6 +131,7 @@ return array(
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'UserContext' => $baseDir . '/html/_core/contexts/UserContext.php',
     'UserController' => $baseDir . '/html/_core/subControllers/UserController.php',
+    'UserTextPolicy' => $baseDir . '/html/_core/services/UserTextPolicy.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     'WebController' => $baseDir . '/html/_core/_init/WebController.php',
     'WorkerContext' => $baseDir . '/html/_core/contexts/WorkerContext.php',

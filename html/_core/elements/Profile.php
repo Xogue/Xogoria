@@ -43,6 +43,11 @@ class Profile {
         return is_array( $allowed ) && in_array( $interaction, $allowed, true );
     }
 
+    public function allowsSpecialInteraction( string $type, string $interaction ): bool {
+        $allowed = $this->allowedSpecialTypes[ $type ] ?? null;
+        return is_array( $allowed ) && in_array( $interaction, $allowed, true );
+    }
+
     // PRIVATE FUNCTIONS
     private function checkData( array $data, array $columnNames ): bool {
         foreach ( $columnNames as $columnName ) {

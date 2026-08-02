@@ -187,6 +187,7 @@ class ComposerStaticInit57d026eb92d5764d5cf20530973e2440
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'UserContext' => __DIR__ . '/../..' . '/html/_core/contexts/UserContext.php',
         'UserController' => __DIR__ . '/../..' . '/html/_core/subControllers/UserController.php',
+        'UserTextPolicy' => __DIR__ . '/../..' . '/html/_core/services/UserTextPolicy.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'WebController' => __DIR__ . '/../..' . '/html/_core/_init/WebController.php',
         'WorkerContext' => __DIR__ . '/../..' . '/html/_core/contexts/WorkerContext.php',

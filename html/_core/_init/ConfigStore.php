@@ -56,6 +56,17 @@ class ConfigStore {
     public function getClipsUrl( )     : string { return $this->twitchData[ "clipsUrl" ] ?? ""; }
     public function getCodeQuery( )    : array  { return $this->twitchData[ "codeQuery" ] ?? [ ]; }
     public function getGameData( )     : array  { return $this->gameData ?? [ ]; }
+    public function getRestrictedWords( ): array {
+        $words = $this->coreData[ "restrictedWords" ] ?? [ ];
+        if ( !is_array( $words ) ) {
+            return [ ];
+        }
+
+        return array_values( array_filter(
+            $words,
+            fn( mixed $word ): bool => is_string( $word ) && trim( $word ) !== "",
+        ) );
+    }
 
     public function getSqlQuery( string $key ): string { return $this->sqlData[ $key ] ?? ""; }
 

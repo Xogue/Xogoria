@@ -60,13 +60,12 @@ class InteractionManager {
         }
 
         $serverId = $this->configManager->getActiveProfile( )->getServerId( );
-        $command = "say This command needs to be updated";
-        // [
-        // 'data modify storage xogoria:bat claim set value ' . $json,
-        // 'execute as Xogue at @s run function xogoria:claim_bat',
-        // ];
+        $commands = [
+            "data modify storage xogoria:bat claim set value {$json}",
+            "execute as Xogue at @s run function xogoria:claim_bat",
+        ];
 
-        $success = $this->sendCommands( $serverId, [ $command ] );
+        $success = $this->sendCommands( $serverId, $commands );
         return $success;
     }
 

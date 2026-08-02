@@ -18,6 +18,7 @@ final class WebController {
     public function getLoreManager( )       : LoreManager       { return $this->services->loreManager( ); }
     public function getGameManager( )       : GameManager       { return $this->services->gameManager( ); }
     public function getAssetManager( )      : AssetManager      { return $this->services->assetManager( ); }
+    public function getRestrictedWords( )  : array             { return $this->services->configManager( )->getConfigStore( )->getRestrictedWords( ); }
     public function loginToTwitch( )        : void              { $this->services->twitchController( )->startLogin( ); }
     public function getPostLoginRedirect( ) : string            { return $this->services->twitchController( )->getPostLoginRedirect( ); }
     public function getAccessCode( )        : mixed             { return $this->services->twitchController( )->getAccessCode( ); }

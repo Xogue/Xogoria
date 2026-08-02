@@ -342,6 +342,128 @@
     grid-template-columns: repeat(4, 1fr);
 }
 
+.spawnWrap {
+    background: #242b33;
+    border: 1px solid #00000055;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.spawnRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 6px;
+    border-top: 1px solid #00000055;
+}
+
+.spawnRow:first-child {
+    border-top: none;
+}
+
+.sLabel,
+.spawnSummary {
+    color: #e6eeff;
+    font-family: "fr-bold", sans-serif;
+}
+
+.sCost {
+    color: #a9c5ff;
+    margin-left: 6px;
+    font-size: 13px;
+}
+
+.sCtrls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sBtn,
+.spawnRow input {
+    height: 32px;
+    border: 1px solid #1d2630;
+    border-radius: 8px;
+    background: #393e48;
+    color: #e6eeff;
+    font-family: "fr-bold", sans-serif;
+}
+
+.sBtn {
+    width: 36px;
+    cursor: pointer;
+}
+
+.sBtn:hover {
+    background: #434a57;
+}
+
+.spawnRow input {
+    width: 56px;
+    padding: 0 6px;
+    text-align: center;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.spawnRow input::-webkit-outer-spin-button,
+.spawnRow input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.spawnSummary {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.sumLine {
+    margin: 4px 0;
+}
+
+.cardButton.spawnButton {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.cardBatClaim {
+    min-height: 180px;
+    height: auto;
+}
+
+.batNameInput {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 42px;
+    padding: 8px 10px;
+    border: 1px solid #2f3440;
+    border-radius: 6px;
+    background: #1f222a;
+    color: #e6eeff;
+}
+
+.batNameInput.invalid {
+    border-color: #c0392b;
+}
+
+.batHint {
+    min-height: 20px;
+    color: #ffb3b3;
+    font-family: "fr-bold", sans-serif;
+    font-size: 13px;
+    visibility: hidden;
+}
+
+.batHint.visible {
+    visibility: visible;
+}
+
+.cardBatClaim .cardButton {
+    position: static;
+    width: 100%;
+}
+
 @media (min-width: 700px) {
     .cardList {
         grid-template-columns: 1fr 1fr;

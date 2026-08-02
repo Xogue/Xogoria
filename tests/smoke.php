@@ -13,6 +13,12 @@ assert( $services->contextManager( )->getInputData( ) === $services->contextMana
 assert( isset( $services->adminResourceManager( )->definitions( )[ "users" ] ) );
 assert( isset( $services->adminConfigManager( )->files( )[ "minecraft" ] ) );
 assert( $services->clipDeletionRegistry( )->all( ) === [ ] );
+$textPolicy = $services->userTextPolicy( );
+assert( $textPolicy->isAllowed( "Flappy" ) );
+assert( $textPolicy->isAllowed( "Classy Bat" ) );
+assert( !$textPolicy->isAllowed( "f.u.c.k" ) );
+assert( !$textPolicy->isAllowed( "sh1tbat" ) );
+assert( !$textPolicy->isAllowed( "kill-yourself" ) );
 $success = new WorkerResult( [ "item" => "value" ], "Completed." );
 assert( $success->isSuccess( ) );
 assert( json_decode( $success->toJson( ), true, flags: JSON_THROW_ON_ERROR )[ "success" ] === true );

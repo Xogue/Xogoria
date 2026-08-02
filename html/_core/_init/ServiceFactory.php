@@ -13,6 +13,12 @@ final class ServiceFactory {
     public function mySqlManager( )     : MySqlManager      { return $this->service( __FUNCTION__, fn( ) => new MySqlManager( $this->configManager( ) ) ); }
     public function twitchController( ) : TwitchController  { return $this->service( __FUNCTION__, fn( ) => new TwitchController( $this->dataController( ) ) ); }
     public function soundQueueManager( ): SoundQueueManager { return $this->service( __FUNCTION__, fn( ) => new SoundQueueManager( $this->dataStore( ) ) ); }
+    public function userTextPolicy( ): UserTextPolicy {
+        return $this->service(
+            __FUNCTION__,
+            fn( ) => new UserTextPolicy( $this->configManager( )->getConfigStore( )->getRestrictedWords( ) ),
+        );
+    }
 
     public function logger( string $channel = Logger::CHANNEL_COMMON ): Logger {
         return $this->service( "logger.{$channel}", fn( ) => new Logger( $channel ) );
@@ -131,6 +137,7 @@ final class ServiceFactory {
                 $this->interactionManager( ),
                 $this->contextManager( )->getUser( ),
                 $this->mySqlManager( ),
+                $this->userTextPolicy( ),
             ),
             "configure" => new ConfigureWorker( $this->contextManager( )->getUser( ) ),
             default => null,

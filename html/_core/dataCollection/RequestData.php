@@ -19,6 +19,11 @@ class RequestData {
     public function getDuration( )   : int    { return (int) ( $this->get( "duration" ) ?? 0 ); }
     public function getCost( )       : int    { return (int) ( $this->get( "cost" ) ?? 0 ); }
     public function getCooldown( )   : int    { return (int) ( $this->get( "cooldown" ) ?? -1 ); }
+    public function getBatName( )    : string { return trim( (string) ( $this->get( "batName" ) ?? "" ) ); }
+    public function getMobs( )       : array  {
+        $mobs = $this->get( "mobs" );
+        return is_array( $mobs ) ? $mobs : [ ];
+    }
 
     // PRIVATE FUNCTIONS
     private function getMethod( ): string { return strtoupper( (string) ( $_SERVER[ "REQUEST_METHOD" ] ?? "GET" ) ); }

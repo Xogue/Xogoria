@@ -20,6 +20,8 @@ class InputDataContext {
     public function getDuration( ) : int    { return $this->requestData->getDuration( ); }
     public function getCost( )     : int    { return $this->requestData->getCost( ); }
     public function getCooldown( ) : int    { return $this->requestData->getCooldown( ); }
+    public function getBatName( )  : string { return $this->requestData->getBatName( ); }
+    public function getMobs( )     : array  { return $this->requestData->getMobs( ); }
     // CURRENCY WORKER
     public function getAmount( ): int { return $this->requestData->getAmount( ); }
     // COLLECTION WORKER

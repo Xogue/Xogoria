@@ -20,6 +20,9 @@
     $panelTagLine = $activeProfile->getTagLine( );
     $simpleTypes = $activeProfile->getAllowedSimpleTypes( );
     $specialTypes = $activeProfile->getAllowedSpecialTypes( );
+    $powerSpawn = $activeGame->getSpecialType( "powerSpawn" );
+    $batClaim = $activeGame->getSpecialType( "batClaim" );
+    $restrictedWords = $webController->getRestrictedWords( );
 
     $requestUri = $_SERVER[ "REQUEST_URI" ];
 ?>
@@ -80,6 +83,13 @@
                             echo '<button class="typeButton' . ( $first ? " active" : "" ) . '" data-tab="' . $typeName . '">' . $categoryTitle . "</button>";
                             $first = false;
                         }
+                        if ( $powerSpawn instanceof PowerSpawn && !empty( $specialTypes[ "powerSpawn" ] ) ) {
+                            echo '<button class="typeButton' . ( $first ? " active" : "" ) . '" data-tab="powerSpawn">Custom Spawn</button>';
+                            $first = false;
+                        }
+                        if ( $batClaim instanceof BatClaim && $batClaim->isEnabled( ) && in_array( "batClaim", $specialTypes[ "special" ] ?? [ ], true ) ) {
+                            echo '<button class="typeButton' . ( $first ? " active" : "" ) . '" data-tab="special">Bat Claim</button>';
+                        }
                     ?>
                 </div>
 
@@ -95,39 +105,48 @@
                     </section>
                 <?php endforeach; ?>
 
-                <div class="spawnWrap uiHidden">
+                <?php if ( $powerSpawn instanceof PowerSpawn && !empty( $specialTypes[ "powerSpawn" ] ) ): ?>
+                <section class="interactions uiHidden" data-tab="powerSpawn">
+                <div class="spawnWrap" data-cooldown-min="<?php echo $powerSpawn->getCooldownMin( ); ?>" data-cooldown-max="<?php echo $powerSpawn->getCooldownMax( ); ?>">
+                    <div class="cardLabel">Build a custom mob spawn</div>
                     <div class="spawnRows">
-                        <?php if ( isset( $profileInteractions[ "spawn" ] ) ) {
-                            $mobs = $profileInteractions[ "spawn" ][ "mobs" ]->getAllChildren( );
-                            $replaceKeys = [ "{KEY}", "{LABEL}", "{COST}" ];
+                        <?php
+                            $mobs = $powerSpawn->getMobs( );
+                            $replaceKeys = [ "{KEY}", "{LABEL}", "{COST}", "{COOLDOWN}" ];
                             foreach ( $mobs as $mobKey => $mob ) {
-                                if ( $mob->isEnabled( ) ) {
-                                    $label = isset( $mob[ "label" ] ) ? $mob[ "label" ] : ucfirst( $mobKey );
-                                    $replaceValues = [ $mobKey, $label, $mob[ "cost" ] ];
+                                if ( $mob->isEnabled( ) && in_array( $mobKey, $specialTypes[ "powerSpawn" ], true ) ) {
+                                    $replaceValues = [ $mobKey, $mob->getLabel( ), $mob->getCost( ), $mob->getCooldown( ) ];
                                     echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpawnController" ) );
                                 }
                             }
-                        } ?>
+                        ?>
                     </div>
                     <div class="spawnSummary">
                         <div class="sumLine">Total Mobs: <span id="sum_count">0</span></div>
                         <div class="sumLine">Total Cost: <span id="sum_cost">0</span> AGs</div>
                         <div class="sumLine">Cooldown: <span id="sum_cd">0s</span></div>
-                        <button id="spawnBtn" class="cBtn primary" type="button">Spawn Them</button>
+                        <button id="spawnBtn" class="cardButton spawnButton" type="button" disabled>Spawn Them</button>
                     </div>
                 </div>
+                </section>
+                <?php endif; ?>
 
-
-                <section class="intPanel" data-tab="special" hidden>
-                    <div class="cardList mb-10">
-                        <?php if ( isset( $profileInteractions[ "special" ] ) ) {
-                            $batClaim = $profileInteractions[ "special" ][ "batClaim" ];
+                <?php if ( $batClaim instanceof BatClaim && $batClaim->isEnabled( ) && in_array( "batClaim", $specialTypes[ "special" ] ?? [ ], true ) ): ?>
+                <section class="interactions uiHidden" data-tab="special">
+                    <div class="cardList">
+                        <?php
                             $replaceKeys = [ "{COOLDOWN}", "{BLOCKED}", "{LABEL}", "{DESCRIPTION}" ];
-                            $replaceValues = [ $batClaim->getCooldown( ), implode( ", ", getBlockedWords( ) ), $batClaim->getLabel( ), $batClaim->getDescription( ) ];
+                            $replaceValues = [
+                                $batClaim->getCooldown( ),
+                                htmlspecialchars( json_encode( $restrictedWords, JSON_HEX_APOS | JSON_HEX_QUOT ) ?: "[]", ENT_QUOTES, "UTF-8" ),
+                                htmlspecialchars( $batClaim->getLabel( ), ENT_QUOTES, "UTF-8" ),
+                                htmlspecialchars( $batClaim->getDescription( ), ENT_QUOTES, "UTF-8" ),
+                            ];
                             echo str_replace( $replaceKeys, $replaceValues, $webController->getTemplatePart( "panelSpecial" ) );
-                        } ?>
+                        ?>
                     </div>
                 </section>
+                <?php endif; ?>
             <?php else: ?>
                 <a class="navAuthLink" href="<?php echo $twitchAuthStart . urlencode( $requestUri ); ?>">Login with Twitch</a>
             <?php endif; ?>

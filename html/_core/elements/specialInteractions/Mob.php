@@ -6,7 +6,7 @@ class Mob {
     private string $label;
     private int $cost;
     private int $cooldown;
-    private array $commands;
+    private string $command;
 
     // MAGIC FUNCTIONS
     public function __construct( string $name, array $data ) {
@@ -15,7 +15,7 @@ class Mob {
         $this->label = $data[ "label" ] ?? "";
         $this->cost = $data[ "cost" ] ?? 0;
         $this->cooldown = $data[ "cooldown" ] ?? 0;
-        $this->commands = $data[ "commands" ] ?? [ ];
+        $this->command = (string) ( $data[ "command" ] ?? "" );
     }
 
     // PUBLIC FUNCTIONS
@@ -24,5 +24,5 @@ class Mob {
     public function getLabel( )   : string { return $this->label; }
     public function getCost( )    : int    { return $this->cost; }
     public function getCooldown( ): int    { return $this->cooldown; }
-    public function getCommands( ): array  { return $this->commands; }
+    public function getCommand( )  : string { return $this->command; }
 }
