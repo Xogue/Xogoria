@@ -503,6 +503,23 @@
                     "poison",
                     "miningFatigue"
                 ],
+                "sound": [
+                    "betty",
+                    "cat",
+                    "mary",
+                    "2kyears",
+                    "cheer",
+                    "haha",
+                    "violin",
+                    "wahwah",
+                    "wow",
+                    "dave",
+                    "toolbreak",
+                    "ghastper",
+                    "piggy",
+                    "creeper",
+                    "scream"
+                ],
                 "prank": [
                     "blockstand"
                 ],
@@ -592,9 +609,6 @@
                     "blaze",
                     "vex",
                     "hoglin"
-                ],
-                "special": [
-                    "batClaim"
                 ]
             }
         },
