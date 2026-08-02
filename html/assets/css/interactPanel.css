@@ -157,7 +157,8 @@
 }
 
 .navAuthLink {
-    display: inline-block;
+    display: block;
+    width: fit-content;
     padding: 7px 20px;
     border-radius: 999px;
     border: 1px solid #5080ea;
