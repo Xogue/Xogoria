@@ -48,6 +48,21 @@ try {
         ApiController::sendJson( [ "success" => true ] );
     }
 
+    if ( $domain === "community" ) {
+        $source = (string) ( $input[ "source" ] ?? "" );
+        $manager = $admin->community( );
+        if ( $action === "preview" ) {
+            ApiController::sendJson( [ "success" => true, "html" => $manager->render( $source ) ] );
+        }
+        if ( $action === "save" ) {
+            if ( !$manager->save( $source ) ) {
+                ApiController::error( "The community page could not be saved.", 500 );
+            }
+            ApiController::sendJson( [ "success" => true, "html" => $manager->render( $source ) ] );
+        }
+        throw new InvalidArgumentException( "Unknown community content action" );
+    }
+
     ApiController::error( "Unknown admin operation." );
 } catch ( InvalidArgumentException $error ) {
     ApiController::error( $error->getMessage( ), 422 );

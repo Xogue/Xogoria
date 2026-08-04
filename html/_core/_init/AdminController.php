@@ -7,6 +7,7 @@ final class AdminController {
     // PUBLIC FUNCTIONS
     public function resources( ): AdminResourceManager { return $this->services->adminResourceManager( ); }
     public function configs( )  : AdminConfigManager   { return $this->services->adminConfigManager( ); }
+    public function community( ): CommunityContentManager { return $this->services->communityContentManager( ); }
 
     public function requireAdmin( bool $api = false ): UserContext {
         $user = $this->services->contextManager( )->getUser( );

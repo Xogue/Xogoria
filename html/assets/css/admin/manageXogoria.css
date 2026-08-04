@@ -55,6 +55,26 @@ button, input, textarea, select { font: inherit; }
 .adminConfigHeader h2 { margin: 0; font-size: 18px; }
 .adminJsonEditor { min-height: 360px; resize: vertical; font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; tab-size: 2; }
 
+.communityEditorShell { overflow: hidden; border: 1px solid var(--admin-border); border-radius: 10px; background: var(--admin-panel); }
+.communityEditorToolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; border-bottom: 1px solid var(--admin-border); background: #1c2635; }
+.communityEditorToolbar button { min-width: 35px; padding: 6px 9px; border: 1px solid #3f5572; border-radius: 5px; background: #243750; color: var(--admin-text); cursor: pointer; }
+.communityEditorToolbar button:hover { border-color: var(--admin-accent); background: #31517a; }
+.toolbarDivider { width: 1px; margin: 2px 3px; background: var(--admin-border); }
+.communityMarkdownEditor { display: block; width: 100%; min-height: 480px; resize: vertical; padding: 18px; border: 0; outline: 0; background: #0e1520; color: #edf4ff; font: 14px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; tab-size: 4; }
+.communityMarkdownEditor:focus { box-shadow: inset 0 0 0 2px #426ea8; }
+.communityEditorFooter { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 12px; border-top: 1px solid var(--admin-border); color: var(--admin-muted); }
+.communityEditorFooter > div { display: flex; gap: 8px; }
+.communityEditorFooter .unsaved { color: #f5c86b; }
+.communityPreviewButton { background: #27384e; }
+.communitySyntaxHelp { margin: 12px 0 20px; padding: 10px 14px; border: 1px solid var(--admin-border); border-radius: 8px; background: var(--admin-panel); color: var(--admin-muted); }
+.communitySyntaxHelp summary { color: var(--admin-text); cursor: pointer; }
+.communitySyntaxHelp code { color: #bcd3f7; }
+.communityPreviewPanel { scroll-margin-top: 90px; }
+.communityPreviewHeader { display: flex; align-items: baseline; gap: 12px; }
+.communityPreviewHeader h2 { margin-bottom: 0; }
+.communityPreviewHeader span { color: var(--admin-muted); }
+.communityPreviewPanel .communityContent { max-width: 1000px; margin-top: 12px; }
+
 @media (max-width: 850px) {
     .adminApp { display: block; }
     .adminHeader { height: auto; min-height: 64px; padding: 10px 14px; }
@@ -62,4 +82,5 @@ button, input, textarea, select { font: inherit; }
     .adminSidebar { border-right: 0; border-bottom: 1px solid var(--admin-border); display: flex; gap: 10px; overflow-x: auto; }
     .adminNavGroup { min-width: 170px; margin: 0; }
     .adminMain { padding: 16px; }
+    .communityEditorFooter { align-items: flex-start; flex-direction: column; }
 }

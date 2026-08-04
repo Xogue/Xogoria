@@ -12,9 +12,9 @@
     <?php if ( $userContext->userLoggedIn( ) ): ?>
         <span class="navAuthLabel">Logged in as</span>
         <span class="navAuthUser"><?php echo $displayName; ?></span>
-        <a class="navAuthLink" href="/admin/adminLogout.php">Logout</a>
+        <a class="navAuthLink navAuthLinkLogout" href="/admin/adminLogout.php">Logout</a>
     <?php else: ?>
-        <a class="navAuthLink" href="<?php echo $twitchAuthStart . urlencode( $requestUri ); ?>">Login with Twitch</a>
+        <a class="navAuthLink navAuthLinkLogin" href="<?php echo $twitchAuthStart . urlencode( $requestUri ); ?>">Login with Twitch</a>
     <?php endif; ?>
 </div>
 <div id="navbar"></div>

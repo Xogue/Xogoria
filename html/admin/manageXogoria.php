@@ -28,6 +28,14 @@
         $services->logger( Logger::CHANNEL_WEB )->exception( $error, [ "section" => "config" ] );
     }
 
+    try {
+        $communitySource = $admin->community( )->source( );
+    } catch ( Throwable $error ) {
+        $communitySource = "";
+        $loadErrors[ "community" ] = "Community page content could not be loaded.";
+        $services->logger( Logger::CHANNEL_WEB )->exception( $error, [ "section" => "community" ] );
+    }
+
     $escape = static fn( mixed $value ): string => htmlspecialchars( (string) $value, ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8" );
     $groups = [
     "People" => [ "users" ],
@@ -42,6 +50,7 @@
         <title>Xogoria Admin</title>
         <meta name="admin-csrf-token" content="<?= $escape( $csrfToken ) ?>">
         <link rel="stylesheet" href="/assets/css/common/ui.css">
+        <link rel="stylesheet" href="/assets/css/community.css">
         <link rel="stylesheet" href="/assets/css/admin/manageXogoria.css">
         <link rel="stylesheet" href="/assets/css/admin/clipsManager.css">
     </head>
@@ -72,6 +81,7 @@
                 <?php endforeach; ?>
                 <div class="adminNavGroup">
                     <div class="adminNavLabel">Content control</div>
+                    <button class="adminNavItem" type="button" data-admin-target="community">Community page</button>
                     <button class="adminNavItem" type="button" data-admin-target="clips">Clip review</button>
                     <button class="adminNavItem" type="button" data-admin-target="config">Configuration</button>
                 </div>
@@ -79,6 +89,7 @@
                     <div class="adminNavLabel">Open site</div>
                     <a class="adminNavLink" href="/interact.php" target="_blank">Interaction panel</a>
                     <a class="adminNavLink" href="/clips.php" target="_blank">Clip collection</a>
+                    <a class="adminNavLink" href="/community.php" target="_blank">Community page</a>
                     <a class="adminNavLink" href="/collections.php" target="_blank">Collections</a>
                 </div>
             </aside>
@@ -140,6 +151,65 @@
                 <section class="adminSection" data-admin-section="clips" hidden>
                     <div class="adminSectionHeader"><div><h1>Clip review</h1><p>Approve clips for stream screens, ignore them, or record deletion requests.</p></div></div>
                     <?php require __DIR__ . "/sections/clips.php"; ?>
+                </section>
+
+                <section class="adminSection" data-admin-section="community" hidden>
+                    <div class="adminSectionHeader">
+                        <div>
+                            <h1>Community page</h1>
+                            <p>Write formatted rules, resources, join instructions, and server details. Preview before publishing.</p>
+                        </div>
+                        <a class="adminButton" href="/community.php" target="_blank">Open live page</a>
+                    </div>
+                    <?php if ( isset( $loadErrors[ "community" ] ) ): ?><div class="adminInlineError"><?= $escape( $loadErrors[ "community" ] ) ?></div><?php endif; ?>
+                    <div class="communityEditorShell">
+                        <div class="communityEditorToolbar" role="toolbar" aria-label="Formatting shortcuts">
+                            <button type="button" data-format="heading1" title="Large heading">H1</button>
+                            <button type="button" data-format="heading2" title="Section heading">H2</button>
+                            <button type="button" data-format="heading3" title="Small heading">H3</button>
+                            <button type="button" data-format="toc" title="Description shown only in the table of contents">TOC Text</button>
+                            <span class="toolbarDivider"></span>
+                            <button type="button" data-format="bold" title="Bold"><strong>B</strong></button>
+                            <button type="button" data-format="italic" title="Italic"><em>I</em></button>
+                            <button type="button" data-format="strike" title="Strikethrough"><s>S</s></button>
+                            <button type="button" data-format="link" title="Link">Link</button>
+                            <button type="button" data-format="button" title="Call-to-action button">Button</button>
+                            <span class="toolbarDivider"></span>
+                            <button type="button" data-format="bullets" title="Bulleted list">• List</button>
+                            <button type="button" data-format="numbers" title="Numbered list">1. List</button>
+                            <button type="button" data-format="quote" title="Quote">Quote</button>
+                            <button type="button" data-format="code" title="Code block">Code</button>
+                            <button type="button" data-format="table" title="Table">Table</button>
+                            <button type="button" data-format="divider" title="Divider">Divider</button>
+                            <span class="toolbarDivider"></span>
+                            <button type="button" data-format="note">Note</button>
+                            <button type="button" data-format="tip">Tip</button>
+                            <button type="button" data-format="warning">Warning</button>
+                            <button type="button" data-format="cards">Cards</button>
+                        </div>
+                        <textarea id="communityEditor" class="communityMarkdownEditor" spellcheck="true" aria-label="Community page content"><?= $escape( $communitySource ) ?></textarea>
+                        <div class="communityEditorFooter">
+                            <span id="communityEditorStatus">Markdown with Xogoria layout blocks</span>
+                            <div>
+                                <button type="button" class="adminButton communityPreviewButton" data-preview-community>Preview</button>
+                                <button type="button" class="adminButton" data-save-community>Save &amp; publish</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="communitySyntaxHelp">
+                        <details>
+                            <summary>Formatting guide</summary>
+                            <p>Use <code>#</code> through <code>####</code> for headings, <code>**bold**</code>, <code>*italic*</code>, links, lists, quotes, code fences, dividers, and Markdown tables.</p>
+                            <p>Put <code>{toc: A short description}</code> directly below a heading to show that description in the table of contents without displaying it in the article.</p>
+                            <p>The Note, Tip, Warning, and Cards controls insert Xogoria layout blocks. Separate cards with <code>+++</code>. All output is sanitized before display.</p>
+                        </details>
+                    </div>
+                    <section class="communityPreviewPanel" id="communityPreviewPanel" hidden>
+                        <div class="communityPreviewHeader"><h2>Preview</h2><span>Not published until you save</span></div>
+                        <div class="uiPanel communityPanel communityPanelStandalone">
+                            <article class="uiPanelBody communityContent" id="communityPreview"></article>
+                        </div>
+                    </section>
                 </section>
 
                 <section class="adminSection" data-admin-section="config" hidden>

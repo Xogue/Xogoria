@@ -12,6 +12,22 @@ assert( $services->contextManager( ) === $services->contextManager( ) );
 assert( $services->contextManager( )->getInputData( ) === $services->contextManager( )->getInputData( ) );
 assert( isset( $services->adminResourceManager( )->definitions( )[ "users" ] ) );
 assert( isset( $services->adminConfigManager( )->files( )[ "minecraft" ] ) );
+assert( str_contains( $services->communityContentManager( )->source( ), "Xogoria Community" ) );
+$renderedCommunity = ( new CommunityMarkdownRenderer( ) )->render(
+    "## Rules\n{toc: How community members should behave}\n\n**Be kind.** [Site](/about.php)\n\n:::warning Notice\nNo scripts: <script>alert(1)</script>\n:::",
+);
+assert( str_contains( $renderedCommunity, '<h2 id="rules"' ) );
+assert( str_contains( $renderedCommunity, 'data-toc-description="How community members should behave"' ) );
+assert( !str_contains( $renderedCommunity, "{toc:" ) );
+assert( str_contains( $renderedCommunity, "<strong>Be kind.</strong>" ) );
+assert( !str_contains( $renderedCommunity, "<script>" ) );
+$richCommunity = ( new CommunityMarkdownRenderer( ) )->render(
+    "| Name | Detail |\n| --- | --- |\n| One | Two |\n\n[Unsafe](javascript:alert(1))\n\n:::cards Picks\n### First\nText\n+++\n### Second\nText\n:::",
+);
+assert( str_contains( $richCommunity, '<table class="uiTable">' ) );
+assert( !str_contains( $richCommunity, 'href="javascript:' ) );
+assert( substr_count( $richCommunity, '<article class="uiPanel communityCard">' ) === 2 );
+assert( str_contains( $richCommunity, 'id="picks"' ) );
 assert( $services->clipDeletionRegistry( )->all( ) === [ ] );
 $textPolicy = $services->userTextPolicy( );
 assert( $textPolicy->isAllowed( "Flappy" ) );

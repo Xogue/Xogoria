@@ -41,24 +41,8 @@
         </div>
 
         <div id="uiSubBanner">
-            <div class="uiSubTitle">
+            <div class="uiTitlePill">
                 <span>What Are Collections?</span>
-                <div class="uiHorizontalPlate ui25FromLeft">
-                    <span class="uiLeftBolt jsCollectionsAnchor1A">
-                        <span class="uiChain uiCenter jsChainLength1" aria-hidden="true"></span>
-                    </span>
-                    <span class="uiRightBolt jsCollectionsAnchor2A">
-                        <span class="uiChain uiCenter jsChainLength2" aria-hidden="true"></span>
-                    </span>
-                </div>
-                <div class="uiHorizontalPlate ui25FromRight">
-                    <span class="uiLeftBolt jsCollectionsAnchor2A">
-                        <span class="uiChain uiCenter jsChainLength2" aria-hidden="true"></span>
-                    </span>
-                    <span class="uiRightBolt jsCollectionsAnchor1A">
-                        <span class="uiChain uiCenter jsChainLength1" aria-hidden="true"></span>
-                    </span>
-                </div>
             </div>
         </div>
 
@@ -67,7 +51,7 @@
             We Liked it, so we collected more!
         </div>
         <div class="uiSectionHang">
-            <div class="uiSectionPill jsCollectionsAnchor2B"><span>What We Collect</span></div>
+            <div class="uiTitlePill"><span>What We Collect</span></div>
             <div class="uiSectionPillShelf">
                 <span class="uiSectionPillHang jsPillLink active" data-page="quotes">Quotes</span>
                 <span class="uiSectionPillHang jsPillLink" data-page="objectives">Objectives</span>
@@ -75,21 +59,9 @@
             </div>
         </div>
 
-        <div class="uiSectionHang uiSetWidth48">
-            <div class="uiSectionPill jsCollectionsAnchor1B">
+        <div class="uiSectionHang">
+            <div class="uiTitlePill">
                 <span class="title">Quotes</span>
-            </div>
-            <div class="uiVerticalPlate ui0FromLeft">
-                <span class="uiTopBolt"></span>
-                <span class="uiBottomBolt">
-                    <span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
-                </span>
-            </div>
-            <div class="uiVerticalPlate ui0FromRight">
-                <span class="uiTopBolt"></span>
-                <span class="uiBottomBolt">
-                    <span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
-                </span>
             </div>
         </div>
 

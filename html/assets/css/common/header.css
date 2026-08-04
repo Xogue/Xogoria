@@ -91,46 +91,49 @@
 #patreon { background-image: url("../../_media/images/patreonLogo.png"); }
 #discord { background-image: url("../../_media/images/discordLogo.png"); }
 
-.clipsHeaderButton {
+.headerFeatureLinks {
     position: absolute;
-    top: 50%;
+    top: 168px;
     left: 50%;
-    transform: translate(-50%, calc(var(--x-size) / 2 - 50px));
-    min-width: 200px;
-    padding: 4px 24px 6px 24px;
-    background: #1f3c88;
-    color: #e6eeff;
-    font-family: 'bronic', sans-serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 999px;
-    border: 1px solid #0f1422;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+    width: min(690px, calc(100% - 32px));
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 280px;
     z-index: 3;
 }
 
-.clipsHeaderButton::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 5px;
-    width: 60%;
-    height: 3px;
-    background: #4d7fe7;
-    border-radius: 2px;
-    opacity: 0.95;
+.headerFeatureLink {
+    position: relative;
+    min-width: 0;
+    padding: 5px 18px 7px;
+    background: linear-gradient(180deg, #274d91, #172d61);
+    color: #e6eeff;
+    font-family: 'bronic', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 999px;
+    border: 1px solid #5080ea;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+    white-space: nowrap;
+    transition: background .2s ease, transform .2s ease, color .2s ease;
 }
 
-.clipsHeaderButton:hover {
+.headerFeatureLink:hover {
     background: #4d7fe7;
     color: #fff;
+    transform: translateY(2px);
 }
 
-.clipsHeaderButton.active {
+.headerFeatureLink.active {
     background: #f5b54b;
     border-color: #fcd177;
     color: #151515;
+}
+
+@media (max-width: 760px) {
+    .headerFeatureLinks { gap: clamp(80px, 25vw, 190px); width: calc(100% - 20px); }
+    .headerFeatureLink { font-size: 14px; padding-inline: 8px; }
 }

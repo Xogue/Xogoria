@@ -27,17 +27,20 @@
 .navlink {
 	width: 170px;
 	height: 30px;
-	box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-	border: 1px solid #151515;
+	box-sizing: border-box;
+	box-shadow: inset 0 1px 0 #ffffff12, inset 0 -3px 6px #0006, 0 3px 7px rgba(0,0,0,0.5);
+	border: 1px solid #424a58;
 	border-radius: 24px;
-	background-color: #252525;
+	background: linear-gradient(180deg, #30343b 0, #24272d 48%, #1b1d21 100%);
 	text-align: center;
 	font-family: 'britanic', sans-serif;
 	font-size: 20px;
-    color: #e6eeff;
-	line-height: 30px;
+	letter-spacing: .4px;
+    color: #d0d8e7;
+	line-height: 28px;
 	position: relative;
-	transition: margin-top 0.3s ease;
+	text-shadow: 0 1px 1px #000;
+	transition: margin-top 0.3s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 #navlinks a,
@@ -72,9 +75,12 @@
 .navlink::after { left: 80%; } 
 
 .navlink.active {
-    background-color: #e6eeff;
-    color: #252525;
+    border-color: #687d9d;
+    background: linear-gradient(180deg, #5273a3 0, #25436f 52%, #102443 100%);
+    color: #fff;
     margin-top: 30px;
+    text-shadow: 0 1px 2px #10244d;
+    box-shadow: inset 0 1px 0 #dbeaffaa, inset 0 -3px 5px #102c6255, 0 3px 9px #0008;
 }
 
 .navlink.active::before,
@@ -85,8 +91,9 @@
 
 .navlink:not(.active):hover {
     margin-top: 15px;
-    background-color: #a9a9a9;
-    color: #252525;
+    border-color: #66758d;
+    background: linear-gradient(180deg, #424852 0, #30353d 52%, #24272d 100%);
+    color: #fff;
 }
 .navlink:not(.active):hover::before,
 .navlink:not(.active):hover::after {
@@ -96,36 +103,75 @@
 
 #navAuth {
     display: flex;
-    align-items: baseline;
-    margin: 20px;
-    gap: 15px;
+    align-items: center;
+    gap: 8px;
+    max-width: min(420px, calc(100vw - 20px));
+    min-height: 36px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 5px 6px 5px 12px;
+    border: 1px solid #30476d;
+    border-radius: 10px;
+    background: radial-gradient(circle at 70% -80%, #263b60 0, rgba(25, 31, 41, .96) 48%, rgba(15, 18, 24, .96) 100%);
+    box-shadow: inset 0 0 8px #0008, 0 3px 8px rgba(0, 0, 0, .45);
     font-family: 'fr-bold', sans-serif;
-    font-size: 15px;
+    font-size: 12px;
     color: #a9c5ff;
-    position: absolute;
-    top: 178px;
-    right: -10px;
-    z-index: 3;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
 }
 
 .navAuthLabel {
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: .8px;
+    color: #8295b5;
 }
 .navAuthUser {
+    max-width: 170px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	text-transform: uppercase;
     color: #e6eeff;
-	font-size: 20px;
+	font-size: 15px;
+    letter-spacing: .5px;
 }
 .navAuthLink {
-    padding: 4px 10px;
+    flex: 0 0 auto;
+    padding: 4px 11px;
     border-radius: 999px;
-    border: 1px solid #5080ea;
-    background: #252525;
+    border: 1px solid #466ea9;
+    background: linear-gradient(180deg, #284f8d, #1b3764);
     color: #e6eeff;
     text-decoration: none;
     font-family: 'fr-bold', sans-serif;
+    font-size: 12px;
+    letter-spacing: .3px;
+    box-shadow: inset 0 0 5px #0006;
+    transition: background .2s ease, border-color .2s ease, color .2s ease;
 }
 .navAuthLink:hover {
-    background: #3b6cd0;
+    border-color: #6d9be8;
+    background: #315fa8;
+    color: #fff;
+}
+
+.navAuthLinkLogout {
+    border-color: #594657;
+    background: linear-gradient(180deg, #3c3444, #29242f);
+    color: #d8cce1;
+}
+
+.navAuthLinkLogout:hover {
+    border-color: #896783;
+    background: #4a384b;
+}
+
+@media (max-width: 560px) {
+    #navAuth { padding-left: 8px; }
+    .navAuthLabel { display: none; }
+    .navAuthUser { max-width: 110px; }
 }

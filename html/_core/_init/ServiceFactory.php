@@ -5,6 +5,8 @@
 $deploymentClassFallbacks = [
     UserTextPolicy::class => dirname( __DIR__ ) . "/services/UserTextPolicy.php",
     ApiResponseNormalizer::class => dirname( __DIR__ ) . "/services/ApiResponseNormalizer.php",
+    CommunityMarkdownRenderer::class => dirname( __DIR__ ) . "/services/CommunityMarkdownRenderer.php",
+    CommunityContentManager::class => dirname( __DIR__ ) . "/managers/CommunityContentManager.php",
     ResponseLibrary::class => __DIR__ . "/_status/ResponseLibrary.php",
 ];
 foreach ( $deploymentClassFallbacks as $className => $classPath ) {
@@ -116,6 +118,16 @@ final class ServiceFactory {
         return $this->service(
             __FUNCTION__,
             fn( ) => new AdminConfigManager( new JsonHandler( ), $this->logger( Logger::CHANNEL_WEB ) ),
+        );
+    }
+
+    public function communityContentManager( ): CommunityContentManager {
+        return $this->service(
+            __FUNCTION__,
+            fn( ) => new CommunityContentManager(
+                new JsonHandler( ),
+                $this->logger( Logger::CHANNEL_WEB ),
+            ),
         );
     }
 

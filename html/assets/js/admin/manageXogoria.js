@@ -136,4 +136,148 @@
             showNotice(`${card.dataset.configCard} configuration saved. Restart long-running workers if needed.`);
         } catch (error) { showNotice(error.message, 'error'); }
     }));
+
+    const communityEditor = document.getElementById('communityEditor');
+    if (communityEditor) {
+        const status = document.getElementById('communityEditorStatus');
+        let savedSource = communityEditor.value;
+        const editorSnapshot = () => ({
+            value: communityEditor.value,
+            start: communityEditor.selectionStart,
+            end: communityEditor.selectionEnd
+        });
+        let editorHistory = [editorSnapshot()];
+        let editorHistoryIndex = 0;
+        let lastHistoryTime = 0;
+        let lastInputType = '';
+
+        const updateEditorStatus = () => {
+            const changed = communityEditor.value !== savedSource;
+            status.textContent = changed ? 'Unsaved changes' : 'All changes saved';
+            status.classList.toggle('unsaved', changed);
+        };
+
+        const recordEditorHistory = (inputType = '', force = false) => {
+            const state = editorSnapshot();
+            if (state.value === editorHistory[editorHistoryIndex].value) return;
+            const now = Date.now();
+            const mergeTyping = !force && inputType === 'insertText' && lastInputType === 'insertText' && now - lastHistoryTime < 750;
+            if (mergeTyping) {
+                editorHistory[editorHistoryIndex] = state;
+            } else {
+                editorHistory = editorHistory.slice(0, editorHistoryIndex + 1);
+                editorHistory.push(state);
+                editorHistoryIndex++;
+            }
+            lastHistoryTime = now;
+            lastInputType = inputType;
+        };
+
+        const restoreEditorHistory = index => {
+            if (index < 0 || index >= editorHistory.length) return;
+            editorHistoryIndex = index;
+            const state = editorHistory[index];
+            communityEditor.value = state.value;
+            communityEditor.setSelectionRange(state.start, state.end);
+            communityEditor.focus();
+            lastInputType = '';
+            updateEditorStatus();
+        };
+        const formats = {
+            heading1: {line: '# '}, heading2: {line: '## '}, heading3: {line: '### '},
+            toc: {block: '{toc: Short description}'},
+            bold: {before: '**', after: '**', sample: 'bold text'},
+            italic: {before: '*', after: '*', sample: 'italic text'},
+            strike: {before: '~~', after: '~~', sample: 'strikethrough text'},
+            link: {before: '[', after: '](https://example.com)', sample: 'link text'},
+            button: {before: '[button: ', after: '](https://example.com)', sample: 'Button label'},
+            bullets: {line: '- ', sample: 'List item'},
+            numbers: {line: '1. ', sample: 'List item'},
+            quote: {line: '> ', sample: 'Quote'},
+            code: {before: '```\n', after: '\n```', sample: 'code'},
+            table: {block: '| Name | Details |\n| --- | --- |\n| Item | Description |'},
+            divider: {block: '\n---\n'},
+            note: {before: ':::note Note title\n', after: '\n:::', sample: 'Helpful information'},
+            tip: {before: ':::tip Tip title\n', after: '\n:::', sample: 'Helpful tip'},
+            warning: {before: ':::warning Important\n', after: '\n:::', sample: 'Important information'},
+            cards: {block: ':::cards Section title\n### First card\nFirst card details.\n+++\n### Second card\nSecond card details.\n:::'}
+        };
+
+        const replaceSelection = (format) => {
+            const start = communityEditor.selectionStart;
+            const end = communityEditor.selectionEnd;
+            const selected = communityEditor.value.slice(start, end);
+            let replacement;
+            let selectStart;
+            let selectEnd;
+            if (format.line) {
+                const lineStart = communityEditor.value.lastIndexOf('\n', start - 1) + 1;
+                const nextBreak = communityEditor.value.indexOf('\n', end);
+                const lineEnd = selected ? end : (nextBreak === -1 ? communityEditor.value.length : nextBreak);
+                const content = selected || communityEditor.value.slice(lineStart, lineEnd) || format.sample || '';
+                replacement = content.split('\n').map(line => format.line + line).join('\n');
+                communityEditor.setRangeText(replacement, selected ? start : lineStart, lineEnd, 'end');
+            } else if (format.block) {
+                replacement = format.block;
+                communityEditor.setRangeText(replacement, start, end, 'end');
+            } else {
+                const content = selected || format.sample || '';
+                replacement = format.before + content + format.after;
+                communityEditor.setRangeText(replacement, start, end, 'end');
+                selectStart = start + format.before.length;
+                selectEnd = selectStart + content.length;
+                communityEditor.setSelectionRange(selectStart, selectEnd);
+            }
+            communityEditor.focus();
+            recordEditorHistory('format', true);
+            updateEditorStatus();
+        };
+
+        document.querySelectorAll('[data-format]').forEach(button => button.addEventListener('click', () => {
+            const format = formats[button.dataset.format];
+            if (format) replaceSelection(format);
+        }));
+
+        communityEditor.addEventListener('input', event => {
+            recordEditorHistory(event.inputType || '', false);
+            updateEditorStatus();
+        });
+
+        communityEditor.addEventListener('keydown', event => {
+            const modifier = event.ctrlKey || event.metaKey;
+            if (!modifier) return;
+            const key = event.key.toLowerCase();
+            const undo = key === 'z' && !event.shiftKey;
+            const redo = key === 'y' || (key === 'z' && event.shiftKey);
+            if (!undo && !redo) return;
+            event.preventDefault();
+            restoreEditorHistory(editorHistoryIndex + (undo ? -1 : 1));
+        });
+
+        document.querySelector('[data-preview-community]')?.addEventListener('click', async buttonEvent => {
+            const button = buttonEvent.currentTarget;
+            button.disabled = true;
+            try {
+                const result = await request({domain: 'community', action: 'preview', source: communityEditor.value});
+                document.getElementById('communityPreview').innerHTML = result.html;
+                document.getElementById('communityPreviewPanel').hidden = false;
+                document.getElementById('communityPreviewPanel').scrollIntoView({behavior: 'smooth', block: 'start'});
+            } catch (error) { showNotice(error.message, 'error'); }
+            finally { button.disabled = false; }
+        });
+
+        document.querySelector('[data-save-community]')?.addEventListener('click', async buttonEvent => {
+            const button = buttonEvent.currentTarget;
+            button.disabled = true;
+            try {
+                const result = await request({domain: 'community', action: 'save', source: communityEditor.value});
+                savedSource = communityEditor.value;
+                updateEditorStatus();
+                document.getElementById('communityPreview').innerHTML = result.html;
+                document.getElementById('communityPreviewPanel').hidden = false;
+                showNotice('Community page saved and published.');
+            } catch (error) { showNotice(error.message, 'error'); }
+            finally { button.disabled = false; }
+        });
+    }
 })();

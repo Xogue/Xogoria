@@ -13,8 +13,13 @@
         <a href="http://discord.gg/FaXBje6" target="_blank" class="socialLink extra">
             Discord<div id="discord"></div>
         </a>
-        <a href="/clips.php" class="clipsHeaderButton<?php echo $current === "clips.php" ? " active" : ""; ?>">
-            Stream Clips
-        </a>
+        <div class="headerFeatureLinks" aria-label="Featured pages">
+            <a href="/community.php" class="headerFeatureLink<?php echo $current === "community.php" ? " active" : ""; ?>">
+                Community Info
+            </a>
+            <a href="/clips.php" class="headerFeatureLink<?php echo $current === "clips.php" ? " active" : ""; ?>">
+                Stream Clips
+            </a>
+        </div>
     </div>
 </div>

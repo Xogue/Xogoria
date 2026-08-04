@@ -23,23 +23,7 @@
         </div>
 
         <div id="uiSubBanner">
-            <div class="uiSubTitle">Schedule</div>
-            <div class="uiHorizontalPlate ui25FromLeft">
-                <span class="uiLeftBolt jsAboutAnchor1A">
-                    <span class="uiChain uiCenter jsChainLength1" aria-hidden="true"></span>
-                </span>
-                <span class="uiRightBolt jsAboutAnchor2A">
-                    <span class="uiChain uiCenter jsChainLength2" aria-hidden="true"></span>
-                </span>
-            </div>
-            <div class="uiHorizontalPlate ui25FromRight">
-                <span class="uiLeftBolt jsAboutAnchor2A">
-                    <span class="uiChain uiCenter jsChainLength2" aria-hidden="true"></span>
-                </span>
-                <span class="uiRightBolt jsAboutAnchor1A">
-                    <span class="uiChain uiCenter jsChainLength1" aria-hidden="true"></span>
-                </span>
-            </div>
+            <div class="uiTitlePill">Schedule</div>
         </div>
 
         <div class="uiSubDescription">
@@ -56,14 +40,14 @@
         </div>
 
         <div class="uiSectionHang">
-            <div class="uiSectionPill jsAboutAnchor2B"><span>Stream Content</span></div>
+            <div class="uiTitlePill"><span>Stream Content</span></div>
             <p class="uiSectionDescription">
                 I will mostly be playing Minecraft, but sometimes another game will catch my interest, and it will make an appearance on stream.
             </p>
         </div>
 
-        <div class="uiSectionHang uiSetWidth40">
-            <div class="uiSectionPill jsAboutAnchor1B">
+        <div class="uiSectionHang">
+            <div class="uiTitlePill">
                 <span class="title">Who is Xogue?</span>
             </div>
             <div class="uiSectionPillShelf">
@@ -72,21 +56,9 @@
             </div>
         </div>
 
-        <div class="uiSectionHang uiSetWidth40">
-            <div class="uiSectionPill">
+        <div class="uiSectionHang">
+            <div class="uiTitlePill">
                 <span class="title">Quick Version</span>
-            </div>
-            <div class="uiVerticalPlate ui0FromLeft">
-                <span class="uiTopBolt"></span>
-                <span class="uiBottomBolt">
-                    <span class="uiChain uiCenter uiLongChain" aria-hidden="true"></span>
-                </span>
-            </div>
-            <div class="uiVerticalPlate ui0FromRight">
-                <span class="uiTopBolt"></span>
-                <span class="uiBottomBolt">
-                    <span class="uiChain uiCenter uiVeryLongChain" aria-hidden="true"></span>
-                </span>
             </div>
         </div>
         <div class="uiSectionBody" data-page="quick">
