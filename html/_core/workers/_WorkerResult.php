@@ -20,6 +20,9 @@ class WorkerResult {
     public function isSuccess( )      : bool   { return $this->success; }
     public function getIntResult( )   : int    { return is_int( $this->value ) ? $this->value : -1; }
     public function getValue( )       : mixed  { return $this->value; }
+    public function getMessage( )     : string { return $this->resultMessage; }
+    public function getCode( )        : string { return $this->code; }
+    public function getMeta( )        : array  { return $this->meta; }
     public function getHttpStatus( )  : int    { return $this->httpStatus; }
     public function getWorkerAsJson( ): string { return $this->toJson( ); }
 
@@ -30,6 +33,31 @@ class WorkerResult {
     ): self {
         $result = new self( false, $message, $code );
         $result->httpStatus = $httpStatus;
+        return $result;
+    }
+
+    public static function success(
+        string $code,
+        mixed $value = true,
+        array $meta = [ ],
+    ): self {
+        $result = new self( $value, "", $code );
+        $result->success = true;
+        foreach ( $meta as $key => $metaValue ) {
+            $result->addMeta( (string) $key, $metaValue );
+        }
+        return $result;
+    }
+
+    public static function failureCode(
+        string $code,
+        array $meta = [ ],
+        int $httpStatus = 400,
+    ): self {
+        $result = self::failure( "", $code, $httpStatus );
+        foreach ( $meta as $key => $metaValue ) {
+            $result->addMeta( (string) $key, $metaValue );
+        }
         return $result;
     }
 

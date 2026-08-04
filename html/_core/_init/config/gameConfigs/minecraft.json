@@ -341,7 +341,7 @@
     },
     "specialTypes": {
         "batClaim": {
-            "enabled": true,
+            "enabled": false,
             "label": "Claim Viewer Bat",
             "description": "Claim a nearby viewer bat (uses Twitch ID)",
             "cost": 0,
@@ -554,7 +554,7 @@
         "minecraftSubserver": {
             "label": "Xogue's Sub Server",
             "tagLine": "Trigger effects, play sounds, run pranks, or spawn mobs directly.",
-            "serverId": "c14cb952",
+            "serverId": "5645fde4",
             "allowedSimpleTypes": {
                 "effect": [
                     "speed",

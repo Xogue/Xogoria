@@ -1,6 +1,8 @@
 <?php
 
 class InteractionManager {
+    private array $lastCommandResults = [ ];
+
     // MAGIC FUNCTIONS
     public function __construct(
         private ConfigManager $configManager,
@@ -11,6 +13,7 @@ class InteractionManager {
     public function sendCommands( string $serverId, array $commands ): bool {
         $url = $this->getInteractUrl( $serverId );
         $success = true;
+        $this->lastCommandResults = [ ];
 
         foreach ( $commands as $command ) {
             $command = trim( (string) $command );
@@ -23,12 +26,33 @@ class InteractionManager {
             ] );
 
             $response = $curlRequest->send( );
-            if ( !empty( $response ) ) {
+            $responseInfo = $curlRequest->getLastResponseInfo( );
+            $httpStatus = (int) ( $responseInfo[ "httpStatus" ] ?? 0 );
+            $commandSucceeded =
+                (int) ( $responseInfo[ "errorNumber" ] ?? 0 ) === 0 &&
+                $httpStatus >= 200 &&
+                $httpStatus < 300;
+
+            $this->lastCommandResults[ ] = [
+                "serverId" => $serverId,
+                "url" => $url,
+                "command" => $command,
+                "httpStatus" => $httpStatus,
+                "transportErrorNumber" => (int) ( $responseInfo[ "errorNumber" ] ?? 0 ),
+                "transportError" => (string) ( $responseInfo[ "errorMessage" ] ?? "" ),
+                "response" => is_string( $response ) ? mb_substr( $response, 0, 2000 ) : $response,
+                "success" => $commandSucceeded,
+            ];
+
+            if ( !$commandSucceeded ) {
                 $success = false;
 
                 new Logger( Logger::CHANNEL_API )->error( "Interaction command failed", [
                     "url" => $url,
-                    "response" => (string) $response,
+                    "http_status" => $httpStatus,
+                    "transport_error_number" => $responseInfo[ "errorNumber" ] ?? 0,
+                    "transport_error" => $responseInfo[ "errorMessage" ] ?? "",
+                    "response" => is_scalar( $response ) ? (string) $response : gettype( $response ),
                     "command" => $command,
                 ] );
             }
@@ -36,6 +60,8 @@ class InteractionManager {
 
         return $success;
     }
+
+    public function getLastCommandResults( ): array { return $this->lastCommandResults; }
 
     public function viewerBatClaimed( string $batName ): bool {
         if ( !$this->userContext->userLoggedIn( ) ) {

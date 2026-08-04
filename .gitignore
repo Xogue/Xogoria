@@ -1,5 +1,7 @@
 __archive/
-_internal/
+_internal/*
+!_internal/constantGenerator.php
+!_internal/API_RESPONSE_CONSOLIDATION.md
 private/
 .codepin.local.json
 Xogoria-Architecture.drawio

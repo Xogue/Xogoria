@@ -1,2 +1,52 @@
 {"timestamp":"2026-07-14T12:42:59-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":146}}
 {"timestamp":"2026-07-14T12:44:21-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":146}}
+{"timestamp":"2026-08-02T18:16:34-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftSubserver","success":true}}
+{"timestamp":"2026-08-02T18:17:51-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftForever","success":true}}
+{"timestamp":"2026-08-02T18:22:48-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftCrucible","success":true}}
+{"timestamp":"2026-08-02T18:25:50-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftForever","success":true}}
+{"timestamp":"2026-08-02T18:26:32-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftSubserver","success":true}}
+{"timestamp":"2026-08-02T18:31:21-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftForever","success":true}}
+{"timestamp":"2026-08-02T18:31:28-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftSubserver","success":true}}
+{"timestamp":"2026-08-02T18:42:00-05:00","level":"error","channel":"api","message":"Class \"UserTextPolicy\" not found","context":{"exception":"Error","file":"/var/www/xogoria.com/html/_core/_init/ServiceFactory.php","line":19}}
+{"timestamp":"2026-08-02T18:59:16-05:00","level":"error","channel":"api","message":"Class \"UserTextPolicy\" not found","context":{"exception":"Error","file":"/var/www/xogoria.com/html/_core/_init/ServiceFactory.php","line":19}}
+{"timestamp":"2026-08-02T19:41:39-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"configure","action":"minecraft-minecraftSubserver","success":true}}
+{"timestamp":"2026-08-02T19:41:51-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"speed","success":true}}
+{"timestamp":"2026-08-02T19:45:34-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"speed","success":true}}
+{"timestamp":"2026-08-02T19:45:53-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"blockstand","success":true}}
+{"timestamp":"2026-08-02T19:46:00-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"yeet","success":true}}
+{"timestamp":"2026-08-02T19:50:33-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"spawn","success":true}}
+{"timestamp":"2026-08-02T19:51:19-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"interaction","action":"batClaim","success":true}}
+{"timestamp":"2026-08-02T20:00:47-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:01:57-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:20:10-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"objective","success":true}}
+{"timestamp":"2026-08-02T20:20:10-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:21:31-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:21:31-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:22:07-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"objective","success":true}}
+{"timestamp":"2026-08-02T20:22:07-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:22:43-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"objective","success":true}}
+{"timestamp":"2026-08-02T20:22:43-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:24:23-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:24:23-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:24:41-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"objective","success":true}}
+{"timestamp":"2026-08-02T20:24:41-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:28:12-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:29:08-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:30:28-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"quote","success":true}}
+{"timestamp":"2026-08-02T20:30:58-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"quote","success":true}}
+{"timestamp":"2026-08-02T20:30:58-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:32:25-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"quote","success":true}}
+{"timestamp":"2026-08-02T20:32:25-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:34:02-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"name","success":false}}
+{"timestamp":"2026-08-02T20:34:02-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:34:15-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"collection","action":"name","success":true}}
+{"timestamp":"2026-08-02T20:34:16-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:43:59-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"checkBalance","success":true}}
+{"timestamp":"2026-08-02T20:43:59-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":true}}
+{"timestamp":"2026-08-02T20:44:00-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:44:09-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"checkBalance","success":true}}
+{"timestamp":"2026-08-02T20:44:09-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":true}}
+{"timestamp":"2026-08-02T20:44:09-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}
+{"timestamp":"2026-08-02T20:44:19-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"checkBalance","success":true}}
+{"timestamp":"2026-08-02T20:44:19-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":true}}
+{"timestamp":"2026-08-02T20:44:20-05:00","level":"info","channel":"api","message":"API request processed","context":{"request":"currency","action":"addToUser","success":false}}

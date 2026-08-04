@@ -1,12 +1,308 @@
 {
-    "SECTION1": { "-----------------------": "CURRENCY RESPONSES" },
-    "C100R": { 
+    "SECTION1": { "-----------------------": "API RESPONSES" },
+    "API100R": {
+        "constantName": "R_API__MISSING_REQUEST",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "A request type is required."
+    },
+    "API101R": {
+        "constantName": "R_API__UNAUTHORIZED",
+        "success": false,
+        "httpStatus": 401,
+        "messageTemplate": "The API key is invalid."
+    },
+    "API102R": {
+        "constantName": "R_API__INVALID_REQUEST",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The request type '{requestName}' is not supported.",
+        "replaceMap": { "{requestName}": "requestName" }
+    },
+    "API103R": {
+        "constantName": "R_API__INTERNAL_ERROR",
+        "success": false,
+        "httpStatus": 500,
+        "messageTemplate": "The request could not be completed because of an internal error."
+    },
+
+    "SECTION2": { "-----------------------": "CURRENCY RESPONSES" },
+    "C100R": {
         "constantName": "R_CURRENCY__GEMS_ADD",
-        "messageTemplate": "You found {foundGems} gems! Your new total is {totalGems}",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "You found {foundGems} gems! Your new total is {totalGems}.",
         "replaceMap": {
             "{foundGems}": "foundGems",
             "{totalGems}": "totalGems"
         }
+    },
+    "C101R": {
+        "constantName": "R_CURRENCY__BALANCE_CHECK",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "You currently have {totalGems} gems.",
+        "replaceMap": { "{totalGems}": "totalGems" }
+    },
+    "C102R": {
+        "constantName": "R_CURRENCY__BALANCE_SET",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "Your gem balance was set to {totalGems}.",
+        "replaceMap": { "{totalGems}": "totalGems" }
+    },
+    "C103R": {
+        "constantName": "R_CURRENCY__GEMS_DEDUCTED",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "You spent {spentGems} gems. Your new total is {totalGems}.",
+        "replaceMap": {
+            "{spentGems}": "spentGems",
+            "{totalGems}": "totalGems"
+        }
+    },
+    "C104R": {
+        "constantName": "R_CURRENCY__USER_NOT_FOUND",
+        "success": false,
+        "httpStatus": 404,
+        "messageTemplate": "That user could not be found."
+    },
+    "C105R": {
+        "constantName": "R_CURRENCY__INVALID_ACTION",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The currency action '{action}' is not supported.",
+        "replaceMap": { "{action}": "action" }
+    },
+    "C106R": {
+        "constantName": "R_CURRENCY__UPDATE_FAILED",
+        "success": false,
+        "httpStatus": 500,
+        "messageTemplate": "The gem balance could not be updated. The attempted amount was {amount}.",
+        "replaceMap": { "{amount}": "amount" }
+    },
+    "C107R": {
+        "constantName": "R_CURRENCY__INSUFFICIENT_FUNDS",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "You need {spentGems} gems, but you only have {totalGems}.",
+        "replaceMap": {
+            "{spentGems}": "spentGems",
+            "{totalGems}": "totalGems"
+        }
+    },
+
+    "SECTION3": { "-----------------------": "COLLECTION RESPONSES" },
+    "COL100R": {
+        "constantName": "R_COLLECTION__MONSTER_FOUND",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "The name chosen for {gameName} is {customName}.",
+        "replaceMap": {
+            "{gameName}": "gameName",
+            "{customName}": "customName"
+        }
+    },
+    "COL101R": {
+        "constantName": "R_COLLECTION__OBJECTIVE_FOUND",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "Your objective is: {objective}",
+        "replaceMap": { "{objective}": "objective" }
+    },
+    "COL102R": {
+        "constantName": "R_COLLECTION__QUOTE_FOUND",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "{quote}",
+        "replaceMap": { "{quote}": "quote" }
+    },
+    "COL103R": {
+        "constantName": "R_COLLECTION__MISSING_ARGUMENT",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "Provide a search term, numeric ID, or 'random' for the {collection} command.",
+        "replaceMap": { "{collection}": "collection" }
+    },
+    "COL104R": {
+        "constantName": "R_COLLECTION__NOT_FOUND",
+        "success": false,
+        "httpStatus": 404,
+        "messageTemplate": "No {collection} matched '{search}'.",
+        "replaceMap": {
+            "{collection}": "collection",
+            "{search}": "search"
+        }
+    },
+    "COL105R": {
+        "constantName": "R_COLLECTION__INVALID_ACTION",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The collection action '{action}' is not supported.",
+        "replaceMap": { "{action}": "action" }
+    },
+
+    "SECTION4": { "-----------------------": "INTERACTION RESPONSES" },
+    "I100R": {
+        "constantName": "R_INTERACTION__COMPLETED",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "{interaction} completed for {duration} second(s), costing {cost} gems. You now have {totalGems} gems; cooldown is {cooldown} second(s).",
+        "replaceMap": {
+            "{interaction}": "interaction",
+            "{duration}": "duration",
+            "{cost}": "cost",
+            "{totalGems}": "totalGems",
+            "{cooldown}": "cooldown"
+        }
+    },
+    "I101R": {
+        "constantName": "R_INTERACTION__LOGIN_REQUIRED",
+        "success": false,
+        "httpStatus": 401,
+        "messageTemplate": "You must be logged in to use interactions."
+    },
+    "I102R": {
+        "constantName": "R_INTERACTION__WRONG_GAME",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The interaction '{interaction}' is not available for the active game and profile.",
+        "replaceMap": { "{interaction}": "interaction" }
+    },
+    "I103R": {
+        "constantName": "R_INTERACTION__NOT_FOUND",
+        "success": false,
+        "httpStatus": 404,
+        "messageTemplate": "The interaction '{interaction}' does not exist or is not configured correctly.",
+        "replaceMap": { "{interaction}": "interaction" }
+    },
+    "I104R": {
+        "constantName": "R_INTERACTION__DISABLED",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The interaction '{interaction}' is currently disabled.",
+        "replaceMap": { "{interaction}": "interaction" }
+    },
+    "I105R": {
+        "constantName": "R_INTERACTION__INSUFFICIENT_FUNDS",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The interaction costs {cost} gems, but you only have {totalGems}.",
+        "replaceMap": {
+            "{cost}": "cost",
+            "{totalGems}": "totalGems"
+        }
+    },
+    "I106R": {
+        "constantName": "R_INTERACTION__CURRENCY_ERROR",
+        "success": false,
+        "httpStatus": 500,
+        "messageTemplate": "The interaction could not charge {cost} gems, so nothing was sent.",
+        "replaceMap": { "{cost}": "cost" }
+    },
+    "I107R": {
+        "constantName": "R_INTERACTION__FAILED_REFUNDED",
+        "success": false,
+        "httpStatus": 502,
+        "messageTemplate": "The interaction failed to reach the game server. Your {cost} gems were refunded, leaving you with {totalGems} gems.",
+        "replaceMap": {
+            "{cost}": "cost",
+            "{totalGems}": "totalGems"
+        }
+    },
+    "I108R": {
+        "constantName": "R_INTERACTION__FAILED",
+        "success": false,
+        "httpStatus": 502,
+        "messageTemplate": "The interaction failed to reach the game server. No gems were charged."
+    },
+    "I109R": {
+        "constantName": "R_INTERACTION__INVALID_QUANTITY",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "Choose between 1 and 100 total mobs, with no more than 25 of any one mob. You requested {mobCount} total.",
+        "replaceMap": { "{mobCount}": "mobCount" }
+    },
+    "I110R": {
+        "constantName": "R_INTERACTION__INVALID_TEXT",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "Bat names may contain at most 32 characters. '{batName}' contains {textLength}.",
+        "replaceMap": {
+            "{batName}": "batName",
+            "{textLength}": "textLength"
+        }
+    },
+    "I111R": {
+        "constantName": "R_INTERACTION__RESTRICTED_TEXT",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The bat name '{batName}' is not allowed.",
+        "replaceMap": { "{batName}": "batName" }
+    },
+    "I112R": {
+        "constantName": "R_INTERACTION__BAT_CLAIMED",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "Your bat was claimed with the name '{batName}'.",
+        "replaceMap": { "{batName}": "batName" }
+    },
+    "I113R": {
+        "constantName": "R_INTERACTION__BAT_CLAIM_FAILED",
+        "success": false,
+        "httpStatus": 502,
+        "messageTemplate": "The bat named '{batName}' could not be claimed by the game server.",
+        "replaceMap": { "{batName}": "batName" }
+    },
+    "I114R": {
+        "constantName": "R_INTERACTION__POWER_SPAWN_COMPLETED",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "Spawned {mobCount} mob(s) for {cost} gems. You now have {totalGems} gems; cooldown is {cooldown} second(s).",
+        "replaceMap": {
+            "{mobCount}": "mobCount",
+            "{cost}": "cost",
+            "{totalGems}": "totalGems",
+            "{cooldown}": "cooldown"
+        }
+    },
+    "I115R": {
+        "constantName": "R_INTERACTION__FAILED_REFUND_ERROR",
+        "success": false,
+        "httpStatus": 500,
+        "messageTemplate": "The interaction failed to reach the game server, and the {cost}-gem refund could not be confirmed. Please contact a moderator.",
+        "replaceMap": { "{cost}": "cost" }
+    },
+
+    "SECTION5": { "-----------------------": "CONFIGURATION RESPONSES" },
+    "CFG100R": {
+        "constantName": "R_CONFIGURE__GAME_CHANGED",
+        "success": true,
+        "httpStatus": 200,
+        "messageTemplate": "The active game was changed to {game} using the {profile} profile.",
+        "replaceMap": {
+            "{game}": "game",
+            "{profile}": "profile"
+        }
+    },
+    "CFG101R": {
+        "constantName": "R_CONFIGURE__MODERATOR_REQUIRED",
+        "success": false,
+        "httpStatus": 403,
+        "messageTemplate": "Moderator access is required to change the active game."
+    },
+    "CFG102R": {
+        "constantName": "R_CONFIGURE__INVALID_CONFIGURATION",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "'{configuration}' is not a valid game-profile configuration.",
+        "replaceMap": { "{configuration}": "configuration" }
+    },
+    "CFG103R": {
+        "constantName": "R_CONFIGURE__INVALID_ACTION",
+        "success": false,
+        "httpStatus": 400,
+        "messageTemplate": "The configuration type '{configurationType}' is not supported.",
+        "replaceMap": { "{configurationType}": "configurationType" }
     }
-    
 }

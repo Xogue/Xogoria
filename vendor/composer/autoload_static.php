@@ -10,6 +10,7 @@ class ComposerStaticInit57d026eb92d5764d5cf20530973e2440
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        'fe1d4898277c26748a003292f432cd3b' => __DIR__ . '/..' . '/jetbrains/phpstorm-stubs/PhpStormStubsMap.php',
         '686447b99402f9f480fd30ceaed9863f' => __DIR__ . '/../..' . '/html/_core/helpers/SiteHelpers.php',
     );
 
@@ -66,6 +67,7 @@ class ComposerStaticInit57d026eb92d5764d5cf20530973e2440
         'AdminController' => __DIR__ . '/../..' . '/html/_core/_init/AdminController.php',
         'AdminResourceManager' => __DIR__ . '/../..' . '/html/_core/managers/AdminResourceManager.php',
         'ApiController' => __DIR__ . '/../..' . '/html/_core/_init/ApiController.php',
+        'ApiResponseNormalizer' => __DIR__ . '/../..' . '/html/_core/services/ApiResponseNormalizer.php',
         'AssetManager' => __DIR__ . '/../..' . '/html/_core/managers/AssetManager.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BackblazeBridge' => __DIR__ . '/../..' . '/html/_core/bridges/BackblazeBridge.php',
@@ -166,6 +168,7 @@ class ComposerStaticInit57d026eb92d5764d5cf20530973e2440
         'Quote' => __DIR__ . '/../..' . '/html/_core/elements/Quote.php',
         'QuoteCollection' => __DIR__ . '/../..' . '/html/_core/collections/QuoteCollection.php',
         'RequestData' => __DIR__ . '/../..' . '/html/_core/dataCollection/RequestData.php',
+        'ResponseLibrary' => __DIR__ . '/../..' . '/html/_core/_init/_status/ResponseLibrary.php',
         'ServiceFactory' => __DIR__ . '/../..' . '/html/_core/_init/ServiceFactory.php',
         'SessionData' => __DIR__ . '/../..' . '/html/_core/dataCollection/SessionData.php',
         'SoundQueueManager' => __DIR__ . '/../..' . '/html/_core/managers/SoundQueueManager.php',

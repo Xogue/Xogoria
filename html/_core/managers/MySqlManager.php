@@ -173,9 +173,9 @@ class MySqlManager {
     private function getQuoteById( int $id ) { return $this->runQueryFromJson( "quoteById", "i", [ $id ] ); }
     private function getMonsterById( int $id ) { return $this->runQueryFromJson( "monsterById", "i", [ $id ] ); }
     private function getObjectiveById( int $id ) { return $this->runQueryFromJson( "objectiveById", "i", [ $id ] ); }
-    private function searchQuoteByText( string $text ) { return $this->runQueryFromJson( "searchQuoteByText", "s", [ $text ] ); }
-    private function searchMonsterByName( string $name ) { return $this->runQueryFromJson( "searchMonsterByName", "s", [ $name ] ); }
-    private function searchObjectiveByRequirement( string $requirement ) { return $this->runQueryFromJson( "searchObjectiveByRequirement", "s", [ $requirement ] ); }
+    private function searchQuoteByText( string $text ) { return $this->runQueryFromJson( "searchQuoteByText", "s", [ "%{$text}%" ] ); }
+    private function searchMonsterByName( string $name ) { return $this->runQueryFromJson( "searchMonsterByName", "s", [ "%{$name}%" ] ); }
+    private function searchObjectiveByRequirement( string $requirement ) { return $this->runQueryFromJson( "searchObjectiveByRequirement", "s", [ "%{$requirement}%" ] ); }
     private function isInt( mixed $value ) { return filter_var( $value, FILTER_VALIDATE_INT ) !== false; }
 
     private function runQueryFromJson( string $query, string $types, array $params ) {

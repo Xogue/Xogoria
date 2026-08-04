@@ -6,8 +6,12 @@ class RequestData {
 
     // PUBLIC FUNCTIONS
     public function getUserId( )     : string { return (string) ( $this->get( "userId" ) ?? "" ); }
-    public function getUsername( )   : string { return (string) ( $this->get( "username" ) ?? "" ); }
-    public function getDisplayName( ): string { return (string) ( $this->get( "displayName" ) ?? "" ); }
+    public function getUsername( )   : string {
+        return (string) ( $this->get( "username" ) ?? $this->get( "userLogin" ) ?? $this->get( "userName" ) ?? "" );
+    }
+    public function getDisplayName( ): string {
+        return (string) ( $this->get( "displayName" ) ?? $this->get( "userName" ) ?? "" );
+    }
     public function getType( )       : string { return (string) ( $this->get( "type" ) ?? "" ); }
     public function getApiKey( )     : string { return (string) ( $this->get( "apiKey" ) ?? "" ); }
     public function getAction( )     : string { return (string) ( $this->get( "action" ) ?? "" ); }

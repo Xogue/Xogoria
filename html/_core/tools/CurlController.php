@@ -6,6 +6,9 @@ class CurlController {
     private CurlHandle $curlHandle;
     private mixed $downloadHandle = null;
     private array $headers = [ ];
+    private int $lastHttpStatus = 0;
+    private int $lastErrorNumber = 0;
+    private string $lastErrorMessage = "";
 
     // MAGIC FUNCTIONS
     public function __construct( string $url, string $panelKey, ?array $data = null ) {
@@ -59,20 +62,28 @@ class CurlController {
 
     public function send( ): mixed {
         $returnValue = curl_exec( $this->curlHandle );
-        $returnCode = (int) curl_getinfo( $this->curlHandle, CURLINFO_RESPONSE_CODE );
-        $errorNumber = curl_errno( $this->curlHandle );
-        $errorMessage = curl_error( $this->curlHandle );
+        $this->lastHttpStatus = (int) curl_getinfo( $this->curlHandle, CURLINFO_RESPONSE_CODE );
+        $this->lastErrorNumber = curl_errno( $this->curlHandle );
+        $this->lastErrorMessage = curl_error( $this->curlHandle );
 
-        if ( $errorNumber ) {
+        if ( $this->lastErrorNumber !== 0 ) {
             new Logger( )->error( "cURL request failed", [
-                "http_status" => $returnCode,
-                "error_number" => $errorNumber,
-                "error" => $errorMessage,
+                "http_status" => $this->lastHttpStatus,
+                "error_number" => $this->lastErrorNumber,
+                "error" => $this->lastErrorMessage,
             ] );
         }
 
         $this->closeDownloadHandle( );
         return $returnValue;
+    }
+
+    public function getLastResponseInfo( ): array {
+        return [
+            "httpStatus" => $this->lastHttpStatus,
+            "errorNumber" => $this->lastErrorNumber,
+            "errorMessage" => $this->lastErrorMessage,
+        ];
     }
 
     public static function postForm( string $url, string $panelApiKey, array $data ): self {

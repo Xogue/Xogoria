@@ -70,8 +70,20 @@
                                     <?php endforeach; ?>
                             </select>
                             <button class="setGame" type="button">Set & Refresh</button>
+                            <div class="gameSelectLabel adminToolLabel">Interact Page Tools</div>
+                            <button class="debugToggle" type="button" aria-pressed="false" aria-controls="interactDebugPanel">Enable Debug Mode</button>
                         </div>
                     </div>
+                    <section id="interactDebugPanel" class="debugPanel uiHidden" aria-label="Interact page debug log">
+                        <div class="debugHeader">
+                            <span>Session Debug Log</span>
+                            <div class="debugHeaderControls">
+                                <button class="sBtn debugCopy" type="button" title="Copy debug log">Copy</button>
+                                <button class="sBtn debugClear" type="button" title="Clear debug log">Clear</button>
+                            </div>
+                        </div>
+                        <div class="debugLog" role="log" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+                    </section>
                 <?php endif; ?>
 
 

@@ -1,4 +1,182 @@
 $(document).ready(function () {
+    let debugEnabled = false;
+    let debugRequestSequence = 0;
+    let pendingUiContext = null;
+    const nativeFetch = window.fetch.bind(window);
+
+    const formatDebugValue = (value) => {
+        if (value === undefined) return "undefined";
+        if (value === null) return "null";
+        if (typeof value === "string") {
+            try {
+                return JSON.stringify(JSON.parse(value), null, 2);
+            } catch (_) {
+                return value;
+            }
+        }
+        try {
+            return JSON.stringify(value, null, 2);
+        } catch (_) {
+            return String(value);
+        }
+    };
+
+    const appendDebug = (kind, value, options = {}) => {
+        if (!debugEnabled) return;
+        const log = document.querySelector(".debugLog");
+        if (!log) return;
+
+        if (options.separator) {
+            const separator = document.createElement("hr");
+            separator.className = "debugSeparator";
+            log.appendChild(separator);
+        }
+
+        const entry = document.createElement("div");
+        entry.className = `debugEntry${options.error ? " debugEntryError" : ""}`;
+        const timestamp = new Date().toLocaleTimeString([], { hour12: false, fractionalSecondDigits: 3 });
+        const heading = document.createElement("span");
+        heading.className = "debugEntryKind";
+        heading.textContent = `[${timestamp}] ${kind}`;
+        entry.appendChild(heading);
+        if (value !== undefined && value !== "") {
+            entry.appendChild(document.createTextNode(`\n${formatDebugValue(value)}`));
+        }
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+    };
+
+    const requestLabel = (body, method, url) => {
+        if (body && typeof body === "object") {
+            return [body.request, body.type, body.action].filter(Boolean).join(" / ") || `${method} ${url}`;
+        }
+        return `${method} ${url}`;
+    };
+
+    window.fetch = async (input, init = {}) => {
+        if (!debugEnabled) return nativeFetch(input, init);
+
+        const url = typeof input === "string" ? input : input.url;
+        const method = String(init.method || (typeof input !== "string" && input.method) || "GET").toUpperCase();
+        const debugHeaders = new Headers(init.headers || (typeof input !== "string" ? input.headers : undefined));
+        debugHeaders.set("X-Interact-Debug", "1");
+        const debugInit = { ...init, headers: debugHeaders };
+        let requestBody = init.body;
+        if (typeof requestBody === "string") {
+            try { requestBody = JSON.parse(requestBody); } catch (_) { /* Keep the original text. */ }
+        }
+
+        const requestId = ++debugRequestSequence;
+        const startedAt = performance.now();
+        appendDebug(`ACTION #${requestId}: ${requestLabel(requestBody, method, url)}`, pendingUiContext, { separator: true });
+        pendingUiContext = null;
+        appendDebug(`REQUEST #${requestId}`, {
+            url,
+            method,
+            credentials: init.credentials || "default",
+            headers: Object.fromEntries(debugHeaders.entries()),
+            body: requestBody ?? null,
+        });
+
+        try {
+            const response = await nativeFetch(input, debugInit);
+            appendDebug("RESPONSE HEADERS", {
+                requestId,
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok,
+                elapsedMs: Math.round((performance.now() - startedAt) * 100) / 100,
+                headers: Object.fromEntries(response.headers.entries()),
+            }, { error: !response.ok });
+
+            response.clone().text()
+                .then((body) => appendDebug(`RESPONSE BODY #${requestId}`, body || "(empty response)", { error: !response.ok }))
+                .catch((error) => appendDebug(`RESPONSE BODY READ FAILED #${requestId}`, error.stack || String(error), { error: true }));
+            return response;
+        } catch (error) {
+            appendDebug("FETCH FAILED", {
+                requestId,
+                elapsedMs: Math.round((performance.now() - startedAt) * 100) / 100,
+                error: error.stack || String(error),
+            }, { error: true });
+            throw error;
+        }
+    };
+
+    document.addEventListener("click", (event) => {
+        if (!debugEnabled) return;
+        const button = event.target.closest(".cardButton, .setGame");
+        if (!button) return;
+        const card = button.closest(".card");
+        const cardData = card ? card.querySelector(".cardData") : null;
+        pendingUiContext = {
+            button: button.textContent.trim(),
+            cardLabel: card?.querySelector(".cardLabel")?.textContent.trim() || null,
+            interaction: cardData ? { ...cardData.dataset } : null,
+            selectedGame: button.matches(".setGame") ? $("select[name='gameSelector']").val() : null,
+            spawnSummary: button.matches("#spawnBtn") ? {
+                totalMobs: $("#sum_count").text(),
+                totalCost: $("#sum_cost").text(),
+                cooldown: $("#sum_cd").text(),
+            } : null,
+            batName: button.matches(".batClaimBtn") ? $(".batNameInput").val() : null,
+        };
+        const capturedContext = pendingUiContext;
+        window.setTimeout(() => {
+            if (pendingUiContext === capturedContext) pendingUiContext = null;
+        }, 0);
+    }, true);
+
+    $(".debugToggle").on("click", function () {
+        debugEnabled = !debugEnabled;
+        $(this)
+            .toggleClass("active", debugEnabled)
+            .attr("aria-pressed", String(debugEnabled))
+            .text(debugEnabled ? "Disable Debug Mode" : "Enable Debug Mode");
+        $("#interactDebugPanel").toggleClass("uiHidden", !debugEnabled);
+        if (debugEnabled) {
+            appendDebug("DEBUG MODE ENABLED", {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+            });
+        }
+    });
+
+    $(".debugClear").on("click", function () {
+        $(".debugLog").empty().focus();
+    });
+
+    $(".debugCopy").on("click", async function () {
+        const $button = $(this);
+        const originalText = $button.text();
+        const copiedText = Array.from(document.querySelector(".debugLog").children)
+            .map((entry) => entry.matches(".debugSeparator") ? "========================================" : entry.innerText)
+            .join("\n\n");
+        try {
+            await navigator.clipboard.writeText(copiedText);
+            $button.text("Copied!");
+        } catch (error) {
+            $button.text("Copy failed");
+            appendDebug("COPY FAILED", error.stack || String(error), { error: true });
+        }
+        window.setTimeout(() => $button.text(originalText), 1500);
+    });
+
+    window.addEventListener("error", (event) => {
+        appendDebug("UNHANDLED PAGE ERROR", {
+            message: event.message,
+            source: event.filename,
+            line: event.lineno,
+            column: event.colno,
+            stack: event.error?.stack || null,
+        }, { separator: true, error: true });
+    });
+
+    window.addEventListener("unhandledrejection", (event) => {
+        appendDebug("UNHANDLED PROMISE REJECTION", event.reason?.stack || event.reason, { separator: true, error: true });
+    });
+
     $(".typeButton").on("click", function () {
         $(".typeButton").removeClass("active");
         $(".interactions").addClass("uiHidden");
@@ -19,7 +197,7 @@ $(document).ready(function () {
 
     $(".adminPanelTitle").click(function () {
         $(".adminPanel").toggleClass("active");
-        $(".adminPanelTitle", $(this)).text(
+        $(this).text(
             $(".adminPanel").hasClass("active") ? "Close Admin Controls" : "Open Admin Controls",
         );
     });
@@ -64,6 +242,12 @@ $(document).ready(function () {
 
     const showButtonResult = ($button, result, originalText, enableAfter = true) => {
         const success = Boolean(result && result.success);
+        appendDebug("UI RESULT", {
+            success,
+            message: result && result.message,
+            code: result && result.code,
+            meta: result && result.meta,
+        }, { error: !success });
         $button
             .removeClass("interactionSuccess interactionFailure")
             .addClass(success ? "interactionSuccess" : "interactionFailure")

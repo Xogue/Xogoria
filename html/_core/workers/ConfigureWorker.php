@@ -11,23 +11,35 @@ class ConfigureWorker implements WorkerInterface {
     }
     public function process(): WorkerResult {
         if (!$this->user->isAdmin()) {
-            return WorkerResult::failure('Moderator access is required.', 'moderator_required', 403);
+            return WorkerResult::failureCode( ResponseLibrary::R_CONFIGURE__MODERATOR_REQUIRED, [ ], 403 );
         }
         $type = $this->inputData->getType();
         $action = $this->inputData->getAction();
         
-        if ($type === 'game') {
-            $parts = explode('-', $action, 2);
-            if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') {
-                return WorkerResult::failure('A valid game and profile are required.', 'invalid_configuration');
-            }
-            [$game, $profile] = $parts;
-            $this->workerContext->setActiveGameAndProfile($game, $profile);
+        if ($type !== 'game') {
+            return WorkerResult::failureCode( ResponseLibrary::R_CONFIGURE__INVALID_ACTION, [
+                'configurationType' => $type,
+            ] );
         }
-        return new WorkerResult(true);
+
+        $parts = explode('-', $action, 2);
+        if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') {
+            return WorkerResult::failureCode( ResponseLibrary::R_CONFIGURE__INVALID_CONFIGURATION, [
+                'configuration' => $action,
+            ] );
+        }
+        [$game, $profile] = $parts;
+        try {
+            $this->workerContext->setActiveGameAndProfile($game, $profile);
+        } catch ( InvalidArgumentException ) {
+            return WorkerResult::failureCode( ResponseLibrary::R_CONFIGURE__INVALID_CONFIGURATION, [
+                'configuration' => $action,
+            ] );
+        }
+        return WorkerResult::success( ResponseLibrary::R_CONFIGURE__GAME_CHANGED, true, [
+            'game' => $game,
+            'profile' => $profile,
+        ] );
     }
 
-    public function createWorkerResult(string $protocolString): WorkerResult {
-        return new WorkerResult($protocolString);
-    }
 }

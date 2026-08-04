@@ -1,5 +1,19 @@
 <?php
 
+// Production deployments may update application classes without rebuilding Composer's
+// generated classmap immediately. Keep newly introduced services available during that window.
+$deploymentClassFallbacks = [
+    UserTextPolicy::class => dirname( __DIR__ ) . "/services/UserTextPolicy.php",
+    ApiResponseNormalizer::class => dirname( __DIR__ ) . "/services/ApiResponseNormalizer.php",
+    ResponseLibrary::class => __DIR__ . "/_status/ResponseLibrary.php",
+];
+foreach ( $deploymentClassFallbacks as $className => $classPath ) {
+    if ( !class_exists( $className, false ) ) {
+        require_once $classPath;
+    }
+}
+unset( $deploymentClassFallbacks, $className, $classPath );
+
 final class ServiceFactory {
     private array $cachedService = [ ];
 
@@ -13,6 +27,9 @@ final class ServiceFactory {
     public function mySqlManager( )     : MySqlManager      { return $this->service( __FUNCTION__, fn( ) => new MySqlManager( $this->configManager( ) ) ); }
     public function twitchController( ) : TwitchController  { return $this->service( __FUNCTION__, fn( ) => new TwitchController( $this->dataController( ) ) ); }
     public function soundQueueManager( ): SoundQueueManager { return $this->service( __FUNCTION__, fn( ) => new SoundQueueManager( $this->dataStore( ) ) ); }
+    public function apiResponseNormalizer( ): ApiResponseNormalizer {
+        return $this->service( __FUNCTION__, fn( ) => new ApiResponseNormalizer( new JsonHandler( ) ) );
+    }
     public function userTextPolicy( ): UserTextPolicy {
         return $this->service(
             __FUNCTION__,
@@ -52,7 +69,11 @@ final class ServiceFactory {
     public function userController( ): UserController {
         return $this->service(
             __FUNCTION__,
-            fn( ) => new UserController( $this->mySqlManager( ), $this->contextManager( )->getUser( ) ),
+            fn( ) => new UserController(
+                $this->mySqlManager( ),
+                $this->contextManager( )->getUser( ),
+                $this->contextManager( )->getInputData( ),
+            ),
         );
     }
 

@@ -3,7 +3,6 @@
 class InteractionWorker implements WorkerInterface {
     private WorkerContext $workerContext;
     private InputDataContext $inputDataContext;
-    private array $commandsToSend;
 
     public function __construct(
         private InteractionManager $interactionManager,
@@ -19,9 +18,10 @@ class InteractionWorker implements WorkerInterface {
     public function process(): WorkerResult {
         $type = $this->inputDataContext->getType();
         $action = $this->inputDataContext->getAction();
+        $interactionMeta = [ 'interaction' => $action, 'interactionType' => $type ];
 
         if (!$this->user->userLoggedIn()) {
-            return WorkerResult::failure('You must be logged in to use interactions.', 'login_required', 401);
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__LOGIN_REQUIRED, $interactionMeta, 401 );
         }
 
         if ($type === 'powerSpawn') {
@@ -33,54 +33,49 @@ class InteractionWorker implements WorkerInterface {
         }
 
         if (!$this->workerContext->getProfile()->allowsSimpleInteraction($type, $action)) {
-            return WorkerResult::failure('That command is not available for the active game and profile.', 'wrong_game');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__WRONG_GAME, $interactionMeta );
         }
 
-        $details = [
-            '{DURATION}' => $this->inputDataContext->getDuration(),
-            '{COST}' => $this->inputDataContext->getCost(),
-            '{COOLDOWN}' => $this->inputDataContext->getCooldown()
-        ];
-        
         $simpleType = $this->workerContext->getGame()->getSimpleType($type);
         $interaction = $simpleType?->getInteraction($action);
         if ($interaction === null) {
-            return WorkerResult::failure('The requested interaction does not exist.', 'interaction_not_found');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__NOT_FOUND, $interactionMeta, 404 );
         }
 
         if (!$interaction->isEnabled()) {
-            return WorkerResult::failure('That interaction is currently disabled.', 'interaction_disabled');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__DISABLED, $interactionMeta );
         }
 
-        $duration = max(1, min(300, $this->inputDataContext->getDuration()));
-        $cost = max(0, $interaction->getCost() * $duration);
-        if ($this->user->getGemBalance() < $cost) {
-            return WorkerResult::failure('You do not have enough Airo Gems.', 'insufficient_funds');
-        }
-        
+        $duration = max(1, min(30, $this->inputDataContext->getDuration()));
+        $costPerSecond = max(0, $interaction->getCost());
+        $cost = $duration <= 10
+            ? $costPerSecond * $duration
+            : (10 * $costPerSecond) + (($duration - 10) * ($costPerSecond * 10));
+        $cooldown = $interaction->getCooldown() + max(0, $duration - 10);
 
-        $details['{DURATION}'] = $duration;
-        $details['{COST}'] = $cost;
-        if ($cost > 0 && !$this->bank->subtractFromUserBalance($this->user->getUserId(), $cost)) {
-            return WorkerResult::failure('Your Airo Gems could not be charged.', 'currency_error', 500);
-        }
-
-        $this->commandsToSend = $interaction->getCommandArray($details);
-        $success = $this->interactionManager->sendCommands($this->workerContext->getServerId(), $this->commandsToSend);
-        if (!$success && $cost > 0) {
-            $this->bank->addToUserBalance($this->user->getUserId(), $cost);
-            return WorkerResult::failure('The interaction failed; your Airo Gems were refunded.', 'interaction_failed', 502);
-        }
-
-        $result = new WorkerResult(true, 'Interaction completed.');
-        $result->addMeta('cost', $cost);
-        return $result;
+        $details = [
+            '{DURATION}' => $duration,
+            '{COST}' => $cost,
+            '{COOLDOWN}' => $cooldown,
+        ];
+        $commandsToSend = $interaction->getCommandArray($details);
+        return $this->chargeAndSend(
+            $commandsToSend,
+            $cost,
+            $cooldown,
+            ResponseLibrary::R_INTERACTION__COMPLETED,
+            $interactionMeta + [
+                'duration' => $duration,
+            ],
+        );
     }
 
     private function processPowerSpawn(): WorkerResult {
         $powerSpawn = $this->workerContext->getGame()->getSpecialType('powerSpawn');
         if (!$powerSpawn instanceof PowerSpawn) {
-            return WorkerResult::failure('Power spawning is not available for the active game.', 'interaction_not_found');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__NOT_FOUND, [
+                'interaction' => 'powerSpawn',
+            ], 404 );
         }
 
         $commands = [];
@@ -92,7 +87,9 @@ class InteractionWorker implements WorkerInterface {
             $mobName = (string) $mobName;
             $requestedCount = filter_var($requestedCount, FILTER_VALIDATE_INT);
             if ($requestedCount === false || $requestedCount < 0 || $requestedCount > 25) {
-                return WorkerResult::failure('Each mob quantity must be between 0 and 25.', 'invalid_quantity');
+                return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__INVALID_QUANTITY, [
+                    'mobCount' => $count,
+                ] );
             }
             if ($requestedCount === 0) {
                 continue;
@@ -100,10 +97,14 @@ class InteractionWorker implements WorkerInterface {
 
             $mob = $powerSpawn->getMobs()[$mobName] ?? null;
             if (!$mob instanceof Mob || !$mob->isEnabled() || !$this->workerContext->getProfile()->allowsSpecialInteraction('powerSpawn', $mobName)) {
-                return WorkerResult::failure('That mob is not available for the active game and profile.', 'wrong_game');
+                return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__WRONG_GAME, [
+                    'interaction' => $mobName,
+                ] );
             }
             if ($mob->getCommand() === '') {
-                return WorkerResult::failure('That mob is not configured correctly.', 'interaction_not_found', 500);
+                return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__NOT_FOUND, [
+                    'interaction' => $mobName,
+                ], 500 );
             }
 
             $count += $requestedCount;
@@ -115,56 +116,100 @@ class InteractionWorker implements WorkerInterface {
         }
 
         if ($count < 1 || $count > 100) {
-            return WorkerResult::failure('Choose between 1 and 100 total mobs.', 'invalid_quantity');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__INVALID_QUANTITY, [
+                'mobCount' => $count,
+            ] );
         }
 
-        return $this->chargeAndSend($commands, $cost, max($powerSpawn->getCooldownMin(), min($powerSpawn->getCooldownMax(), $cooldown)));
+        return $this->chargeAndSend(
+            $commands,
+            $cost,
+            max($powerSpawn->getCooldownMin(), min($powerSpawn->getCooldownMax(), $cooldown)),
+            ResponseLibrary::R_INTERACTION__POWER_SPAWN_COMPLETED,
+            [ 'interaction' => 'powerSpawn', 'mobCount' => $count ],
+        );
     }
 
     private function processBatClaim(): WorkerResult {
         $batClaim = $this->workerContext->getGame()->getSpecialType('batClaim');
         if (!$batClaim instanceof BatClaim || !$batClaim->isEnabled() || !$this->workerContext->getProfile()->allowsSpecialInteraction('special', 'batClaim')) {
-            return WorkerResult::failure('Bat claiming is not available for the active game and profile.', 'wrong_game');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__WRONG_GAME, [
+                'interaction' => 'batClaim',
+            ] );
         }
 
         $batName = $this->inputDataContext->getBatName();
         $effectiveName = $batName !== '' ? $batName : $this->user->getDisplayName() . "'s Pet";
         $length = function_exists('mb_strlen') ? mb_strlen($effectiveName, 'UTF-8') : strlen($effectiveName);
         if ($length > 32) {
-            return WorkerResult::failure('Bat names may contain at most 32 characters.', 'invalid_text');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__INVALID_TEXT, [
+                'batName' => $effectiveName,
+                'textLength' => $length,
+            ] );
         }
         if (!$this->userTextPolicy->isAllowed($effectiveName)) {
-            return WorkerResult::failure('That bat name is not allowed.', 'restricted_text');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__RESTRICTED_TEXT, [
+                'batName' => $effectiveName,
+            ] );
         }
 
         if (!$this->interactionManager->viewerBatClaimed($effectiveName)) {
-            return WorkerResult::failure('The bat could not be claimed.', 'interaction_failed', 502);
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__BAT_CLAIM_FAILED, [
+                'batName' => $effectiveName,
+            ], 502 );
         }
 
-        return new WorkerResult(true, 'Bat claimed.');
+        return WorkerResult::success( ResponseLibrary::R_INTERACTION__BAT_CLAIMED, true, [
+            'batName' => $effectiveName,
+        ] );
     }
 
-    private function chargeAndSend(array $commands, int $cost, int $cooldown): WorkerResult {
+    private function chargeAndSend(
+        array $commands,
+        int $cost,
+        int $cooldown,
+        string $successCode,
+        array $meta = [ ],
+    ): WorkerResult {
         if ($this->user->getGemBalance() < $cost) {
-            return WorkerResult::failure('You do not have enough Airo Gems.', 'insufficient_funds');
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__INSUFFICIENT_FUNDS, $meta + [
+                'cost' => $cost,
+                'totalGems' => $this->user->getGemBalance(),
+            ] );
         }
         if ($cost > 0 && !$this->bank->subtractFromUserBalance($this->user->getUserId(), $cost)) {
-            return WorkerResult::failure('Your Airo Gems could not be charged.', 'currency_error', 500);
+            return WorkerResult::failureCode( ResponseLibrary::R_INTERACTION__CURRENCY_ERROR, $meta + [
+                'cost' => $cost,
+                'totalGems' => $this->user->getGemBalance(),
+            ], 500 );
         }
         if (!$this->interactionManager->sendCommands($this->workerContext->getServerId(), $commands)) {
+            $refunded = true;
             if ($cost > 0) {
-                $this->bank->addToUserBalance($this->user->getUserId(), $cost);
+                $refunded = $this->bank->addToUserBalance($this->user->getUserId(), $cost) !== false;
             }
-            return WorkerResult::failure('The interaction failed; your Airo Gems were refunded.', 'interaction_failed', 502);
+            return WorkerResult::failureCode(
+                match ( true ) {
+                    $cost === 0 => ResponseLibrary::R_INTERACTION__FAILED,
+                    $refunded => ResponseLibrary::R_INTERACTION__FAILED_REFUNDED,
+                    default => ResponseLibrary::R_INTERACTION__FAILED_REFUND_ERROR,
+                },
+                $meta + [
+                    'cost' => $cost,
+                    'totalGems' => $refunded
+                        ? $this->user->getGemBalance()
+                        : $this->user->getGemBalance() - $cost,
+                    'refunded' => $refunded,
+                ],
+                $cost > 0 && !$refunded ? 500 : 502,
+            );
         }
 
-        $result = new WorkerResult(true, 'Interaction completed.');
-        $result->addMeta('cost', $cost);
-        $result->addMeta('cooldown', $cooldown);
-        return $result;
+        return WorkerResult::success( $successCode, true, $meta + [
+            'cost' => $cost,
+            'cooldown' => $cooldown,
+            'totalGems' => $this->user->getGemBalance() - $cost,
+        ] );
     }
 
-    public function createWorkerResult(string $protocolString): WorkerResult {
-        return new WorkerResult($protocolString);
-    }
 }

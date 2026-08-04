@@ -5,21 +5,34 @@ class UserController {
     public function __construct(
         private MySqlManager $mySqlManager,
         private UserContext $userContext,
+        private InputDataContext $inputDataContext,
     ) { }
 
     // PUBLIC FUNCTIONS
     public function syncTwitchSessionUser( ): bool {
-        $twitchUserId = $this->userContext->getUserId( );
-        $twitchLoginName = $this->userContext->getLoginName( );
-        $twitchDisplayName = $this->userContext->getDisplayName( ) ?? $twitchLoginName;
+        return $this->ensureTwitchUser( );
+    }
 
-        if ( $twitchUserId === "" || $twitchLoginName === "" ) {
+    public function ensureTwitchUser( ): bool {
+        $twitchUserId = $this->inputDataContext->getUserId( );
+        $twitchLoginName = $this->inputDataContext->getUsername( );
+        $twitchDisplayName = $this->inputDataContext->getDisplayName( );
+        if ( $twitchLoginName === "" ) {
+            // Some Streamer.bot AG actions only send the stable Twitch user ID.
+            $twitchLoginName = $twitchUserId;
+        }
+        if ( $twitchDisplayName === "" ) {
+            $twitchDisplayName = $twitchLoginName;
+        }
+
+        if ( $twitchUserId === "" ) {
             new Logger( Logger::CHANNEL_WEB )->warning( "Cannot sync an incomplete Twitch session" );
             return false;
         }
 
         $rows = $this->mySqlManager->selectUserWithId( $twitchUserId );
-        if ( $rows !== false && !empty( $rows ) ) {
+        if ( !empty( $rows ) ) {
+            $this->userContext->refreshIdentity( $this->inputDataContext );
             return true;
         }
 
@@ -29,7 +42,8 @@ class UserController {
             $twitchDisplayName,
         );
 
-        if ( !$inserted ) {
+        // A concurrent first request may have inserted the same Twitch user.
+        if ( !$inserted && empty( $this->mySqlManager->selectUserWithId( $twitchUserId ) ) ) {
             new Logger( Logger::CHANNEL_WEB )->error( "Failed to insert Twitch user", [
                 "user_id" => $twitchUserId,
             ] );
@@ -37,7 +51,8 @@ class UserController {
             return false;
         }
 
-        return true;
+        $this->userContext->refreshIdentity( $this->inputDataContext );
+        return $this->userContext->userLoggedIn( );
     }
 
     public function logout( ): void {

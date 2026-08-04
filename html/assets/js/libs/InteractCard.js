@@ -8,7 +8,6 @@ class InteractCard {
     this.costElement = $(".cardCost", card);
     this.cooldownElement = $(".cardCooldown", card);
     this.apiEndpoint = "/api/xogoriaApi.php";
-    this.startingBalance = $(".gemInfo strong").text();
 
     this.request = this.dataElement.data("request");
     this.type = this.dataElement.data("type");
@@ -24,12 +23,14 @@ class InteractCard {
     this.cooldownEnd = 0;
     this.btnSuccessClass = "interactionSuccess";
     this.btnFailureClass = "interactionFailure";
-    this.btnOnCooldownClass = "interactionOnCooldown";
+    this.btnOnCooldownClass = "interactionCooldown";
 
-    this.durationElement
-      .on("wheel", (event) => this.wheelEvent(event))
-      .on("change", (event) => this.changeEvent(event))
-      .on("keyup", (event) => this.changeEvent(event));
+    const durationInput = this.durationElement.get(0);
+    if (durationInput) {
+      durationInput.addEventListener("wheel", (event) => this.wheelEvent(event), { passive: false });
+      this.durationElement.on("input change", () => this.syncDuration());
+      this.syncDuration();
+    }
   }
 
   async activate() {
@@ -38,16 +39,26 @@ class InteractCard {
       .prop("disabled", true)
       .removeClass(`${this.btnSuccessClass} ${this.btnFailureClass}`);
 
-    await this.send();
+    const result = await this.send();
+    if (!result || !result.success) {
+      this.button
+        .text((result && result.message) || "Failed")
+        .addClass(this.btnFailureClass);
+      window.setTimeout(() => {
+        this.button.removeClass(this.btnFailureClass).prop("disabled", false).text(this.initLabel);
+      }, 3000);
+      return;
+    }
 
-    this.button.text("Sent!");
-    this.button.addClass(this.btnSuccessClass);
-    let newBalance = this.startingBalance - this.dataElement.data("cost");
+    this.button.text("Sent!").addClass(this.btnSuccessClass);
+    const chargedCost = Number(result.meta && result.meta.cost) || Number(this.dataElement.data("cost")) || 0;
+    const currentBalance = Number($(".gemInfo strong").text()) || 0;
+    const newBalance = Math.max(0, currentBalance - chargedCost);
     $(".gemInfo strong").text(newBalance);
-    this.startingBalance = newBalance;
 
-    if (this.initCooldown > 0) {
-      this.startCooldown();
+    const cooldown = Number(result.meta && result.meta.cooldown) || Number(this.dataElement.data("cooldown")) || 0;
+    if (cooldown > 0) {
+      this.startCooldown(cooldown);
     } else {
       setTimeout(() => {
         this.button
@@ -58,8 +69,8 @@ class InteractCard {
     }
   }
 
-  startCooldown() {
-    this.cooldownEnd = Date.now() + this.initCooldown * 1000;
+  startCooldown(seconds) {
+    this.cooldownEnd = Date.now() + seconds * 1000;
     this.button.addClass(this.btnOnCooldownClass);
 
     this.tick();
@@ -85,33 +96,24 @@ class InteractCard {
   wheelEvent(event) {
     event.preventDefault();
 
-    let $input = this.durationElement;
-    let step = 1;
-    let min = Number($input.attr("min"));
-    let max = Number($input.attr("max"));
-    let current = $input.val() === "" ? 0 : Number($input.val());
+    const min = Number(this.durationElement.attr("min")) || 1;
+    const max = Number(this.durationElement.attr("max")) || 30;
+    const current = Number(this.durationElement.val()) || min;
+    const next = Math.min(max, Math.max(min, current + (event.deltaY < 0 ? 1 : -1)));
 
-    let direction = event.originalEvent.deltaY < 0 ? 1 : -1;
-    let next = Math.min(max, Math.max(min, current + direction * step));
-
-    $input.val(next).trigger("input").trigger("change");
+    this.durationElement.val(next).trigger("input");
   }
 
-  changeEvent(event) {
-    let $input = this.durationElement;
-    let currentDuration = $input.val();
-    let costPer = $input.data("costper");
+  syncDuration() {
+    const $input = this.durationElement;
+    const min = Number($input.attr("min")) || 1;
+    const max = Number($input.attr("max")) || 30;
+    const currentDuration = Math.min(max, Math.max(min, Number.parseInt($input.val(), 10) || min));
+    const costPer = Number($input.data("costper")) || Number(this.costPer) || 0;
     let cardCooldown = this.dataElement.data("cooldown");
     let currentCost = currentDuration * costPer;
 
-    if (currentDuration < 1) {
-      currentDuration = 1;
-      $input.val(1);
-    }
-    if (currentDuration > 30) {
-      currentDuration = 30;
-      $input.val(30);
-    }
+    $input.val(currentDuration);
 
     if (currentDuration > 10) {
       currentCost = 10 * costPer;
@@ -121,7 +123,7 @@ class InteractCard {
       this.costElement.addClass("highlight");
       $(".extraCost", $input.closest(".card")).removeClass("uiHidden");
     } else {
-      currentCost = costPer;
+      currentCost = currentDuration * costPer;
       cardCooldown = this.initCooldown;
       this.cooldownElement.removeClass("highlight");
       this.costElement.removeClass("highlight");
