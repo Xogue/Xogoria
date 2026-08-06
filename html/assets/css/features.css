@@ -65,3 +65,42 @@
 .uiVerticalPlate {
   bottom: -9px;
 }
+
+@media (max-width: 1024px) {
+  .uiSubDescription,
+  .uiSectionBody {
+    width: min(72%, 900px);
+  }
+
+  .uiSectionFloatShelf {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+
+  .uiSectionPillFloat {
+    box-sizing: border-box;
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .uiSubDescription,
+  .uiSectionBody {
+    width: calc(100% - 24px);
+  }
+
+  .example,
+  .uiSectionFloatShelf {
+    width: 100%;
+  }
+
+  .uiSectionPillFloat {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 420px) {
+  .uiSectionFloatShelf {
+    grid-template-columns: 1fr;
+  }
+}

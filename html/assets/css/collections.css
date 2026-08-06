@@ -6,3 +6,17 @@
     width: 45%;
     text-align: left;
 }
+
+@media (max-width: 1024px) {
+    .uiSubDescription,
+    .uiSectionBody {
+        width: min(72%, 900px);
+    }
+}
+
+@media (max-width: 700px) {
+    .uiSubDescription,
+    .uiSectionBody {
+        width: calc(100% - 24px);
+    }
+}

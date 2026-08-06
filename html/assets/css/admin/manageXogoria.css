@@ -84,3 +84,16 @@ button, input, textarea, select { font: inherit; }
     .adminMain { padding: 16px; }
     .communityEditorFooter { align-items: flex-start; flex-direction: column; }
 }
+
+@media (max-width: 560px) {
+    .adminHeader { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .adminIdentity { width: 100%; justify-content: space-between; }
+    .adminSidebar { padding: 10px; }
+    .adminNavGroup { min-width: 145px; }
+    .adminMain { padding: 12px; }
+    .adminSectionHeader, .adminConfigHeader { align-items: stretch; flex-direction: column; }
+    .adminButton, .adminIconButton, .communityEditorToolbar button { min-height: 44px; }
+    .adminNotice { top: 10px; right: 10px; left: 10px; max-width: none; }
+    .communityMarkdownEditor { min-height: 360px; padding: 12px; }
+    .communityEditorFooter > div { flex-wrap: wrap; }
+}

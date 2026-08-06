@@ -13,7 +13,7 @@ final class CommunityMarkdownRenderer {
         return $this->renderLines( explode( "\n", $source ) );
     }
 
-    private function renderLines( array $lines ): string {
+    private function renderLines( array $lines, bool $preserveLineBreaks = false ): string {
         $html = [ ];
         $count = count( $lines );
 
@@ -35,7 +35,7 @@ final class CommunityMarkdownRenderer {
                     "card" => "uiPanel ",
                     default => "uiAlert ",
                 };
-                $html[] = '<aside class="' . $sharedClasses . 'communityBlock communityBlock--' . $type . '">' . $titleHtml . $this->renderLines( $body ) . '</aside>';
+                $html[] = '<aside class="' . $sharedClasses . 'communityBlock communityBlock--' . $type . '">' . $titleHtml . $this->renderLines( $body, $preserveLineBreaks ) . '</aside>';
                 continue;
             }
 
@@ -52,7 +52,7 @@ final class CommunityMarkdownRenderer {
                 $cards = "";
                 foreach ( $groups as $group ) {
                     if ( trim( $group ) !== "" ) {
-                        $cards .= '<article class="uiPanel communityCard">' . $this->renderLines( explode( "\n", trim( $group ) ) ) . '</article>';
+                        $cards .= '<article class="uiPanel communityCard">' . $this->renderLines( explode( "\n", trim( $group ) ), true ) . '</article>';
                     }
                 }
                 $html[] = $titleHtml . '<div class="communityCardGrid">' . $cards . '</div>';
@@ -128,7 +128,7 @@ final class CommunityMarkdownRenderer {
                     $quotes[] = $match[ 1 ];
                     $index++;
                 }
-                $html[] = '<blockquote>' . $this->renderLines( $quotes ) . '</blockquote>';
+                $html[] = '<blockquote>' . $this->renderLines( $quotes, $preserveLineBreaks ) . '</blockquote>';
                 continue;
             }
 
@@ -137,7 +137,8 @@ final class CommunityMarkdownRenderer {
             while ( $index < $count && trim( $lines[ $index ] ) !== "" && !$this->startsBlock( $lines, $index ) ) {
                 $paragraph[] = trim( $lines[ $index++ ] );
             }
-            $html[] = '<p>' . $this->inline( implode( " ", $paragraph ) ) . '</p>';
+            $separator = $preserveLineBreaks ? "<br>\n" : " ";
+            $html[] = '<p>' . implode( $separator, array_map( fn( string $part ): string => $this->inline( $part ), $paragraph ) ) . '</p>';
         }
         return implode( "\n", $html );
     }
@@ -145,8 +146,23 @@ final class CommunityMarkdownRenderer {
     private function collectContainer( array $lines, int $index ): array {
         $body = [ ];
         $count = count( $lines );
-        while ( $index < $count && trim( $lines[ $index ] ) !== ":::" ) $body[] = $lines[ $index++ ];
-        if ( $index < $count ) $index++;
+        $depth = 1;
+        while ( $index < $count ) {
+            $trimmed = trim( $lines[ $index ] );
+            if ( preg_match( '/^:::(?:note|tip|warning|danger|card|center|cards)(?:\s|$)/i', $trimmed ) ) {
+                $depth++;
+                $body[] = $lines[ $index++ ];
+                continue;
+            }
+            if ( $trimmed === ":::" ) {
+                $depth--;
+                $index++;
+                if ( $depth === 0 ) break;
+                $body[] = ":::";
+                continue;
+            }
+            $body[] = $lines[ $index++ ];
+        }
         return [ $body, $index ];
     }
 

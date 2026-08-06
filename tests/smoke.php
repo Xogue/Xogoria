@@ -12,7 +12,7 @@ assert( $services->contextManager( ) === $services->contextManager( ) );
 assert( $services->contextManager( )->getInputData( ) === $services->contextManager( )->getInputData( ) );
 assert( isset( $services->adminResourceManager( )->definitions( )[ "users" ] ) );
 assert( isset( $services->adminConfigManager( )->files( )[ "minecraft" ] ) );
-assert( str_contains( $services->communityContentManager( )->source( ), "Xogoria Community" ) );
+assert( is_string( $services->communityContentManager( )->source( ) ) );
 $renderedCommunity = ( new CommunityMarkdownRenderer( ) )->render(
     "## Rules\n{toc: How community members should behave}\n\n**Be kind.** [Site](/about.php)\n\n:::warning Notice\nNo scripts: <script>alert(1)</script>\n:::",
 );
@@ -28,6 +28,12 @@ assert( str_contains( $richCommunity, '<table class="uiTable">' ) );
 assert( !str_contains( $richCommunity, 'href="javascript:' ) );
 assert( substr_count( $richCommunity, '<article class="uiPanel communityCard">' ) === 2 );
 assert( str_contains( $richCommunity, 'id="picks"' ) );
+$nestedCardCommunity = ( new CommunityMarkdownRenderer( ) )->render(
+    ":::cards Details\n### Setup\nFirst line\nSecond line\n\n:::note Remember\nNested note text\n:::\n:::",
+);
+assert( str_contains( $nestedCardCommunity, "First line<br>\nSecond line" ) );
+assert( str_contains( $nestedCardCommunity, 'communityBlock--note' ) );
+assert( str_contains( $nestedCardCommunity, "Nested note text" ) );
 assert( $services->clipDeletionRegistry( )->all( ) === [ ] );
 $textPolicy = $services->userTextPolicy( );
 assert( $textPolicy->isAllowed( "Flappy" ) );

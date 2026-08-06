@@ -59,7 +59,7 @@
     background: #252525;
     color: #e6eeff;
     border-radius: 20px;
-    font-family: "britanic", sans-serif;
+    font-family: var(--fontDisplay);
     font-size: 18px;
     letter-spacing: 1px;
     margin: 20px auto;
@@ -85,7 +85,7 @@
     border: 2px solid #1e4e83;
     border-radius: 20px;
     padding: 6px 0;
-    font-family: "britanic", sans-serif;
+    font-family: var(--fontDisplay);
     font-size: 18px;
     letter-spacing: 1px;
     cursor: pointer;
@@ -102,7 +102,7 @@
     color: #daa617;
     padding: 5px;
     border: 1px solid #1d2630;
-    font-family: "britanic", sans-serif;
+    font-family: var(--fontBody);
     font-size: 16px;
     border-bottom: 1px solid #daa61755;
     margin: 0;
@@ -113,7 +113,7 @@
     background: #1c2235;
     color: #e6eeff;
     padding: 5px;
-    font-family: "britanic", sans-serif;
+    font-family: var(--fontBody);
     font-size: 16px;
     border-radius: 12px;
     border: 2px solid #daa61755;
@@ -219,7 +219,7 @@
     border: 1px solid #1d2630;
     border-radius: 12px;
     padding: 6px 0;
-    font-family: "britanic", sans-serif;
+    font-family: var(--fontDisplay);
     font-size: 18px;
     letter-spacing: 1px;
     cursor: pointer;
@@ -548,5 +548,100 @@
 @media (min-width: 700px) {
     .cardList {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    #interactPanel {
+        box-sizing: border-box;
+        padding: 8px 12px;
+    }
+
+    .title {
+        font-size: clamp(30px, 10vw, 40px);
+    }
+
+    .userInfo {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .loginBanner strong,
+    .gemInfo strong {
+        font-size: 32px;
+    }
+
+    .adminPanel,
+    .adminPanelTitle,
+    .interactions {
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .adminPanelTitle {
+        min-height: 44px;
+        height: auto;
+        padding: 9px 10px;
+    }
+
+    .adminPanel.active {
+        height: auto;
+        min-height: 250px;
+    }
+
+    .gameSelect {
+        margin-inline: 12px;
+    }
+
+    .gameSelect select,
+    .gameSelect button,
+    .gameSelect .debugToggle {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 44px;
+        margin: 5px 0;
+    }
+
+    .typeButton,
+    .intTab,
+    .sBtn,
+    .spawnRow input,
+    .cardButton {
+        min-height: 44px;
+    }
+
+    .intTabs,
+    .intTabs.cols4,
+    .intTabs.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+        box-sizing: border-box;
+    }
+
+    .cardButton {
+        box-sizing: border-box;
+        width: calc(100% - 24px);
+    }
+
+    .spawnRow {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sCtrls {
+        align-self: stretch;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 420px) {
+    .intTabs,
+    .intTabs.cols4,
+    .intTabs.cols3,
+    .intTabs.cols2 {
+        grid-template-columns: 1fr;
     }
 }

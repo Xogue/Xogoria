@@ -201,7 +201,7 @@
                             <summary>Formatting guide</summary>
                             <p>Use <code>#</code> through <code>####</code> for headings, <code>**bold**</code>, <code>*italic*</code>, links, lists, quotes, code fences, dividers, and Markdown tables.</p>
                             <p>Put <code>{toc: A short description}</code> directly below a heading to show that description in the table of contents without displaying it in the article.</p>
-                            <p>The Note, Tip, Warning, and Cards controls insert Xogoria layout blocks. Separate cards with <code>+++</code>. All output is sanitized before display.</p>
+                            <p>The Note, Tip, Warning, and Cards controls insert Xogoria layout blocks. Separate cards with <code>+++</code>. Cards preserve single line breaks and can contain Note, Tip, Warning, or Danger blocks. All output is sanitized before display.</p>
                         </details>
                     </div>
                     <section class="communityPreviewPanel" id="communityPreviewPanel" hidden>

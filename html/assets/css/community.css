@@ -192,8 +192,7 @@
 }
 .communityContent h4 {
     font-size: 21px;
-    margin-bottom: 5px;
-    margin-top: 20px;
+    margin: 20px 0 5px 25px;
 }
 .communityContent p {
     margin: 10px 0 18px;
@@ -358,5 +357,62 @@
     }
     .communityContent h2 {
         font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .communityTocHeader {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .communityTocHeader.searchOpen #communityTocTitle {
+        display: block;
+    }
+
+    .communitySearchDock,
+    .communitySearchDock.open .communitySearchBar {
+        width: 100%;
+    }
+
+    .communitySearchToggle,
+    .communitySearchControls .uiButton {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .communityTocLink {
+        grid-template-columns: 1fr;
+        gap: 3px;
+    }
+
+    .communityTocDescription {
+        text-align: left;
+    }
+
+    .communityContent {
+        padding: 20px 14px 30px;
+    }
+
+    .communityContent h1 {
+        font-size: 30px;
+    }
+
+    .communityContent h2 {
+        font-size: 25px;
+    }
+
+    .communityContent h4 {
+        margin-left: 10px;
+    }
+
+    .communityCardGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .communityBlock,
+    .communityCard {
+        padding: 14px;
     }
 }

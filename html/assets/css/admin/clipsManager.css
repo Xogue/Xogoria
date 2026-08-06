@@ -342,6 +342,19 @@
     max-height: 260px;
   }
 }
+
+@media (max-width: 600px) {
+  #adminHero { width: calc(100% - 20px); }
+  #adminHero .banner { padding-inline: 16px; font-size: 42px; }
+  .adminWrap { box-sizing: border-box; margin-top: 24px; padding-inline: 0; }
+  .panelBody { padding-inline: 8px; }
+  .clipAdminTabs, .formActions { flex-wrap: wrap; }
+  .clipAdminTabs .tabBtn, .formActions button { min-height: 44px; }
+  .formRow input[type="text"],
+  .formRow input[type="password"],
+  .formRow input[type="date"],
+  .formRow select { box-sizing: border-box; width: 100%; min-height: 44px; }
+}
 .clipDeletionList {
     display: grid;
     gap: 10px;

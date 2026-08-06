@@ -65,3 +65,33 @@
   50%  { transform: scale(1.2); box-shadow: 0 0 16px rgba(255,60,60,1); }
   100% { transform: scale(1); box-shadow: 0 0 8px rgba(255,60,60,0.6); }
 }
+
+@media (max-width: 760px) {
+  #liveBanner {
+    width: calc(100% - 24px);
+    margin-bottom: 36px;
+  }
+
+  #liveBanner .liveInner {
+    gap: 12px;
+    padding: 13px 18px;
+  }
+
+  #liveBanner .liveText {
+    font-size: clamp(28px, 8vw, 42px);
+  }
+}
+
+@media (max-width: 480px) {
+  #liveBanner .liveInner {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #liveBanner .liveCta {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 18px;
+  }
+}
