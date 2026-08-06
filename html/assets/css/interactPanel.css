@@ -584,6 +584,11 @@
         padding: 9px 10px;
     }
 
+    .adminPanel {
+        height: 44px;
+        padding-bottom: 0;
+    }
+
     .adminPanel.active {
         height: auto;
         min-height: 250px;

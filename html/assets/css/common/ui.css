@@ -88,10 +88,67 @@ html {
 }
 
 body {
-    margin: 0px;
+    margin: 0;
     background: transparent;
     font-family: var(--fontBody);
     color: var(--uiText);
+}
+
+/* Inherited component defaults. Descendants only override these when needed. */
+.streamStatusBadge,
+.uiPageTitle,
+.uiTitlePill,
+.uiSubDescription,
+.uiPanel,
+.uiAlert,
+.uiButton,
+.uiTable,
+.favPill,
+.pageButton,
+.pageInfo {
+    font-family: var(--fontDisplay);
+}
+
+/* Shared foundations for reusable controls. */
+.uiPanelLabel,
+.uiButton,
+.searchWrap,
+.favPill {
+    display: inline-block;
+}
+
+.uiPanelLabel,
+.uiButton,
+.pageButton {
+    padding: 6px 12px;
+    border-radius: 10px;
+}
+
+.uiSectionPillHang,
+.favPill,
+.pageButton {
+    border: 1px solid var(--uiBorderDark);
+}
+
+.uiButton,
+.favPill,
+.pageButton {
+    color: var(--uiText);
+    cursor: pointer;
+}
+
+.uiSectionPillHang,
+.clearSearch {
+    cursor: pointer;
+}
+
+/* Shared positioning contexts; position is not inherited. */
+.uiSectionHang,
+.uiSectionPillShelf,
+.uiSectionPillHang,
+.uiPanel,
+.searchWrap {
+    position: relative;
 }
 
 body > * {
@@ -137,11 +194,9 @@ body > * {
     border: 1px solid #1d2630;
     border-radius: 8px;
     background: rgba(21, 21, 21, 0.88);
-    font-family: var(--fontDisplay);
     font-size: 13px;
     line-height: 18px;
     white-space: nowrap;
-    color: var(--uiText);
     pointer-events: none;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
 }
@@ -185,16 +240,19 @@ body > * {
     transform: translateX(-50%);
 }
 
-.uiSetWidth51 {
+.uiSetWidth51,
+.uiSetWidth48,
+.uiSetWidth40 {
     width: calc(100% - var(--uiContentGutter)) !important;
+}
+
+.uiSetWidth51 {
     max-width: clamp(var(--uiContentMobileMax), 72vw, 980px);
 }
 .uiSetWidth48 {
-    width: calc(100% - var(--uiContentGutter)) !important;
     max-width: clamp(var(--uiContentMobileMax), 72vw, 920px);
 }
 .uiSetWidth40 {
-    width: calc(100% - var(--uiContentGutter)) !important;
     max-width: clamp(var(--uiContentMobileMax), 72vw, 768px);
 }
 
@@ -208,26 +266,33 @@ body > * {
    Headings
    ------------------------------ */
 
-#uiPageBanner {
-    position: relative; /* remove large gap so chains can meet headers */
+#uiPageBanner,
+#uiSubBanner {
+    position: relative;
     overflow: visible;
+}
+
+#uiPageBanner {
     width: 900px;
     margin: 40px auto 0 auto; /* allow bolt chains to extend below */
 }
 
-.uiPageTitle {
+.uiPageTitle,
+.uiTitlePill {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
+    line-height: 1;
+    text-align: center;
+}
+
+.uiPageTitle {
     padding: 5px 40px 5px;
     border: 1px solid #406fc9;
     border-radius: 38px;
     background: radial-gradient(circle at 50% -30%, #396bc7 0, #1f3c88 36%, #111b2b 100%);
-    font-family: var(--fontDisplay);
     font-size: clamp(34px, 6.25vw, 70px);
-    line-height: 1;
     letter-spacing: 3px;
-    text-align: center;
     text-shadow: 0 2px 2px #000;
     color: #fff;
     box-shadow:
@@ -246,27 +311,19 @@ body > * {
 }
 
 #uiSubBanner {
-    position: relative;
-    overflow: visible;
     width: 750px;
     margin: 5px auto 0 auto; /* allow bolt chains to extend below */
 }
 
 .uiTitlePill {
-    position: relative;
     display: grid;
-    overflow: hidden;
-    box-sizing: border-box;
     place-items: center;
     height: 42px;
     border: 1px solid #253045;
     border-radius: 22px;
     background: radial-gradient(circle at 50% -90%, #161b23 0, #282e38 42%, #1d1f24 100%);
-    font-family: var(--fontDisplay);
     font-size: 36px;
-    line-height: 1;
     letter-spacing: 2px;
-    text-align: center;
     text-shadow: 0 1px 1px #000;
     color: #98b2e3;
     box-shadow:
@@ -285,46 +342,39 @@ body > * {
     margin: -5px auto 0;
 }
 
-.uiTitlePill > span {
-    font: inherit;
-    letter-spacing: inherit;
-    color: inherit;
-}
-
 .title span {
     color: var(--uiText);
 }
 
-.uiSubDescription {
+.uiSubDescription,
+.uiSectionHang,
+.uiSectionBody {
     width: calc(100% - var(--uiContentGutter));
+}
+
+.uiSubDescription {
     max-width: clamp(var(--uiContentMobileMax), 72vw, 720px);
     margin: 20px auto 12px auto;
-    font-family: var(--fontDisplay);
     font-size: 18px;
     text-align: center;
-    color: #e6eeff;
 }
 
 .uiSectionHang {
-    position: relative;
-    width: calc(100% - var(--uiContentGutter));
     max-width: clamp(var(--uiContentMobileMax), 72vw, 760px);
     margin: 50px auto 28px auto;
     padding-top: calc(var(--chain-inner-h) - var(--chain-attach-offset));
+    text-align: center;
 }
 
 .uiSectionDescription {
     width: 80%;
     margin: 8px auto 0 auto;
-    font-family: var(--fontBody);
     font-size: clamp(20px, 2.44vw, 25px);
     line-height: 1.15;
-    text-align: center;
     color: #c1d3ea;
 }
 
 .uiSectionPillShelf {
-    position: relative;
     z-index: 1;
     display: flex;
     justify-content: space-between;
@@ -336,20 +386,14 @@ body > * {
 }
 
 .uiSectionPillHang {
-    position: relative;
     z-index: 1;
     width: 300px;
     height: 30px;
     margin-top: 20px;
-    border: 1px solid #151515;
     border-radius: 24px;
     background-color: #252525;
-    font-family: var(--fontBody);
     font-size: 20px;
     line-height: 30px;
-    text-align: center;
-    color: #e6eeff;
-    cursor: pointer;
     transition: margin-top 0.5s ease;
 }
 
@@ -391,7 +435,6 @@ body > * {
     height: 30px;
 }
 
-.uiSectionPillHang:not(.active):hover,
 .uiSectionPillHang:not(.active):hover {
     margin-top: 25px;
     background-color: #a9a9a9;
@@ -404,42 +447,31 @@ body > * {
 }
 
 .uiSectionBody {
-    width: calc(100% - var(--uiContentGutter));
     max-width: clamp(var(--uiContentMobileMax), 72vw, 900px);
     margin: 25px auto 40px auto;
-    font-family: var(--fontBody);
     font-size: clamp(18px, 2.44vw, 25px);
     line-height: 1.15;
     text-align: center;
-    color: #e6eeff;
 }
 
 /* ------------------------------
    Panels
    ------------------------------ */
 .uiPanel {
-    position: relative;
     margin: 10px auto 24px auto;
     padding-top: 12px;
 }
 
 .uiPanelLabel {
-    display: inline-block;
     margin-left: 12px;
-    padding: 6px 12px;
     border: 1px solid var(--uiLightBlue);
-    border-radius: 10px;
     background: var(--uiBlue);
-    font-family: var(--fontDisplay);
     font-size: 18px;
-    color: var(--uiText);
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.45);
 }
 
 .uiPanelBody {
     padding: 16px;
-    font-family: var(--fontDisplay);
-    color: var(--uiText);
 }
 
 /* ------------------------------
@@ -450,7 +482,6 @@ body > * {
     margin: 40px auto 0px auto;
     padding: 10px 14px;
     border-radius: 8px;
-    font-family: var(--fontDisplay);
     text-align: center;
 }
 
@@ -470,15 +501,9 @@ body > * {
    Buttons
    ------------------------------ */
 .uiButton {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 10px;
     border: 1px solid transparent;
     background: transparent;
-    font-family: var(--fontDisplay);
     text-decoration: none;
-    color: var(--uiText);
-    cursor: pointer;
 }
 
 .uiButton[disabled] {
@@ -552,13 +577,11 @@ body > * {
     margin: 10px auto;
     border-collapse: separate;
     border-spacing: 0;
-    color: var(--uiText);
 }
 
 .uiTable thead th {
     padding: 10px 12px;
     background: #2f3b52;
-    font-family: var(--fontDisplay);
     text-align: left;
     color: #a9c5ff;
 }
@@ -574,7 +597,6 @@ body > * {
     padding: 8px 12px;
     border-top: 1px solid var(--uiBorderSoft);
     background: var(--uiDarkGrey);
-    font-family: var(--fontDisplay);
     font-size: 13px;
     letter-spacing: 0.5px;
 }
@@ -587,7 +609,6 @@ body > * {
 }
 
 .uiTable .empty {
-    font-family: var(--fontDisplay);
     text-align: center;
     color: var(--uiMuted);
 }
@@ -627,8 +648,6 @@ body > * {
 }
 
 .searchWrap {
-    position: relative;
-    display: inline-block;
     flex: 1 1 auto;
 }
 
@@ -642,7 +661,6 @@ body > * {
     font-size: 18px;
     line-height: 1;
     color: #985555;
-    cursor: pointer;
     transform: translateY(-50%);
 }
 
@@ -651,24 +669,20 @@ body > * {
 }
 
 .favPill {
-    display: inline-block;
     min-width: 170px;
     height: 30px;
     padding: 0 16px;
-    border: 1px solid #151515;
     border-radius: 18px;
-    background: #1f1f1f;
-    font-family: var(--fontDisplay);
+    background: var(--uiDarkerGrey);
     font-size: 16px;
     line-height: 30px;
     letter-spacing: 1px;
     text-align: center;
-    color: #e6eeff;
-    cursor: pointer;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28);
 }
 
-.favPill:hover {
+.favPill:hover,
+.pageButton:hover {
     background: #4a4a4a;
 }
 .favPill.active {
@@ -687,21 +701,10 @@ body > * {
 }
 
 .pageButton {
-    padding: 6px 12px;
-    border: 1px solid #151515;
-    border-radius: 10px;
     background: #393e48;
-    font-family: var(--fontDisplay);
-    color: #e6eeff;
-    cursor: pointer;
-}
-
-.pageButton:hover {
-    background: #4a4a4a;
 }
 
 .pageInfo {
-    font-family: var(--fontDisplay);
     text-align: center;
     color: #a9c5ff;
 }
