@@ -1,9 +1,4 @@
-.uiSubDescription {
-  width: 25%;
-}
-
 .uiSectionBody {
-  width: 45%;
   text-align: left;
 }
 
@@ -67,11 +62,6 @@
 }
 
 @media (max-width: 1024px) {
-  .uiSubDescription,
-  .uiSectionBody {
-    width: min(72%, 900px);
-  }
-
   .uiSectionFloatShelf {
     width: 100%;
     grid-template-columns: repeat(2, minmax(140px, 1fr));
@@ -84,11 +74,6 @@
 }
 
 @media (max-width: 700px) {
-  .uiSubDescription,
-  .uiSectionBody {
-    width: calc(100% - 24px);
-  }
-
   .example,
   .uiSectionFloatShelf {
     width: 100%;

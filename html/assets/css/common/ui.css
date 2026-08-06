@@ -77,6 +77,8 @@
 
     /* Element Sizes */
     --chain-attach-offset: 217px; /* small tuck under pill tops */
+    --uiContentGutter: 24px;
+    --uiContentMobileMax: 676px; /* 700px breakpoint minus both 12px gutters */
 }
 
 /* ------------------------------
@@ -189,13 +191,16 @@ body > * {
 }
 
 .uiSetWidth51 {
-    width: 51% !important;
+    width: calc(100% - var(--uiContentGutter)) !important;
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 980px);
 }
 .uiSetWidth48 {
-    width: 48% !important;
+    width: calc(100% - var(--uiContentGutter)) !important;
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 920px);
 }
 .uiSetWidth40 {
-    width: 40% !important;
+    width: calc(100% - var(--uiContentGutter)) !important;
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 768px);
 }
 
 /* ------------------------------
@@ -224,7 +229,7 @@ body > * {
     border-radius: 38px;
     background: radial-gradient(circle at 50% -30%, #396bc7 0, #1f3c88 36%, #111b2b 100%);
     font-family: var(--fontDisplay);
-    font-size: 70px;
+    font-size: clamp(34px, 6.25vw, 70px);
     line-height: 1;
     letter-spacing: 3px;
     text-align: center;
@@ -296,7 +301,8 @@ body > * {
 }
 
 .uiSubDescription {
-    width: 50%;
+    width: calc(100% - var(--uiContentGutter));
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 720px);
     margin: 20px auto 12px auto;
     font-family: var(--fontDisplay);
     font-size: 18px;
@@ -306,7 +312,8 @@ body > * {
 
 .uiSectionHang {
     position: relative;
-    width: 32%;
+    width: calc(100% - var(--uiContentGutter));
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 760px);
     margin: 50px auto 28px auto;
     padding-top: calc(var(--chain-inner-h) - var(--chain-attach-offset));
 }
@@ -315,8 +322,8 @@ body > * {
     width: 80%;
     margin: 8px auto 0 auto;
     font-family: var(--fontBody);
-    font-size: 25px;
-    line-height: 28px;
+    font-size: clamp(20px, 2.44vw, 25px);
+    line-height: 1.15;
     text-align: center;
     color: #c1d3ea;
 }
@@ -327,8 +334,8 @@ body > * {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    width: 70%;
-    min-width: 500px;
+    width: 100%;
+    min-width: 0;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -402,12 +409,12 @@ body > * {
 }
 
 .uiSectionBody {
-    width: 35%;
-    max-width: 1000px;
+    width: calc(100% - var(--uiContentGutter));
+    max-width: clamp(var(--uiContentMobileMax), 72vw, 900px);
     margin: 25px auto 40px auto;
     font-family: var(--fontBody);
-    font-size: 20px;
-    line-height: 25px;
+    font-size: clamp(18px, 2.44vw, 25px);
+    line-height: 1.15;
     text-align: center;
     color: #e6eeff;
 }
@@ -714,25 +721,6 @@ body > * {
         width: min(750px, calc(100% - 32px));
     }
 
-    .uiSubDescription {
-        width: min(72%, 720px);
-    }
-
-    .uiSectionHang,
-    .uiSetWidth51,
-    .uiSetWidth48,
-    .uiSetWidth40 {
-        width: min(72%, 760px) !important;
-    }
-
-    .uiSectionBody {
-        width: min(72%, 900px);
-    }
-
-    .uiSectionPillShelf {
-        width: 100%;
-        min-width: 0;
-    }
 }
 
 @media (max-width: 700px) {
@@ -751,7 +739,6 @@ body > * {
     .uiPageTitle {
         padding: 10px 16px;
         border-radius: 26px;
-        font-size: clamp(34px, 11vw, 48px);
         line-height: 1.05;
         letter-spacing: 1px;
     }
@@ -765,13 +752,17 @@ body > * {
         letter-spacing: 1px;
     }
 
+    .uiSectionHang > .uiTitlePill {
+        top: auto;
+    }
+
     .uiSubDescription,
     .uiSectionHang,
     .uiSetWidth51,
     .uiSetWidth48,
     .uiSetWidth40,
     .uiSectionBody {
-        width: calc(100% - 24px) !important;
+        width: calc(100% - var(--uiContentGutter)) !important;
     }
 
     .uiSectionHang {
@@ -780,14 +771,9 @@ body > * {
         padding-top: 0;
     }
 
-    .uiSectionHang > .uiTitlePill {
-        top: auto;
-    }
-
     .uiSectionDescription {
         width: calc(100% - 16px);
-        font-size: 20px;
-        line-height: 1.3;
+        line-height: 1.2;
     }
 
     .uiSectionPillShelf {
@@ -806,21 +792,20 @@ body > * {
         line-height: 1.15;
     }
 
-    .uiSectionPillHang.active,
-    .uiSectionPillHang:not(.active):hover {
-        margin-top: 0;
-    }
-
     .uiSectionPillHang::before,
     .uiSectionPillHang::after {
         display: none;
     }
 
+    .uiSectionPillHang.active,
+    .uiSectionPillHang:not(.active):hover {
+        margin-top: 0;
+    }
+
     .uiSectionBody {
-        box-sizing: border-box;
         overflow-x: auto;
-        font-size: 18px;
-        line-height: 1.4;
+        box-sizing: border-box;
+        line-height: 1.3;
     }
 
     .uiTable {
@@ -828,8 +813,8 @@ body > * {
     }
 
     .controls {
-        align-items: stretch;
         flex-direction: column;
+        align-items: stretch;
         gap: 8px;
     }
 
@@ -861,8 +846,8 @@ body > * {
     .streamStatusBadge {
         top: 8px;
         left: 8px;
-        max-width: min(170px, calc(50vw - 12px));
         overflow: hidden;
+        max-width: min(170px, calc(50vw - 12px));
         text-overflow: ellipsis;
     }
 }

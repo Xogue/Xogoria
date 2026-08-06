@@ -2,10 +2,6 @@
     --jsBoltChainLength: 15px;
 }
 
-.uiSubDescription {
-    width: 25%;
-}
-
 .chapter .uiLeftBolt {
     top: 17px;
     left: 8px;
@@ -192,20 +188,12 @@ hr {
 }
 
 @media (max-width: 1024px) {
-    .uiSubDescription {
-        width: min(72%, 720px);
-    }
-
     .timeline {
         min-width: 0;
     }
 }
 
 @media (max-width: 700px) {
-    .uiSubDescription {
-        width: calc(100% - 24px);
-    }
-
     .chapterLink,
     .subChapterLink {
         min-height: 44px;
