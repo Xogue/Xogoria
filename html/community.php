@@ -1,7 +1,7 @@
 <?php
     require_once __DIR__ . "/includes/session.php";
 
-    $cssAssets = [ "ui", "header", "nav", "live", "community" ];
+    $cssAssets = [ "ui", "compatibility", "fonts", "variables", "header", "nav", "live", "community" ];
     $jsAssets = [ "jquery", "ui", "community" ];
     $communityHtml = $services->communityContentManager( )->render( );
 ?>

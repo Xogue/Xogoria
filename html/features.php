@@ -1,7 +1,7 @@
 <?php
     require_once __DIR__ . "/includes/session.php";
 
-    $cssAssets = [ "ui", "header", "nav", "live", "features" ];
+    $cssAssets = [ "ui", "compatibility", "fonts", "variables", "header", "nav", "live", "features" ];
     $jsAssets = [ "jquery", "ui", "features" ];
 
     $gameManager = $webController->getGameManager( );

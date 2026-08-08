@@ -1,5 +1,5 @@
 #header {
-	background-image: url("../../_media/images/headerBack.png");
+	background-image: var(--headerBack);
 	height: 219px;
 	width: 100%;
 	position: relative;
@@ -26,7 +26,7 @@
     width: var(--x-size);
     height: var(--x-size);
     transform: translate(-50%, -50%);
-    background-image: url("../../_media/images/headerLogo.png");
+    background-image: var(--headerLogo);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -86,10 +86,10 @@
     transform: translate(50%, -50%);
 }
 
-#twitch { background-image: url("../../_media/images/twitchLogo.png"); }
-#youtube { background-image: url("../../_media/images/youtubeLogo.png"); }
-#patreon { background-image: url("../../_media/images/patreonLogo.png"); }
-#discord { background-image: url("../../_media/images/discordLogo.png"); }
+#twitch { background-image: var(--twitchLogo); }
+#youtube { background-image: var(--youtubeLogo); }
+#patreon { background-image: var(--patreonLogo); }
+#discord { background-image: var(--discordLogo); }
 
 .headerFeatureLinks {
     position: absolute;
@@ -135,58 +135,3 @@
     box-shadow: inset 0 1px 0 #e4efffaa, inset 0 -3px 6px #102c6266, 0 0 10px #5080ea66, 0 3px 8px rgba(0, 0, 0, .6);
 }
 
-@media (max-width: 760px) {
-    .headerFeatureLinks { gap: clamp(80px, 25vw, 190px); width: calc(100% - 20px); }
-    .headerFeatureLink { font-size: 14px; padding-inline: 8px; }
-}
-
-@media (max-width: 600px) {
-    #header {
-        height: 245px;
-    }
-
-    #circleLogo {
-        --x-size: 150px;
-        top: 0;
-    }
-
-    .socialLink {
-        position: absolute;
-        top: 78px;
-        width: 44px;
-        height: 44px;
-        margin: 0;
-        padding: 0;
-        border-radius: 50%;
-        font-size: 0;
-    }
-
-    .socialLink > div {
-        top: 50%;
-        right: auto;
-        left: 50%;
-        width: 44px;
-        height: 44px;
-        transform: translate(-50%, -50%);
-    }
-
-    #circleLogo > .socialLink:nth-of-type(1) { right: auto; top: 66px; left: 18px; }
-    #circleLogo > .socialLink:nth-of-type(2) { right: auto; top: 118px; left: 18px; }
-    #circleLogo > .socialLink:nth-of-type(3) { right: 18px; top: 66px; left: auto; }
-    #circleLogo > .socialLink:nth-of-type(4) { right: 18px; top: 118px; left: auto; }
-
-    .headerFeatureLinks {
-        top: 190px;
-        width: calc(100% - 24px);
-        gap: 10px;
-    }
-
-    .headerFeatureLink {
-        display: grid;
-        min-height: 38px;
-        padding: 5px 8px;
-        place-items: center;
-        white-space: normal;
-        line-height: 1.05;
-    }
-}

@@ -1,0 +1,46 @@
+:root {
+    /* Fonts */
+    --fontBody: "britanic", sans-serif;
+    --fontDisplay: "bronic", sans-serif;
+    --fontAccent: "skranji", sans-serif;
+    --fontMono: "syne", monospace;
+
+    /* Color Palette */
+    --uiText: #e6eeff;
+    --uiMuted: #98a9c9;
+
+    --uiAlmostBlack: #151515;
+    --uiDarkerGrey: #1f1f1f;
+    --uiDarkGrey: #242b33;
+    --uiMediumGrey: #29313c;
+    --uiMediumLightGrey: #313b4c;
+
+    --uiBorderDark: #151515;
+    --uiBorderSoft: #00000055;
+
+    --uiBlue: #2f5eb6;
+    --uiLightBlue: #5080ea;
+
+    --uiGreenBg: #183c22;
+    --uiGreenBorder: #2b7a3d;
+    --uiGreenText: #b8f2c6;
+
+    --uiRedBg: #3c1818;
+    --uiRedBorder: #7a2b2b;
+    --uiRedText: #f2b8b8;
+
+    /* Image URLs */
+    --pageBack: url("../../_media/images/pageBack.png");
+    --chainImg: url("../../_media/images/chain.png");
+    --headerBack: url("../../_media/images/headerBack.png");
+    --headerLogo: url("../../_media/images/headerLogo.png");
+    --twitchLogo: url("../../_media/images/twitchLogo.png");
+    --youtubeLogo: url("../../_media/images/youtubeLogo.png");
+    --patreonLogo: url("../../_media/images/patreonLogo.png");
+    --discordLogo: url("../../_media/images/discordLogo.png");
+
+    /* Element Sizes */
+    --chain-attach-offset: 217px; /* small tuck under pill tops */
+    --uiContentGutter: 24px;
+    --uiContentMobileMax: 676px; /* 700px breakpoint minus both 12px gutters */
+}
