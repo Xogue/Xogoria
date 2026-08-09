@@ -6,7 +6,4 @@
 <!-- FONTS -->
 <link rel="preload" href="/assets/_media/fonts/britanic.ttf" as="font" type="font/ttf" crossorigin>
 
-<!-- REVERSIBLE EXPERIMENT: remove this link to restore decorative chains and plates. -->
-<link rel="stylesheet" href="/assets/css/experiments/chainless.css?v=1">
-
 <title>Xogoria</title>

@@ -1,180 +1,63 @@
-/* =========================================
-   Stream Clips / BRB Overlay Page
-   ========================================= */
+.clipBody                            { padding: 10px 11px 12px; }
+#clipsContent                        { margin-top: 10px; }
+.clipsRoot.loading                   { opacity: 0.65; }
+.thumbOverlay .date                  { color: #c1d3ea; }
+.thumbOverlay .views                 { color: #ffd15c; }
+.clipCard:hover .thumbWrap img       { transform: scale(1.025); }
+.clipsModeToggle .modeBtn.active     { color: var(--uiAlmostBlack); }
+.clipsModeToggle .uiSectionPillShelf { max-width: 640px; }
 
-.page-brb_clips {
-    margin-bottom: 80px;
-}
-
-/* -----------------------------------------
-   Hero banner
-   ----------------------------------------- */
-#clipsHero .banner {
-    position: relative;
-    padding: 8px 40px 14px 40px;
-    border-radius: 55px;
-    background: #1f3c88;
-    font-family: "bronic", sans-serif;
-    text-align: center;
-    text-shadow:
-        -1px 0 1px #000,
-        0 1px 1px #000,
-        1px 0 1px #000,
-        0 -1px 1px #000;
-    color: #fff;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
-}
-
-#clipsHero .banner::after {
-    position: absolute;
-    left: 50%;
-    bottom: 12px;
-    width: 68%;
-    height: 5px;
-    border-radius: 3px;
-    background: #4d7fe7;
-    content: "";
-    opacity: 0.9;
-    transform: translateX(-50%);
-}
-
-#clipsHero .titleText {
-    display: block;
-    font-size: 70px;
-    letter-spacing: 3px;
-}
-
-#clipsHero .subtitleText {
-    display: block;
-    margin-top: 4px;
-    font-family: "fr-bold", sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
-    color: #c1d3ea;
-}
-
-/* -----------------------------------------
-   Content + controls
-   ----------------------------------------- */
-#clipsContent {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    min-width: 500px;
-    margin: 28px auto 80px auto;
-}
-
-.clipsIntro {
-    width: 75%;
-    margin: 0 auto 20px auto;
-    font-family: "fr-bold", sans-serif;
-    font-size: 18px;
-    text-align: center;
-    color: #c1d3ea;
-}
-
-.clipsIntro p {
-    margin: 0;
-}
-
-.clipsModeToggle {
+.clipCard {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.clipsModeToggle .modeBtn {
-    min-width: 170px;
-    padding: 8px 22px;
-    border-radius: 999px;
-    border: 1px solid #151515;
-    background: #252525;
-    font-family: "bronic", sans-serif;
-    font-size: 18px;
-    letter-spacing: 1px;
-    color: #c1d3ea;
+    overflow: hidden;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid var(--uiBorderSoft);
+    border-radius: 14px;
+    background: var(--uiDarkGrey);
+    text-align: left;
     cursor: pointer;
     transition:
-        background 0.2s ease,
-        color 0.2s ease,
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease,
         transform 0.15s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 3px 9px #0007;
 }
 
-.clipsModeToggle .modeBtn.active {
-    background: #4d7fe7;
-    color: #fff;
+.clipCard:hover {
+    border-color: #406fc9;
+    background: var(--uiMediumGrey);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px #000a;
 }
 
-.clipsModeToggle .modeBtn:not(.active):hover {
-    background: #30333c;
-    transform: translateY(-1px);
+.clipCard.current {
+    border-color: var(--uiLightBlue);
+    background: var(--uiMediumLightGrey);
+    box-shadow:
+        0 0 0 1px var(--uiLightBlue),
+        0 6px 14px #000b;
 }
 
-/* -----------------------------------------
-   Clips container / cards
-   ----------------------------------------- */
-.clipsRoot {
-    padding: 16px 18px 22px 18px;
-    border-radius: 22px;
-    border: 1px solid #101010;
-    background: #151515;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-}
-
-.clipsRoot.loading {
-    opacity: 0.7;
-}
-
-.overlayPlayer {
-    position: relative;
+.clipMeta {
     overflow: hidden;
-    width: 100%;
-    margin-bottom: 18px;
-    border-radius: 18px;
-    background: #000;
-    aspect-ratio: 16 / 9;
-}
-
-.overlayPlayer iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-.overlayTitleBar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 2;
-    padding: 6px 12px 8px 12px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.05));
-    font-family: "fr-bold", sans-serif;
-    font-size: 15px;
-    letter-spacing: 0.4px;
-    color: #e6eeff;
-    pointer-events: none;
-}
-
-.overlayTitleBar .overlayTitle {
-    overflow: hidden;
+    font-size: 12px;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: var(--uiMuted);
 }
 
-.overlayFallback {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "bronic", sans-serif;
-    font-size: 24px;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-    color: #e6eeff;
+.clipsRoot {
+    box-sizing: border-box;
+    padding: 18px;
+    border: 1px solid #253045;
+    border-radius: 22px;
+    background: radial-gradient(circle at 50% -20%, #29313c 0, #1f1f1f 42%, #151515 100%);
+    transition: opacity 0.2s ease;
+    box-shadow:
+        inset 0 0 16px #0006,
+        0 8px 24px #0007;
 }
 
 .clipsGrid {
@@ -183,118 +66,152 @@
     gap: 16px;
 }
 
-.clipCard {
-    display: flex;
-    overflow: hidden;
-    flex-direction: column;
-    border-radius: 14px;
-    background: #252525;
-    cursor: pointer;
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.2s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
-}
-
-.clipCard:hover {
-    background: #2b2b33;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.65);
-}
-
-.clipCard.current {
-    background: #2f3744;
-    box-shadow:
-        0 0 0 2px #4d7fe7,
-        0 6px 14px rgba(0, 0, 0, 0.75);
-}
-
 .thumbWrap {
-    position: relative; /* 16:9 */
+    position: relative;
     overflow: hidden;
     width: 100%;
-    padding-top: 56.25%;
     background: #000;
-}
-
-.thumbWrap img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.thumbPlaceholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 30% 30%, #2b2f3a 0, #151515 55%, #000 100%);
-    font-family: "fr-bold", sans-serif;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #c1d3ea;
-}
-
-.thumbOverlay {
-    position: absolute;
-    inset: auto 0 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 8px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.05));
-    font-family: "fr-bold", sans-serif;
-    font-size: 12px;
-    color: #e6eeff;
-}
-
-.thumbOverlay .views {
-    color: #ffd15c;
-}
-
-.thumbOverlay .date {
-    color: #c1d3ea;
-}
-
-.clipBody {
-    padding: 8px 10px 10px 10px;
+    aspect-ratio: 16 / 9;
 }
 
 .clipTitle {
-    margin: 0 0 4px 0;
-    font-family: "fr-bold", sans-serif;
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0 0 5px;
+    font-family: var(--fontBody);
     font-size: 15px;
-    color: #f3f5ff;
-}
-
-.clipMeta {
-    font-family: "fr-bold", sans-serif;
-    font-size: 12px;
-    color: #9fb1d4;
+    line-height: 1.15;
+    color: var(--uiText);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .clipsEmpty,
 .clipsError {
     grid-column: 1 / -1;
-    padding: 12px 0;
-    font-family: "fr-bold", sans-serif;
+    padding: 24px 12px;
     text-align: center;
-    color: #c1d3ea;
+    color: var(--uiMuted);
 }
 
+.thumbOverlay {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 8px 5px;
+    background: linear-gradient(to top, #000e, transparent);
+    font-size: 12px;
+}
 
-/* -----------------------------------------
-   OBS overlay variant
-   ----------------------------------------- */
+.overlayPlayer {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 18px;
+    border: 1px solid #406fc9;
+    border-radius: 16px;
+    background: #000;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 5px 16px #000a;
+}
+
+.thumbWrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.overlayTitleBar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    overflow: hidden;
+    padding: 8px 12px 18px;
+    background: linear-gradient(to bottom, #000d, transparent);
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--uiText);
+    pointer-events: none;
+}
+
+.overlayFallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--fontDisplay);
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: var(--uiText);
+}
+
+.thumbPlaceholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 30% 30%, #313b4c 0, #1f1f1f 58%, #151515 100%);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--uiMuted);
+}
+
+.overlayPlayer iframe,
+.overlayPlayer video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.clipsModeToggle .modeBtn {
+    box-sizing: border-box;
+    padding: 0 16px;
+    font-family: var(--fontBody);
+    color: var(--uiText);
+}
+
+@media (max-width: 700px) {
+    .clipsModeToggle .uiSectionPillShelf { gap: 8px; }
+
+    .clipsRoot {
+        padding: 10px;
+        border-radius: 16px;
+    }
+
+    .overlayPlayer {
+        margin-bottom: 12px;
+        border-radius: 11px;
+    }
+
+    .clipsModeToggle .modeBtn {
+        width: 50%;
+        min-width: 0;
+        height: auto;
+        min-height: 44px;
+        margin-top: 0;
+        line-height: 1.05;
+    }
+}
+
+body.overlay-brb_clips .clipsGrid            { display: none; }
+body.overlay-brb_clips .overlayTitleBar      { font-size: 20px; }
+body.overlay-brb_clips > :not(#clipsContent) { display: none; }
+body.overlay-brb_clips .overlayStopBtn:hover { background: #3b6cd0; }
+/* Kept for the player script's full-screen OBS mode. */
+
 body.overlay-brb_clips {
     overflow: hidden;
     margin: 0;
@@ -302,44 +219,36 @@ body.overlay-brb_clips {
     background: transparent;
 }
 
-body.overlay-brb_clips #clipsHero,
-body.overlay-brb_clips .clipsIntro,
-body.overlay-brb_clips .clipsModeToggle {
-    display: none;
-}
-
 body.overlay-brb_clips #clipsContent {
+    width: 100vw !important;
     max-width: none;
-    min-width: 0;
-    width: 100vw;
     height: 100vh;
     margin: 0;
     padding: 0;
 }
 
-body.overlay-brb_clips .clipsRoot {
+body.overlay-brb_clips .clipsRoot,
+body.overlay-brb_clips .overlayPlayer {
     width: 100%;
     height: 100%;
+    margin: 0;
     padding: 0;
+    border: 0;
     border-radius: 0;
-    border: none;
     background: transparent;
     box-shadow: none;
 }
 
-body.overlay-brb_clips .overlayPlayer {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    border-radius: 0;
-}
-
-body.overlay-brb_clips .overlayTitleBar {
-    font-size: 20px;
-}
-
-body.overlay-brb_clips .clipsGrid {
-    display: none;
+body.overlay-brb_clips .overlayStopBtn {
+    padding: 6px 14px;
+    border: 1px solid var(--uiLightBlue);
+    border-radius: 18px;
+    background: var(--uiBlue);
+    font-family: var(--fontBody);
+    font-size: 16px;
+    color: var(--uiText);
+    cursor: pointer;
+    box-shadow: 0 2px 6px #0008;
 }
 
 body.overlay-brb_clips .overlayControls {
@@ -347,20 +256,4 @@ body.overlay-brb_clips .overlayControls {
     right: 16px;
     bottom: 16px;
     z-index: 5;
-}
-
-body.overlay-brb_clips .overlayStopBtn {
-    padding: 6px 14px;
-    border: 1px solid #5080ea;
-    border-radius: 18px;
-    background: #2f5eb6;
-    font-family: "fr-bold", sans-serif;
-    font-size: 16px;
-    color: #e6eeff;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-body.overlay-brb_clips .overlayStopBtn:hover {
-    background: #3b6cd0;
 }

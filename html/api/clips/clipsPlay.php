@@ -3,7 +3,8 @@ require_once dirname( __DIR__ ) . "/../includes/session.php";
 $clipManager = new ServiceFactory( )->clipManager( );
 
 $method = $_SERVER[ "REQUEST_METHOD" ] ?? "GET";
-$clipId = $method === "POST" ? $_POST[ "clip_id" ] ?? "" : $_GET[ "clip_id" ] ?? "";
+$input = $method === "POST" ? $_POST : $_GET;
+$clipId = $input[ "clipId" ] ?? $input[ "clip_id" ] ?? "";
 $clipId = trim( (string) $clipId );
 
 if ( $clipId === "" ) {

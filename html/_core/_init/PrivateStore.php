@@ -33,6 +33,14 @@ final class PrivateStore {
     public function getClientSecret( )  : string { return $this->data[ "twitch" ][ "clientSecret" ] ?? ""; }
     public function getTwitchToken( )   : string { return $this->data[ "twitch" ][ "token" ] ?? ""; }
     public function getTwitchEditorId( ): string { return (string) ( $this->data[ "twitch" ][ "editorId" ] ?? $this->getSenderId( ) ); }
+    // Backblaze
+    public function backblazeKeyId( ): string { return $this->data[ "backblaze" ][ "key" ] ?? ""; }
+    public function backblazeApplicationKey( ): string { return $this->data[ "backblaze" ][ "applicationKey" ] ?? ""; }
+    public function backblazeBucket( ): string { return $this->data[ "backblaze" ][ "bucket" ] ?? ""; }
+    public function backblazePublicBaseUrl( ): string { return $this->data[ "backblaze" ][ "publicBaseUrl" ] ?? ""; }
+    public function backblazeAuthorizeUrl( ): string { return $this->data[ "backblaze" ][ "authorizeUrl" ] ?? ""; }
+    public function backblazeListBucketUrl( ): string { return $this->data[ "backblaze" ][ "listBucketUrl" ] ?? ""; }
+    public function backblazeUploadUrl( ): string { return $this->data[ "backblaze" ][ "uploadUrl" ] ?? ""; }
     // Redis
     public function redisHost( ): string { return $this->data[ "redis" ][ "host" ] ?? "localhost"; }
     public function redisPort( ): int    { return $this->data[ "redis" ][ "port" ] ?? 6379; }

@@ -23,7 +23,17 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({...payload, csrfToken})
         });
-        const body = await response.json().catch(() => ({success: false, message: 'Invalid server response.'}));
+        const responseText = await response.text();
+        let body;
+        try {
+            body = JSON.parse(responseText);
+        } catch (_) {
+            const looksLikeLogin = response.redirected || response.headers.get('content-type')?.includes('text/html');
+            const sessionHint = looksLikeLogin || response.status === 401 || response.status === 403 || response.status === 419
+                ? ' Your admin session may have expired; refresh the page and sign in again.'
+                : '';
+            throw new Error(`The server returned an unreadable response (HTTP ${response.status}).${sessionHint}`);
+        }
         if (!response.ok || body.success === false) throw new Error(body.message || 'Admin request failed.');
         return body;
     };
@@ -141,6 +151,7 @@
     if (communityEditor) {
         const status = document.getElementById('communityEditorStatus');
         let savedSource = communityEditor.value;
+        let savedRevision = communityEditor.dataset.revision || '';
         const editorSnapshot = () => ({
             value: communityEditor.value,
             start: communityEditor.selectionStart,
@@ -270,8 +281,10 @@
             const button = buttonEvent.currentTarget;
             button.disabled = true;
             try {
-                const result = await request({domain: 'community', action: 'save', source: communityEditor.value});
+                const result = await request({domain: 'community', action: 'save', source: communityEditor.value, revision: savedRevision});
                 savedSource = communityEditor.value;
+                savedRevision = result.revision;
+                communityEditor.dataset.revision = savedRevision;
                 updateEditorStatus();
                 document.getElementById('communityPreview').innerHTML = result.html;
                 document.getElementById('communityPreviewPanel').hidden = false;

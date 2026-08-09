@@ -37,10 +37,19 @@ final class ClipDeletionRegistry {
         }
 
         $this->logger->warning( "Clip deletion requested", [
-            "clip_id" => $clipId,
-            "requested_by" => $requestedBy,
+            "clipId" => $clipId,
+            "requestedBy" => $requestedBy,
         ] );
 
         return $record;
+    }
+
+    public function remove( string $clipId ): bool {
+        $records = $this->all( );
+        if ( !array_key_exists( $clipId, $records ) ) {
+            return true;
+        }
+        unset( $records[ $clipId ] );
+        return safeWriteJson( self::PATH, $records );
     }
 }

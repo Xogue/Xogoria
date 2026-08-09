@@ -24,7 +24,7 @@ final class AssetManager {
                     "file" => $key . ".css",
                 ] );
 
-                return;
+                continue;
             }
 
             $cssPath .= $this->addCacheBuster( $cssPath );
@@ -43,7 +43,7 @@ final class AssetManager {
                     "file" => $key . ".js",
                 ] );
 
-                return;
+                continue;
             }
             $jsPath .= $this->addCacheBuster( $jsPath );
             echo $this->getJsLine( $jsPath );

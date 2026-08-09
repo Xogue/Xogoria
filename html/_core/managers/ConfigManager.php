@@ -40,6 +40,7 @@ class ConfigManager {
     public function getMessageUrl( ) { return $this->configStore->getMessageUrl( ); }
     public function getUsersUrl( ) { return $this->configStore->getUsersUrl( ); }
     public function getClipsUrl( ) { return $this->configStore->getClipsUrl( ); }
+    public function getClipDownloadUrl( ) { return $this->configStore->getClipDownloadUrl( ); }
     public function getCodeQuery( ) { return $this->configStore->getCodeQuery( ); }
     public function getGameData( ) { return $this->configStore->getGameData( ); }
 

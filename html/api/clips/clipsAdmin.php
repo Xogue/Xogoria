@@ -26,10 +26,18 @@ try {
         ApiController::error( "A clip ID is required.", 422 );
     }
 
+    if ( $action === "normalizeAudio" || $action === "approve" ) {
+        set_time_limit( 300 );
+    }
+
     $result = match ( $action ) {
-        "approve" => [ "success" => $manager->approve( $clipId, (array) ( $input[ "clip" ] ?? [ ] ) ) ],
+        "approve" => [
+            "success" => true,
+        ] + $manager->approve( $clipId, (array) ( $input[ "clip" ] ?? [ ] ) ),
         "ignore" => [ "success" => $manager->ignore( $clipId ) ],
+        "restore" => [ "success" => $manager->restore( $clipId ) ],
         "save" => [ "success" => $manager->save( $clipId, (array) ( $input[ "data" ] ?? [ ] ) ) ],
+        "normalizeAudio" => [ "success" => true, "clip" => $manager->normalizeAudio( $clipId ) ],
         "requestDeletion" => [
             "success" => true,
             "deletion" => $manager->requestDeletion(
@@ -45,6 +53,9 @@ try {
     ApiController::sendJson( $result );
 } catch ( InvalidArgumentException $error ) {
     ApiController::error( $error->getMessage( ), 422 );
+} catch ( RuntimeException $error ) {
+    $services->logger( Logger::CHANNEL_API )->exception( $error, [ "endpoint" => "clipsAdmin" ] );
+    ApiController::error( $error->getMessage( ), 500 );
 } catch ( Throwable $error ) {
     $services->logger( Logger::CHANNEL_API )->exception( $error, [ "endpoint" => "clipsAdmin" ] );
     ApiController::error( "The clip operation could not be completed.", 500 );

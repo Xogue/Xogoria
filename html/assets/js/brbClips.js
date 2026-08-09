@@ -16,8 +16,61 @@ $(function () {
   var rotationIndex = 0;
   var playedSession = {};
   var rotateHandle = null;
+  var rotateDeadline = 0;
+  var rotateRemainingMs = null;
+  var rotateNext = null;
+  var rotationTimerPaused = false;
   var rotationStopped = false;
   var currentClipId = null;
+
+  function scheduleRotation(delayMs) {
+    rotateRemainingMs = Math.max(0, delayMs);
+    if (rotationStopped || rotationTimerPaused || !rotateNext) return;
+
+    rotateDeadline = Date.now() + rotateRemainingMs;
+    rotateHandle = setTimeout(function () {
+      rotateHandle = null;
+      rotateDeadline = 0;
+      rotateRemainingMs = null;
+      rotateNext();
+    }, rotateRemainingMs);
+  }
+
+  function pauseRotationTimer() {
+    if (rotationStopped || rotationTimerPaused) return;
+    rotationTimerPaused = true;
+
+    if (rotateHandle) {
+      rotateRemainingMs = Math.max(0, rotateDeadline - Date.now());
+      clearTimeout(rotateHandle);
+      rotateHandle = null;
+      rotateDeadline = 0;
+    }
+  }
+
+  function resumeRotationTimer() {
+    if (rotationStopped || !rotationTimerPaused) return;
+    rotationTimerPaused = false;
+
+    if (rotateRemainingMs !== null) {
+      scheduleRotation(rotateRemainingMs);
+    }
+  }
+
+  function bindRotationTimerToVideo(video) {
+    if (!video || !autoplayEnabled) return;
+
+    video.addEventListener('pause', function () {
+      if ($player.find('video')[0] === video && !video.ended) {
+        pauseRotationTimer();
+      }
+    });
+    video.addEventListener('play', function () {
+      if ($player.find('video')[0] === video) {
+        resumeRotationTimer();
+      }
+    });
+  }
 
   function getQueryParam(name) {
     var search = window.location.search || '';
@@ -80,11 +133,11 @@ $(function () {
 
     var html = '';
     clips.forEach(function (c, idx) {
-      var thumb = thumbUrl(c.thumbnail_url);
-      var views = typeof c.view_count === 'number'
-        ? c.view_count
-        : parseInt(c.view_count || '0', 10) || 0;
-      var created = c.created_at || '';
+      var thumb = thumbUrl(c.thumbnailUrl);
+      var views = typeof c.viewCount === 'number'
+        ? c.viewCount
+        : parseInt(c.viewCount || '0', 10) || 0;
+      var created = c.createdAt || '';
       var dateStr = created ? created.substring(0, 10) : '';
 
       html += '<article class="clipCard" data-index="' + idx + '" data-id="' + c.id + '">' +
@@ -92,7 +145,7 @@ $(function () {
 
       if (thumb) {
         html += '<img src="' + thumb + '" alt="Clip thumbnail">';
-      } else if (c.has_local_file && c.local_url) {
+      } else if (c.hasLocalFile && c.localUrl) {
         html += '<div class="thumbPlaceholder">Stored clip</div>';
       }
 
@@ -106,8 +159,8 @@ $(function () {
       html += '</div>' + // thumbOverlay
         '</div>' +       // thumbWrap
         '<div class="clipBody">' +
-        '<h3 class="clipTitle">' + escapeHtml(c.display_title || c.title || 'Untitled clip') + '</h3>' +
-        '<div class="clipMeta">' + escapeHtml(c.creator_name || '') + '</div>' +
+        '<h3 class="clipTitle">' + escapeHtml(c.displayTitle || c.title || 'Untitled clip') + '</h3>' +
+        '<div class="clipMeta">' + escapeHtml(c.creatorName || '') + '</div>' +
         '</div>' +
         '</article>';
     });
@@ -147,18 +200,19 @@ $(function () {
 
   function setPlayerForClip(clip) {
     if (!$player.length || !clip || !clip.id) return;
-    var hasLocal = clip.has_local_file && clip.local_url;
+    var hasLocal = clip.hasLocalFile && clip.localUrl;
 
     if (!isOverlay) {
       // Site version: prefer locally stored files (Backblaze) when available;
       // otherwise, fall back to the Twitch clip embed.
       if (hasLocal) {
-        var startOff = parseFloat(clip.start_offset || 0) || 0;
-        var videoHtml = '<video src="' + encodeURI(clip.local_url) + '" ' +
+        var startOff = parseFloat(clip.startOffset || 0) || 0;
+        var videoHtml = '<video src="' + encodeURI(clip.localUrl) + '" ' +
           'autoplay playsinline controls ' +
           'style="width:100%;height:100%;border:none;display:block;background:#000;"></video>';
         $player.html(videoHtml);
         var v = $player.find('video')[0];
+        bindRotationTimerToVideo(v);
         if (v && startOff > 0) {
           v.addEventListener('loadedmetadata', function () {
             if (startOff < v.duration) {
@@ -177,9 +231,9 @@ $(function () {
       $player.find('iframe,video').remove();
 
       if (hasLocal) {
-        var startOffO = parseFloat(clip.start_offset || 0) || 0;
+        var startOffO = parseFloat(clip.startOffset || 0) || 0;
         var $video = $('<video>', {
-          src: clip.local_url,
+          src: clip.localUrl,
           autoplay: true,
           playsinline: true
         }).css({
@@ -190,6 +244,7 @@ $(function () {
           background: '#000'
         });
         $player.append($video);
+        bindRotationTimerToVideo($video[0]);
         try {
           $video[0].addEventListener('loadedmetadata', function () {
             if (startOffO > 0 && startOffO < $video[0].duration) {
@@ -212,7 +267,7 @@ $(function () {
     }
 
     if ($titleBar && $titleBar.length) {
-      $titleBar.text(clip.display_title || clip.title || 'Untitled clip');
+      $titleBar.text(clip.displayTitle || clip.title || 'Untitled clip');
     }
 
     // Highlight the currently playing clip in the grid (site view).
@@ -221,8 +276,8 @@ $(function () {
 
   function effectiveDurationSeconds(clip) {
     var total = parseFloat(clip.duration || 0);
-    var maxDur = parseFloat(clip.max_duration || 0);
-    var start = parseFloat(clip.start_offset || 0);
+    var maxDur = parseFloat(clip.maxDuration || 0);
+    var start = parseFloat(clip.startOffset || 0);
 
     if (isNaN(total) || total <= 0) {
       total = 25;
@@ -248,19 +303,19 @@ $(function () {
   function markPlayed(clip) {
     if (!clip || !clip.id) return;
     playedSession[clip.id] = true;
-    if (clip.is_favorite) {
-      var pc = parseInt(clip.play_count || 0, 10);
+    if (clip.isFavorite) {
+      var pc = parseInt(clip.playCount || 0, 10);
       if (isNaN(pc) || pc < 0) pc = 0;
-      clip.play_count = pc + 1;
+      clip.playCount = pc + 1;
       // Fire and forget; failure is harmless.
       if (window.navigator && navigator.sendBeacon) {
         try {
           var data = new FormData();
-          data.append('clip_id', clip.id);
-          navigator.sendBeacon('/api/clips_play.php', data);
+          data.append('clipId', clip.id);
+          navigator.sendBeacon('/api/clips/clipsPlay.php', data);
         } catch (e) { /* ignore */ }
       } else if (window.fetch) {
-        fetch('/api/clips_play.php?clip_id=' + encodeURIComponent(clip.id), { method: 'GET', keepalive: true })
+        fetch('/api/clips/clipsPlay.php?clipId=' + encodeURIComponent(clip.id), { method: 'GET', keepalive: true })
           .catch(function () { /* ignore */ });
       }
     }
@@ -277,32 +332,32 @@ $(function () {
     var favorites = [];
     var nonFavs = [];
     pool.forEach(function (c) {
-      if (c.is_favorite) favorites.push(c);
+      if (c.isFavorite) favorites.push(c);
       else nonFavs.push(c);
     });
 
     favorites.sort(function (a, b) {
-      var pa = parseInt(a.play_count || 0, 10);
-      var pb = parseInt(b.play_count || 0, 10);
+      var pa = parseInt(a.playCount || 0, 10);
+      var pb = parseInt(b.playCount || 0, 10);
       if (isNaN(pa) || pa < 0) pa = 0;
       if (isNaN(pb) || pb < 0) pb = 0;
-      if (pa !== pb) return pa - pb; // lowest play_count first
-      var da = a.created_at || '';
-      var db = b.created_at || '';
+      if (pa !== pb) return pa - pb; // lowest playCount first
+      var da = a.createdAt || '';
+      var db = b.createdAt || '';
       if (da === db) return 0;
       return da < db ? 1 : -1; // newer first
     });
 
     var recent = nonFavs.slice().sort(function (a, b) {
-      var da = a.created_at || '';
-      var db = b.created_at || '';
+      var da = a.createdAt || '';
+      var db = b.createdAt || '';
       if (da === db) return 0;
       return da < db ? 1 : -1; // newer first
     });
 
     var mostWatched = nonFavs.slice().sort(function (a, b) {
-      var va = parseInt(a.view_count || 0, 10);
-      var vb = parseInt(b.view_count || 0, 10);
+      var va = parseInt(a.viewCount || 0, 10);
+      var vb = parseInt(b.viewCount || 0, 10);
       if (isNaN(va) || va < 0) va = 0;
       if (isNaN(vb) || vb < 0) vb = 0;
       if (va === vb) return 0;
@@ -320,7 +375,7 @@ $(function () {
       });
     }
 
-    // Favorites (by play_count), then newest, then most watched.
+    // Favorites (by playCount), then newest, then most watched.
     pushList(favorites);
     pushList(recent);
     pushList(mostWatched);
@@ -348,6 +403,10 @@ $(function () {
 
   function stopRotation() {
     rotationStopped = true;
+    rotationTimerPaused = false;
+    rotateRemainingMs = null;
+    rotateDeadline = 0;
+    rotateNext = null;
     if (rotateHandle) {
       clearTimeout(rotateHandle);
       rotateHandle = null;
@@ -357,12 +416,15 @@ $(function () {
   function startRotation() {
     if (!clips.length || !autoplayEnabled) return;
     rotationStopped = false;
+    rotationTimerPaused = false;
+    rotateRemainingMs = null;
+    rotateDeadline = 0;
     if (rotateHandle) {
       clearTimeout(rotateHandle);
       rotateHandle = null;
     }
 
-    function next() {
+    rotateNext = function () {
       if (rotationStopped || !clips.length) return;
       if (!rotationQueue.length || rotationIndex >= rotationQueue.length) {
         rebuildRotationQueue();
@@ -375,10 +437,15 @@ $(function () {
       setPlayerForClip(clip);
 
       var dur = effectiveDurationSeconds(clip);
-      rotateHandle = setTimeout(next, (dur + 2) * 1000);
-    }
+      scheduleRotation((dur + 2) * 1000);
 
-    next();
+      var currentVideo = $player.find('video')[0];
+      if (currentVideo && currentVideo.paused) {
+        pauseRotationTimer();
+      }
+    };
+
+    rotateNext();
   }
 
   function loadClips(mode) {
@@ -403,12 +470,10 @@ $(function () {
         return;
       }
 
-      // Only use clips that have been approved/stored for the site
-      // (review_status === 1) and are currently enabled. This matches
-      // the admin "stored clips" library.
+      // The public API already limits this response to approved clips.
+      // Keep the enabled guard so a stale response cannot show a hidden clip.
       clips = resp.clips.filter(function (c) {
         if (!c || !c.id) return false;
-        if (c.review_status !== 1) return false;
         if (c.enabled === false || c.enabled === 0) return false;
         return true;
       });
@@ -447,7 +512,9 @@ $(function () {
       var mode = $btn.data('mode');
       if (!mode || $btn.hasClass('active')) return;
       $('.clipsModeToggle .modeBtn').removeClass('active');
+      $('.clipsModeToggle .modeBtn').attr('aria-pressed', 'false');
       $btn.addClass('active');
+      $btn.attr('aria-pressed', 'true');
       loadClips(mode);
     });
 

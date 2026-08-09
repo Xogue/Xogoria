@@ -1,6 +1,10 @@
 <?php
 
+// API responses must remain valid JSON even when PHP reports an operational warning.
+ini_set( "display_errors", "0" );
+
 require_once dirname( __DIR__ ) . "/includes/bootstrap.php";
+ini_set( "display_errors", "0" );
 
 $services = new ServiceFactory( );
 $admin = $services->adminController( );
@@ -55,15 +59,23 @@ try {
             ApiController::sendJson( [ "success" => true, "html" => $manager->render( $source ) ] );
         }
         if ( $action === "save" ) {
-            if ( !$manager->save( $source ) ) {
+            if ( !$manager->save( $source, (string) ( $input[ "revision" ] ?? "" ) ) ) {
                 ApiController::error( "The community page could not be saved.", 500 );
             }
-            ApiController::sendJson( [ "success" => true, "html" => $manager->render( $source ) ] );
+            ApiController::sendJson( [
+                "success" => true,
+                "html" => $manager->render( $source ),
+                "revision" => $manager->revision( $source ),
+            ] );
         }
         throw new InvalidArgumentException( "Unknown community content action" );
     }
 
     ApiController::error( "Unknown admin operation." );
+} catch ( CommunityContentConflictException $error ) {
+    ApiController::error( $error->getMessage( ), 409 );
+} catch ( CommunityContentStorageException $error ) {
+    ApiController::error( $error->getMessage( ), 500 );
 } catch ( InvalidArgumentException $error ) {
     ApiController::error( $error->getMessage( ), 422 );
 } catch ( Throwable $error ) {

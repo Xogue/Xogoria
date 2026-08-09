@@ -1,8 +1,8 @@
 <?php
     require_once __DIR__ . "/includes/session.php";
 
-    $cssAssets = [ "ui", "compatibility", "fonts", "variables", "header", "nav", "clips" ];
-    $jsAssets = [ "jquery", "brbClips" ];
+    $cssAssets = [ "fonts", "variables", "ui", "header", "nav", "clips", "compatibility" ];
+    $jsAssets = [ "jquery", "ui", "brbClips" ];
 ?>
 
 <!DOCTYPE html>
@@ -19,33 +19,32 @@
             require XOG_ROOT . "/includes/partials/header.php";
             require XOG_ROOT . "/includes/partials/nav.php";
         ?>
-        <div id="clipsHero">
-            <div class="banner">
-                <span class="titleText">Stream Clips</span>
-                <span class="subtitleText">Highlights from recent adventures</span>
-            </div>
-            <div class="plate left">
-                <span class="bolt one"></span>
-                <span class="bolt two"></span>
-            </div>
-            <div class="plate right">
-                <span class="bolt one"></span>
-                <span class="bolt two"></span>
+        <div id="uiPageBanner">
+            <div class="uiPageTitle">Stream Clips</div>
+        </div>
+
+        <div id="uiSubBanner">
+            <div class="uiTitlePill">
+                <span>Highlights From Recent Adventures</span>
             </div>
         </div>
 
-        <div id="clipsContent">
-            <div class="clipsIntro">
-                <p>
-                    Explore the latest and most-viewed Twitch clips from Xogoria.
-                    This is the same reel that plays on the BRB screen during stream breaks.
-                </p>
-            </div>
-            <div class="clipsModeToggle">
-                <button class="modeBtn active" data-mode="recent">Latest Clips</button>
-                <button class="modeBtn" data-mode="top">Most Viewed</button>
-            </div>
+        <div class="uiSubDescription">
+            Explore the latest and most-viewed Twitch clips from Xogoria.
+            This is the same reel that plays on the BRB screen during stream breaks.
+        </div>
 
+        <div class="uiSectionHang clipsModeToggle">
+            <div class="uiTitlePill">
+                <span>Browse Clips</span>
+            </div>
+            <div class="uiSectionPillShelf" aria-label="Clip order">
+                <button type="button" class="uiSectionPillHang modeBtn active" data-mode="recent" aria-pressed="true">Latest Clips</button>
+                <button type="button" class="uiSectionPillHang modeBtn" data-mode="top" aria-pressed="false">Most Viewed</button>
+            </div>
+        </div>
+
+        <main id="clipsContent" class="uiSectionBody">
             <div id="clipsRoot" class="clipsRoot">
                 <div class="overlayPlayer">
                     <div class="overlayTitleBar"><span class="overlayTitle"></span></div>
@@ -55,6 +54,6 @@
                     <!-- Cards injected by brb_clips.js -->
                 </div>
             </div>
-        </div>
+        </main>
     </body>
 </html>

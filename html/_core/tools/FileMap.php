@@ -23,8 +23,14 @@ class FileMap implements Iterator {
 
     public function findRelativeFilepath( string $filename, string $basePath = XOG_ROOT ): ?string {
         $fullPath = $this->findFullFilepath( $filename );
-        $pathPiece = explode( $basePath, $fullPath )[ 1 ];
-        return rtrim( $basePath, "/" ) . "/" . $pathPiece;
+        if ( $fullPath === null ) {
+            return null;
+        }
+
+        $pathPiece = substr( $fullPath, strlen( $this->rootPath ) );
+        return rtrim( str_replace( "\\", "/", $basePath ), "/" ) .
+            "/" .
+            ltrim( str_replace( "\\", "/", $pathPiece ), "/" );
     }
 
     public function rewind( ): void {

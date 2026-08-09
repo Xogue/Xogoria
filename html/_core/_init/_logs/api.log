@@ -67,3 +67,39 @@
 {"timestamp":"2026-08-07T23:08:14-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
 {"timestamp":"2026-08-07T23:11:24-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
 {"timestamp":"2026-08-07T23:11:37-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-07T23:33:35-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-07T23:37:21-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-07T23:58:26-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-07T23:58:43-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-07T23:58:58-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:01:43-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:01:55-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:01:59-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:02:03-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:02:08-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsApi","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:13:17-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:16:45-05:00","level":"error","channel":"api","message":"Table 'xogoria.stream_clips' doesn't exist","context":{"endpoint":"clipsAdmin","exception":"mysqli_sql_exception","file":"/var/www/html/html/_core/bridges/MySqlBridge.php","line":174}}
+{"timestamp":"2026-08-08T00:23:51-05:00","level":"error","channel":"api","message":"Twitch clips request failed","context":{"status":401}}
+{"timestamp":"2026-08-08T00:28:07-05:00","level":"error","channel":"api","message":"Twitch clips request failed","context":{"status":401}}
+{"timestamp":"2026-08-08T00:28:08-05:00","level":"error","channel":"api","message":"Twitch clips request failed","context":{"status":401}}
+{"timestamp":"2026-08-08T00:28:09-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:28:48-05:00","level":"error","channel":"api","message":"Twitch clips request failed","context":{"status":401}}
+{"timestamp":"2026-08-08T00:29:15-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:30:33-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:31:31-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:31:45-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:31:56-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:34:18-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:34:20-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:36:08-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:44:08-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:44:14-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:44:22-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:45:07-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:45:16-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:46:57-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:47:14-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:47:17-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:47:54-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T00:50:20-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}
+{"timestamp":"2026-08-08T01:13:38-05:00","level":"warning","channel":"api","message":"Twitch app token could not be cached","context":[]}

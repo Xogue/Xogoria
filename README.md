@@ -326,7 +326,7 @@ Use this placeholder structure:
     "broadcasterId": "123456789",
     "clientId": "replace-with-twitch-client-id",
     "clientSecret": "replace-with-twitch-client-secret",
-    "token": "replace-with-an-appropriate-twitch-token",
+    "token": "optional-fallback-token",
     "editorId": "123456789"
   },
   "redis": {
@@ -338,6 +338,8 @@ Use this placeholder structure:
   }
 }
 ```
+
+Clip retrieval uses the Twitch client-credentials flow and caches its app access token outside the web root. The optional `token` value is used only when a client secret is unavailable.
 
 Generate API keys with a cryptographically secure source. For example:
 
@@ -361,7 +363,7 @@ The active code references these tables:
 | `legendsChapters` | Lore chapter content |
 | `legendsAudio` | Audio linked to lore chapters |
 | `legendsStreams` | recordings linked to lore chapters |
-| `stream_clips` | Clip review state, display metadata, and play counts |
+| `streamClips` | Clip review state, display metadata, and play counts |
 
 The exact fields used by admin-managed resources are defined in:
 

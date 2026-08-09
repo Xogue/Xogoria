@@ -67,18 +67,62 @@ function safeWriteJson( string $filePath, array $data ): bool {
         return false;
     }
 
-    $tempPath = $filePath . ".tmp";
-    $bytes = file_put_contents( $tempPath, $jsonData, LOCK_EX );
-    if ( $bytes === false ) {
-        $logger->error( "Failed to write JSON data", [ "path" => $tempPath ] );
+    $lock = null;
+    $lockPaths = [
+        $filePath . ".lock",
+        rtrim( sys_get_temp_dir( ), "/\\" ) .
+            DIRECTORY_SEPARATOR .
+            "xogoria-json-" . hash( "sha256", $filePath ) . ".lock",
+    ];
+    foreach ( $lockPaths as $lockPath ) {
+        $candidate = @fopen( $lockPath, "c" );
+        if ( $candidate !== false && flock( $candidate, LOCK_EX ) ) {
+            $lock = $candidate;
+            break;
+        }
+        if ( is_resource( $candidate ) ) {
+            fclose( $candidate );
+        }
+    }
+    if ( !is_resource( $lock ) ) {
+        $logger->error( "Failed to lock JSON file", [ "path" => $filePath ] );
         return false;
     }
 
-    if ( !rename( $tempPath, $filePath ) ) {
-        $logger->error( "Failed to replace JSON file", [ "path" => $filePath ] );
-        return false;
+    $tempPath = @tempnam( dirname( $filePath ), basename( $filePath ) . ".tmp-" );
+    try {
+        if ( $tempPath === false ) {
+            // Some deployments allow PHP to update an uploaded file but not
+            // create siblings in its directory. The process lock still keeps
+            // application writers serialized in this compatibility fallback.
+            $bytes = @file_put_contents( $filePath, $jsonData, LOCK_EX );
+            if ( $bytes === false ) {
+                $logger->error( "Failed to write JSON data", [ "path" => $filePath ] );
+                return false;
+            }
+            return true;
+        }
+
+        $bytes = @file_put_contents( $tempPath, $jsonData, LOCK_EX );
+        if ( $bytes === false ) {
+            $logger->error( "Failed to write JSON data", [ "path" => $tempPath ] );
+            return false;
+        }
+        @chmod( $tempPath, 0644 );
+
+        if ( !@rename( $tempPath, $filePath ) ) {
+            $logger->error( "Failed to replace JSON file", [ "path" => $filePath ] );
+            return false;
+        }
+        $tempPath = false;
+        return true;
+    } finally {
+        if ( is_string( $tempPath ) && is_file( $tempPath ) ) {
+            @unlink( $tempPath );
+        }
+        flock( $lock, LOCK_UN );
+        fclose( $lock );
     }
-    return true;
 }
 
 function getCurrentPageName( ): string {

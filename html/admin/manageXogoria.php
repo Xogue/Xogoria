@@ -29,9 +29,12 @@
     }
 
     try {
-        $communitySource = $admin->community( )->source( );
+        $communityManager = $admin->community( );
+        $communitySource = $communityManager->source( );
+        $communityRevision = $communityManager->revision( $communitySource );
     } catch ( Throwable $error ) {
         $communitySource = "";
+        $communityRevision = "";
         $loadErrors[ "community" ] = "Community page content could not be loaded.";
         $services->logger( Logger::CHANNEL_WEB )->exception( $error, [ "section" => "community" ] );
     }
@@ -49,10 +52,7 @@
         <?php require XOG_ROOT . "/includes/partials/head.php"; ?>
         <title>Xogoria Admin</title>
         <meta name="admin-csrf-token" content="<?= $escape( $csrfToken ) ?>">
-        <link rel="stylesheet" href="/assets/css/common/ui.css">
-        <link rel="stylesheet" href="/assets/css/community.css">
-        <link rel="stylesheet" href="/assets/css/admin/manageXogoria.css">
-        <link rel="stylesheet" href="/assets/css/admin/clipsManager.css">
+        <?php $assetManager->useCSS( [ "fonts", "variables", "ui", "community", "manageXogoria", "clipsManager", "compatibility" ] ); ?>
     </head>
     <body class="adminBody">
         <div class="adminApp" id="adminApp">
@@ -187,7 +187,7 @@
                             <button type="button" data-format="warning">Warning</button>
                             <button type="button" data-format="cards">Cards</button>
                         </div>
-                        <textarea id="communityEditor" class="communityMarkdownEditor" spellcheck="true" aria-label="Community page content"><?= $escape( $communitySource ) ?></textarea>
+                        <textarea id="communityEditor" class="communityMarkdownEditor" data-revision="<?= $escape( $communityRevision ) ?>" spellcheck="true" aria-label="Community page content"><?= $escape( $communitySource ) ?></textarea>
                         <div class="communityEditorFooter">
                             <span id="communityEditorStatus">Markdown with Xogoria layout blocks</span>
                             <div>
@@ -228,7 +228,6 @@
         </div>
 
         <script>window.XOG_ADMIN_RESOURCES = <?= json_encode( $resourceDefinitions, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP ) ?>;</script>
-        <script src="/assets/js/admin/manageXogoria.js"></script>
-        <script src="/assets/js/admin/clipsManager.js"></script>
+        <?php $assetManager->useJS( [ "manageXogoria", "clipsManager" ] ); ?>
     </body>
 </html>

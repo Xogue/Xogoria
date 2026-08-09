@@ -54,6 +54,7 @@ class ConfigStore {
     public function getMessageUrl( )   : string { return $this->twitchData[ "messageUrl" ] ?? ""; }
     public function getUsersUrl( )     : string { return $this->twitchData[ "usersUrl" ] ?? ""; }
     public function getClipsUrl( )     : string { return $this->twitchData[ "clipsUrl" ] ?? ""; }
+    public function getClipDownloadUrl( ): string { return $this->twitchData[ "clipDownloadUrl" ] ?? ""; }
     public function getCodeQuery( )    : array  { return $this->twitchData[ "codeQuery" ] ?? [ ]; }
     public function getGameData( )     : array  { return $this->gameData ?? [ ]; }
     public function getRestrictedWords( ): array {

@@ -8,31 +8,18 @@ $range = strtolower( (string) ( $_GET[ "range" ] ?? "month" ) );
 $limit = max( 1, min( 100, (int) ( $_GET[ "limit" ] ?? 50 ) ) );
 
 try {
-    $stored = $services->clipManager( )->getAllReviewedClipInfo( );
-    try {
-        $twitchClips = $services->twitchClipService( )->recent( $limit );
-    } catch ( Throwable $error ) {
-        $twitchClips = [ ];
-
-        $services
-            ->logger( Logger::CHANNEL_API )
-            ->warning( "Using stored clips because Twitch refresh failed", [
-                "error" => $error->getMessage( ),
-            ] );
-    }
-
-    $merged = $stored;
-    foreach ( $twitchClips as $clip ) {
-        $id = $clip[ "id" ];
-        if ( isset( $stored[ $id ] ) ) {
-            $merged[ $id ] = array_merge( $stored[ $id ], $clip );
-        }
+    $catalog = $services->clipReviewManager( )->catalog( $limit );
+    $merged = $catalog[ "clips" ];
+    if ( !empty( $catalog[ "warning" ] ) ) {
+        $services->logger( Logger::CHANNEL_API )->warning( "Using stored clips because Twitch refresh failed", [
+            "error" => $catalog[ "warning" ],
+        ] );
     }
 
     $clips = array_values(
         array_filter(
             $merged,
-            static fn( array $clip ): bool => $clip[ "reviewStatus" ] === 1 && !empty( $clip[ "enabled" ] ),
+            static fn( array $clip ): bool => (int) ( $clip[ "reviewStatus" ] ?? 0 ) === 1 && !empty( $clip[ "enabled" ] ),
         ),
     );
 
@@ -58,19 +45,19 @@ try {
             "id" => $clip[ "id" ],
             "url" => $clip[ "url" ] ?? "https://clips.twitch.tv/" . $clip[ "id" ],
             "title" => $clip[ "title" ] ?? "",
-            "display_title" => $clip[ "customTitle" ] ?: $clip[ "title" ] ?? "Stored clip",
-            "creator_name" => $clip[ "creatorName" ] ?? "",
-            "view_count" => (int) ( $clip[ "viewCount" ] ?? 0 ),
-            "created_at" => $clip[ "createdAt" ] ?? "",
-            "thumbnail_url" => $clip[ "thumbnailUrl" ] ?? "",
+            "displayTitle" => $clip[ "customTitle" ] ?: $clip[ "title" ] ?? "Stored clip",
+            "creatorName" => $clip[ "creatorName" ] ?? "",
+            "viewCount" => (int) ( $clip[ "viewCount" ] ?? 0 ),
+            "createdAt" => $clip[ "createdAt" ] ?? "",
+            "thumbnailUrl" => $clip[ "thumbnailUrl" ] ?? "",
             "duration" => (float) ( $clip[ "duration" ] ?? 0 ),
-            "is_favorite" => !empty( $clip[ "favorite" ] ),
-            "play_count" => (int) ( $clip[ "playCount" ] ?? 0 ),
-            "max_duration" => (float) ( $clip[ "maxDuration" ] ?? 0 ),
-            "start_offset" => (float) ( $clip[ "startOffset" ] ?? 0 ),
+            "isFavorite" => !empty( $clip[ "favorite" ] ),
+            "playCount" => (int) ( $clip[ "playCount" ] ?? 0 ),
+            "maxDuration" => (float) ( $clip[ "maxDuration" ] ?? 0 ),
+            "startOffset" => (float) ( $clip[ "startOffset" ] ?? 0 ),
             "enabled" => !isset( $clip[ "enabled" ] ) || !empty( $clip[ "enabled" ] ),
-            "has_local_file" => !empty( $clip[ "localUrl" ] ),
-            "local_url" => $clip[ "localUrl" ] ?? null,
+            "hasLocalFile" => !empty( $clip[ "localUrl" ] ),
+            "localUrl" => $clip[ "localUrl" ] ?? null,
         ],
         $clips,
     );

@@ -1,7 +1,7 @@
 <?php
     require_once __DIR__ . "/includes/session.php";
 
-    $cssAssets = [ "ui", "compatibility", "fonts", "variables", "interactPanel" ];
+    $cssAssets = [ "fonts", "variables", "ui", "interactPanel", "compatibility" ];
     $jsAssets = [ "jquery", "ui", "InteractCard", "interactPanel" ];
 
     // GET UTILITY DATA

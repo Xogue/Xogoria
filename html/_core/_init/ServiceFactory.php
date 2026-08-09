@@ -8,6 +8,8 @@ $deploymentClassFallbacks = [
     CommunityMarkdownRenderer::class => dirname( __DIR__ ) . "/services/CommunityMarkdownRenderer.php",
     CommunityContentManager::class => dirname( __DIR__ ) . "/managers/CommunityContentManager.php",
     ResponseLibrary::class => __DIR__ . "/_status/ResponseLibrary.php",
+    CurlResponse::class => dirname( __DIR__ ) . "/tools/CurlResponse.php",
+    ClipAudioNormalizer::class => dirname( __DIR__ ) . "/services/ClipAudioNormalizer.php",
 ];
 foreach ( $deploymentClassFallbacks as $className => $classPath ) {
     if ( !class_exists( $className, false ) ) {
@@ -148,6 +150,24 @@ final class ServiceFactory {
         );
     }
 
+    public function backblazeBridge( ): BackblazeBridge {
+        return $this->service(
+            __FUNCTION__,
+            fn( ) => new BackblazeBridge( $this->configManager( )->getPrivateStore( ) ),
+        );
+    }
+
+    public function clipAudioNormalizer( ): ClipAudioNormalizer {
+        return $this->service(
+            __FUNCTION__,
+            fn( ) => new ClipAudioNormalizer(
+                $this->clipManager( ),
+                $this->backblazeBridge( ),
+                $this->logger( Logger::CHANNEL_WEB ),
+            ),
+        );
+    }
+
     public function clipReviewManager( ): ClipReviewManager {
         return $this->service(
             __FUNCTION__,
@@ -155,6 +175,8 @@ final class ServiceFactory {
                 $this->clipManager( ),
                 $this->twitchClipService( ),
                 $this->clipDeletionRegistry( ),
+                $this->clipAudioNormalizer( ),
+                $this->backblazeBridge( ),
             ),
         );
     }

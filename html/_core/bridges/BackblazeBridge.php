@@ -10,20 +10,38 @@ class BackblazeBridge {
 
     private ?array $authorization = null;
     private ?string $clipBucketId = null;
-    private PrivateLoader $privateLoader;
+    private PrivateStore $privateStore;
 
     // MAGIC FUNCTIONS
-    public function __construct( ) {
-        $this->privateLoader = new PrivateLoader( "backblaze" );
-        $this->keyId = $this->privateLoader->getDetail( "key" );
-        $this->applicationKey = $this->privateLoader->getDetail( "applicationKey" );
-        $this->bucketName = $this->privateLoader->getDetail( "bucket" );
-        $this->publicBaseUrl = $this->privateLoader->getDetail( "publicBaseUrl" );
+    public function __construct( PrivateStore $privateStore ) {
+        $this->privateStore = $privateStore;
+        $this->keyId = $privateStore->backblazeKeyId( );
+        $this->applicationKey = $privateStore->backblazeApplicationKey( );
+        $this->bucketName = $privateStore->backblazeBucket( );
+        $this->publicBaseUrl = $privateStore->backblazePublicBaseUrl( );
         $this->logger = new Logger( );
     }
 
     // PUBLIC FUNCTIONS
     public function uploadClip( string $clipId, string $filePath ): ?string {
+        return $this->uploadClipObject( $filePath, $clipId . ".mp4" );
+    }
+
+    public function uploadNormalizedClip( string $clipId, string $filePath ): ?string {
+        $contentHash = hash_file( "sha256", $filePath );
+        if ( $contentHash === false ) {
+            $this->logger->error( "Unable to hash normalized clip", [ "clipId" => $clipId ] );
+            return null;
+        }
+
+        return $this->uploadClipObject(
+            $filePath,
+            $clipId . "-normalized-" . substr( $contentHash, 0, 12 ) . ".mp4",
+        );
+    }
+
+    // PRIVATE FUNCTIONS
+    private function uploadClipObject( string $filePath, string $fileName ): ?string {
         if ( !is_file( $filePath ) ) {
             $this->logger->error( "Invalid upload file path", [ "path" => $filePath ] );
             return null;
@@ -44,23 +62,21 @@ class BackblazeBridge {
             return null;
         }
 
-        if ( !$this->uploadFile( $urlResponse, $filePath, $clipId ) ) {
+        if ( !$this->uploadFile( $urlResponse, $filePath, $fileName ) ) {
             return null;
         }
 
         return rtrim( $this->publicBaseUrl, "/" ) .
             "/xogue29_clips/" .
-            rawurlencode( $clipId ) .
-            ".mp4";
+            rawurlencode( $fileName );
     }
 
-    // PRIVATE FUNCTIONS
     private function authorize( ): bool {
         if ( $this->authorization !== null ) {
             return true;
         }
 
-        $response = CurlController::get( $this->privateLoader->getDetail( "authorizeUrl" ) )
+        $response = CurlController::get( $this->privateStore->backblazeAuthorizeUrl( ) )
             ->basicAuth( $this->keyId, $this->applicationKey )
             ->send( );
 
@@ -98,7 +114,7 @@ class BackblazeBridge {
             return false;
         }
 
-        $response = CurlController::postJson( $this->privateLoader->getDetail( "listBucketUrl" ), [
+        $response = CurlController::postJson( $this->accountApiUrl( $this->privateStore->backblazeListBucketUrl( ) ), [
             "accountId" => $this->authorization[ "accountId" ],
             "bucketName" => $this->bucketName,
         ] )
@@ -134,7 +150,7 @@ class BackblazeBridge {
     }
 
     private function getUploadUrl( ): ?array {
-        $response = CurlController::postJson( $this->privateLoader->getDetail( "uploadUrl" ), [
+        $response = CurlController::postJson( $this->accountApiUrl( $this->privateStore->backblazeUploadUrl( ) ), [
             "bucketId" => $this->clipBucketId,
         ] )
             ->authorization( $this->authorization[ "authorizationToken" ] )
@@ -160,14 +176,14 @@ class BackblazeBridge {
         ];
     }
 
-    private function uploadFile( array $urlResponse, string $filePath, string $clipId ): bool {
+    private function uploadFile( array $urlResponse, string $filePath, string $fileName ): bool {
         $data = @file_get_contents( $filePath );
         if ( $data === false ) {
             $this->logger->error( "Backblaze upload could not read file", [ "path" => $filePath ] );
             return false;
         }
 
-        $objectKey = "xogue29_clips/" . rawurlencode( $clipId ) . ".mp4";
+        $objectKey = "xogue29_clips/" . rawurlencode( $fileName );
 
         $response = CurlController::postRaw( $urlResponse[ "uploadUrl" ], $data, "video/mp4" )
             ->headers( [
@@ -186,5 +202,14 @@ class BackblazeBridge {
         }
 
         return true;
+    }
+
+    private function accountApiUrl( string $configuredUrl ): string {
+        $apiBase = rtrim( (string) ( $this->authorization[ "apiUrl" ] ?? "" ), "/" );
+        $path = (string) parse_url( $configuredUrl, PHP_URL_PATH );
+        if ( $apiBase === "" || $path === "" ) {
+            throw new RuntimeException( "Backblaze account API configuration is incomplete" );
+        }
+        return $apiBase . "/" . ltrim( $path, "/" );
     }
 }
