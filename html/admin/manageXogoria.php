@@ -9,6 +9,13 @@
     $resourceDefinitions = $resourceManager->definitions( );
     $resourceRows = [ ];
     $loadErrors = [ ];
+    $pendingCommandMatches = 0;
+
+    try {
+        $pendingCommandMatches = $admin->captures( )->pendingVerificationCount( );
+    } catch ( Throwable $error ) {
+        $services->logger( Logger::CHANNEL_WEB )->exception( $error, [ "section" => "command-match-count" ] );
+    }
 
     foreach ( $resourceDefinitions as $resourceKey => $definition ) {
         try {
@@ -88,7 +95,12 @@
                     <button class="adminNavItem" type="button" data-admin-target="community">Community page</button>
                     <button class="adminNavItem" type="button" data-admin-target="clips">Clip review</button>
                     <button class="adminNavItem" type="button" data-admin-target="config">Configuration</button>
-                    <a class="adminNavLink" href="/admin/commandCaptures.php">Streamer.bot captures</a>
+                    <a class="adminNavLink commandVerificationNav" href="/admin/commandCaptures.php">
+                        <span>Streamer.bot captures</span>
+                        <?php if ( $pendingCommandMatches > 0 ): ?>
+                            <strong title="Command/action name matches awaiting review"><?= $escape( $pendingCommandMatches ) ?> name matches</strong>
+                        <?php endif; ?>
+                    </a>
                 </div>
                 <div class="adminNavGroup">
                     <div class="adminNavLabel">Open site</div>

@@ -5,6 +5,13 @@
     $jsAssets = [ "jquery", "ui", "commands" ];
 
     // COLLECT DATA
+    try {
+        $services->commandCaptureManager( )->syncLatestCommands( $services->adminResourceManager( ) );
+    } catch ( Throwable $syncError ) {
+        $services->logger( Logger::CHANNEL_WEB )->exception( $syncError, [
+            "section" => "public-command-sync",
+        ] );
+    }
     $mySqlManager = $webController->getMySqlManager( );
     $commands = $mySqlManager->fetchData( "allCommands" );
 

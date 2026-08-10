@@ -1,7 +1,9 @@
 "use strict";
 
 const crypto = require( "node:crypto" );
+const fs = require( "node:fs" );
 const http = require( "node:http" );
+const path = require( "node:path" );
 const { WebSocketServer, WebSocket } = require( "ws" );
 
 const host = process.env.SOCKET_HOST || "127.0.0.1";
@@ -11,6 +13,9 @@ const apiKey = process.env.STREAMERBOT_SOCKET_API_KEY || "";
 const authenticationTimeoutMs = parseInteger( process.env.AUTH_TIMEOUT_MS, 10000 );
 const heartbeatIntervalMs = parseInteger( process.env.HEARTBEAT_INTERVAL_MS, 30000 );
 const maxPayloadBytes = parseInteger( process.env.MAX_PAYLOAD_BYTES, 20 * 1024 * 1024 );
+const syncTimeoutMs = parseInteger( process.env.SYNC_TIMEOUT_MS, 60000 );
+const captureDirectory = process.env.CAPTURE_DIRECTORY ||
+    "/var/www/xogoria.com/storage/command-captures";
 
 if ( apiKey.length < 32 ) {
     process.stderr.write(
@@ -20,6 +25,7 @@ if ( apiKey.length < 32 ) {
 }
 
 const connections = new Map( );
+const pendingSyncs = new Map( );
 
 const httpServer = http.createServer( ( request, response ) => {
     const url = new URL( request.url || "/", `http://${request.headers.host || "localhost"}` );
@@ -106,7 +112,18 @@ websocketServer.on( "connection", ( websocket, request ) => {
             return;
         }
 
-        handleMessage( websocket, message, connectionId );
+        Promise.resolve( handleMessage( websocket, message, connectionId ) ).catch( ( error ) => {
+            log( "error", "message_processing_failed", {
+                connectionId,
+                instanceId: websocket.instanceId,
+                error: error.message,
+            } );
+            send( websocket, {
+                type: "protocol_error",
+                request_id: typeof message.request_id === "string" ? message.request_id : "",
+                error: "The message could not be processed.",
+            } );
+        } );
     } );
 
     websocket.on( "close", ( code, reason ) => {
@@ -143,6 +160,7 @@ const heartbeat = setInterval( ( ) => {
         websocket.isAlive = false;
         websocket.ping( );
     }
+    expirePendingSyncs( );
 }, heartbeatIntervalMs );
 
 httpServer.listen( port, host, ( ) => {
@@ -181,7 +199,7 @@ function authenticate( websocket, message, connectionId, remoteAddress ) {
     } );
 }
 
-function handleMessage( websocket, message, connectionId ) {
+async function handleMessage( websocket, message, connectionId ) {
     const messageType = typeof message.type === "string" ? message.type : "";
     const requestId = typeof message.request_id === "string" ? message.request_id : "";
 
@@ -223,6 +241,11 @@ function handleMessage( websocket, message, connectionId ) {
         return;
     }
 
+    if ( messageType === "streamerbot_api_response" ) {
+        await handleStreamerbotApiResponse( websocket, message, connectionId );
+        return;
+    }
+
     log( "warn", "unsupported_message", {
         connectionId,
         instanceId: websocket.instanceId,
@@ -234,6 +257,297 @@ function handleMessage( websocket, message, connectionId ) {
         request_id: requestId,
         error: "Unsupported message type.",
     } );
+}
+
+async function handleStreamerbotApiResponse( websocket, message, connectionId ) {
+    const payload = message.payload;
+    const responseId = payload && typeof payload.id === "string" ? payload.id : "";
+    const match = /^xogoria-sync-([a-zA-Z0-9_-]{1,100})-(commands|actions)$/.exec( responseId );
+
+    if ( !match ) {
+        send( websocket, {
+            type: "protocol_error",
+            error: "The Streamer.bot API response ID is invalid.",
+        } );
+        return;
+    }
+
+    const requestId = match[ 1 ];
+    const responseType = match[ 2 ];
+
+    if ( payload.status !== "ok" ) {
+        log( "warn", "sync_response_failed", {
+            connectionId,
+            instanceId: websocket.instanceId,
+            requestId,
+            responseType,
+            status: payload.status || "unknown",
+        } );
+        sendSyncAcknowledgement( websocket, requestId, false, {
+            error: `Streamer.bot returned an error for ${responseType}.`,
+        } );
+        pendingSyncs.delete( syncKey( websocket.instanceId, requestId ) );
+        return;
+    }
+
+    const rows = payload[ responseType ];
+    if ( !Array.isArray( rows ) ) {
+        sendSyncAcknowledgement( websocket, requestId, false, {
+            error: `The ${responseType} response did not contain an array.`,
+        } );
+        pendingSyncs.delete( syncKey( websocket.instanceId, requestId ) );
+        return;
+    }
+
+    const key = syncKey( websocket.instanceId, requestId );
+    const pending = pendingSyncs.get( key ) || {
+        instanceId: websocket.instanceId,
+        requestId,
+        createdAt: Date.now( ),
+        commands: null,
+        actions: null,
+    };
+    pending[ responseType ] = payload;
+    pendingSyncs.set( key, pending );
+
+    log( "info", "sync_response_received", {
+        connectionId,
+        instanceId: websocket.instanceId,
+        requestId,
+        responseType,
+        count: rows.length,
+    } );
+
+    if ( pending.commands === null || pending.actions === null ) {
+        return;
+    }
+
+    pendingSyncs.delete( key );
+
+    try {
+        const snapshot = buildSnapshot( pending );
+        const capture = await storeSnapshot( snapshot );
+        log( "info", "sync_snapshot_stored", {
+            connectionId,
+            instanceId: websocket.instanceId,
+            requestId,
+            captureId: capture.id,
+            bytes: capture.bytes,
+            commandCount: snapshot.summary.command_count,
+            actionCount: snapshot.summary.action_count,
+        } );
+        sendSyncAcknowledgement( websocket, requestId, true, {
+            capture,
+            summary: snapshot.summary,
+        } );
+    } catch ( error ) {
+        log( "error", "sync_snapshot_failed", {
+            connectionId,
+            instanceId: websocket.instanceId,
+            requestId,
+            error: error.message,
+        } );
+        sendSyncAcknowledgement( websocket, requestId, false, {
+            error: "The combined snapshot could not be stored.",
+        } );
+    }
+}
+
+function buildSnapshot( pending ) {
+    const commands = pending.commands.commands;
+    const actions = pending.actions.actions;
+    const matchedActionIds = new Set( );
+    let inferredSingleCount = 0;
+    let inferredMultipleCount = 0;
+    let unresolvedCommandCount = 0;
+    let needsVerificationCount = 0;
+
+    const commandActionCandidates = commands.map( ( command ) => {
+        const commandParts = nameParts( command.name );
+        const scored = actions.map( ( action ) => ( {
+            action,
+            parts: nameParts( action.name ),
+            score: nameSimilarity( commandParts, nameParts( action.name ) ),
+        } ) );
+        const sameWords = scored.filter( ( candidate ) =>
+            commandParts.words.length > 0 && arraysEqual( commandParts.words, candidate.parts.words )
+        ).sort( ( left, right ) => right.score - left.score );
+        const ranked = scored.sort( ( left, right ) => right.score - left.score );
+        const selected = sameWords[ 0 ] || ranked[ 0 ] || null;
+        const candidates = selected ? [ selected.action ] : [ ];
+        for ( const action of candidates ) {
+            if ( action.id ) matchedActionIds.add( String( action.id ) );
+        }
+
+        let status = "unresolved";
+        let method = "no_action_available";
+        let score = 0;
+        if ( candidates.length === 1 ) {
+            score = selected.score;
+            const sameWordSet = sameWords.length > 0;
+            const sameExtra = sameWordSet && commandParts.extra === selected.parts.extra;
+            status = sameExtra ? "inferred_words" : "needs_verification";
+            method = sameExtra
+                ? "same_words"
+                : ( sameWordSet ? "same_words_different_characters" : "fuzzy_name_guess" );
+            inferredSingleCount++;
+            if ( status === "needs_verification" ) needsVerificationCount++;
+        } else if ( candidates.length > 1 ) {
+            status = "inferred_multiple";
+            inferredMultipleCount++;
+        } else {
+            unresolvedCommandCount++;
+        }
+
+        return {
+            command_id: command.id || "",
+            action_ids: candidates.map( ( action ) => action.id || "" ),
+            mapping: {
+                status,
+                method,
+                verified: false,
+                review_required: status === "needs_verification",
+                candidate_count: candidates.length,
+                score: Number( score.toFixed( 4 ) ),
+            },
+        };
+    } );
+
+    const unmappedActionIds = actions.filter( ( action ) =>
+        !matchedActionIds.has( String( action.id || "" ) )
+    ).map( ( action ) => action.id || "" );
+
+    return {
+        schema_version: 4,
+        captured_at_utc: new Date( ).toISOString( ),
+        source: "streamer.bot-websocket",
+        instance_id: pending.instanceId,
+        request_id: pending.requestId,
+        mapping_policy: {
+            method: "word_set_then_fuzzy_command_name_to_action_name",
+            verified: false,
+            explanation: "Bracketed text is ignored. Equal word sets are paired regardless of order; differing remaining characters and fuzzy guesses require review.",
+        },
+        summary: {
+            command_count: commands.length,
+            action_count: actions.length,
+            inferred_single_count: inferredSingleCount,
+            inferred_multiple_count: inferredMultipleCount,
+            unresolved_command_count: unresolvedCommandCount,
+            unmapped_action_count: unmappedActionIds.length,
+            needs_verification_count: needsVerificationCount,
+        },
+        commands,
+        actions,
+        command_action_candidates: commandActionCandidates,
+        unmapped_action_ids: unmappedActionIds,
+    };
+}
+
+async function storeSnapshot( snapshot ) {
+    await fs.promises.mkdir( captureDirectory, { recursive: true, mode: 0o770 } );
+    const capturedAt = new Date( );
+    const stamp = capturedAt.toISOString( ).replace( /[-:]/g, "" ).slice( 0, 15 );
+    const id = `streamerbot-${stamp.slice( 0, 8 )}-${stamp.slice( 9 )}-${crypto.randomBytes( 4 ).toString( "hex" )}.json`;
+    const destination = path.join( captureDirectory, id );
+    const temporary = path.join(
+        captureDirectory,
+        `.${id}.${process.pid}.${crypto.randomBytes( 4 ).toString( "hex" )}.tmp`,
+    );
+    const body = JSON.stringify( snapshot, null, 2 ) + "\n";
+
+    try {
+        await fs.promises.writeFile( temporary, body, { encoding: "utf8", mode: 0o640, flag: "wx" } );
+        await fs.promises.rename( temporary, destination );
+        await fs.promises.chmod( destination, 0o640 );
+    } catch ( error ) {
+        await fs.promises.unlink( temporary ).catch( ( ) => { } );
+        throw error;
+    }
+
+    return { id, bytes: Buffer.byteLength( body ), validJson: true };
+}
+
+function expirePendingSyncs( ) {
+    const now = Date.now( );
+    for ( const [ key, pending ] of pendingSyncs ) {
+        if ( now - pending.createdAt < syncTimeoutMs ) continue;
+        pendingSyncs.delete( key );
+        log( "warn", "sync_request_expired", {
+            instanceId: pending.instanceId,
+            requestId: pending.requestId,
+            receivedCommands: pending.commands !== null,
+            receivedActions: pending.actions !== null,
+        } );
+        const websocket = connections.get( pending.instanceId );
+        if ( websocket ) {
+            sendSyncAcknowledgement( websocket, pending.requestId, false, {
+                error: "Timed out waiting for both Streamer.bot API responses.",
+            } );
+        }
+    }
+}
+
+function sendSyncAcknowledgement( websocket, requestId, success, details = { } ) {
+    send( websocket, {
+        type: "sync_ack",
+        request_id: requestId,
+        success,
+        server_time_utc: new Date( ).toISOString( ),
+        ...details,
+    } );
+}
+
+function syncKey( instanceId, requestId ) {
+    return `${instanceId}:${requestId}`;
+}
+
+function normalizeMappingKey( value ) {
+    return typeof value === "string"
+        ? value.trim( ).replace( /^!+/, "" ).replace( /[^a-zA-Z0-9]/g, "" ).toLowerCase( )
+        : "";
+}
+
+function nameParts( value ) {
+    const withoutGroups = String( value || "" ).replace( /\[[^\]]*\]|\([^)]*\)|\{[^}]*\}|<[^>]*>/gu, " " ).toLowerCase( );
+    const words = withoutGroups.match( /\p{L}+/gu ) || [ ];
+    words.sort( );
+    return {
+        words,
+        extra: withoutGroups.replace( /[\p{L}\s]+/gu, "" ),
+        plain: `${words.join( " " )}|${withoutGroups.replace( /[\p{L}\s]+/gu, "" )}`,
+    };
+}
+
+function nameSimilarity( left, right ) {
+    const leftWords = [ ...new Set( left.words ) ];
+    const rightWords = [ ...new Set( right.words ) ];
+    const union = new Set( [ ...leftWords, ...rightWords ] );
+    const common = leftWords.filter( ( word ) => rightWords.includes( word ) ).length;
+    const wordScore = union.size === 0 ? 0 : common / union.size;
+    const length = Math.max( left.plain.length, right.plain.length );
+    const textScore = length === 0 ? 0 : 1 - Math.min( 1, levenshtein( left.plain, right.plain ) / length );
+    return ( wordScore * 0.75 ) + ( textScore * 0.25 );
+}
+
+function arraysEqual( left, right ) {
+    return left.length === right.length && left.every( ( value, index ) => value === right[ index ] );
+}
+
+function levenshtein( left, right ) {
+    const previous = Array.from( { length: right.length + 1 }, ( _, index ) => index );
+    for ( let leftIndex = 1; leftIndex <= left.length; leftIndex++ ) {
+        const current = [ leftIndex ];
+        for ( let rightIndex = 1; rightIndex <= right.length; rightIndex++ ) {
+            current[ rightIndex ] = Math.min(
+                current[ rightIndex - 1 ] + 1,
+                previous[ rightIndex ] + 1,
+                previous[ rightIndex - 1 ] + ( left[ leftIndex - 1 ] === right[ rightIndex - 1 ] ? 0 : 1 ),
+            );
+        }
+        previous.splice( 0, previous.length, ...current );
+    }
+    return previous[ right.length ];
 }
 
 function send( websocket, payload ) {

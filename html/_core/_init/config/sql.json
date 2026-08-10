@@ -1,5 +1,5 @@
 {
-    "allCommands": "SELECT id, name, description, category, perms, enabled FROM collectCommands ORDER BY name ASC",
+    "allCommands": "SELECT id, name, description, category, perms, enabled FROM collectCommands WHERE enabled = 1 ORDER BY name ASC",
     "allMonsters": "SELECT id, gameName, customName FROM collectMonsterNames ORDER BY id ASC",
     "allObjectives": "SELECT id, requirement, active FROM collectObjectives ORDER BY id ASC",
     "allQuotes": "SELECT id, text, speaker, game, date, favorite FROM collectQuotes ORDER BY id ASC",
