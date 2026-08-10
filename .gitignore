@@ -8,3 +8,4 @@ Xogoria-Architecture.drawio
 html/_core/_init/_logs/api.log
 html/_core/_init/config/*.lock
 html/_core/_init/config/*.tmp-*
+storage/command-captures/

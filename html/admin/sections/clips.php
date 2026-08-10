@@ -32,7 +32,7 @@
                             <label class="clipFieldLabel" data-tooltip="Optional title shown on Xogoria instead of the original Twitch title.">Display title<input type="text" id="clipCustomTitle" placeholder="Use original Twitch title"></label>
                         </div>
                         <div class="metaRow inline clipToggleRow">
-                            <label data-tooltip="Prioritize this clip in the stream reel. Prioritized clips with fewer recorded plays are shown first."><input type="checkbox" id="clipFavorite"> Prioritize in reel</label>
+                            <label data-tooltip="Mark this clip as a favorite for reference. Reel order is determined by play count."><input type="checkbox" id="clipFavorite"> Favorite</label>
                             <label data-tooltip="Include this clip on the public clips page and in the stream reel."><input type="checkbox" id="clipEnabled"> Published</label>
                         </div>
                         <div class="metaRow inline clipTimingRow">

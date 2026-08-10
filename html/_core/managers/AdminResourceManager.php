@@ -41,6 +41,19 @@ final class AdminResourceManager {
         $definition = $this->definition( $resource );
         $primaryKey = (string) $definition[ "primaryKey" ];
         $originalKey = $input[ "_originalKey" ] ?? null;
+        if ( $originalKey !== null && $originalKey !== "" && ( $input[ $primaryKey ] ?? "" ) === "" ) {
+            $input[ $primaryKey ] = $originalKey;
+        }
+        if ( $originalKey === null || $originalKey === "" ) {
+            foreach ( $definition[ "fields" ] as $name => $field ) {
+                if ( !array_key_exists( "defaultOnAdd", $field ) || ( $input[ $name ] ?? "" ) !== "" ) {
+                    continue;
+                }
+                $input[ $name ] = $field[ "defaultOnAdd" ] === "@today"
+                    ? date( "Y-m-d" )
+                    : $field[ "defaultOnAdd" ];
+            }
+        }
         $data = $this->normalize( $definition, $input );
         if ( $originalKey === null || $originalKey === "" ) {
             unset( $data[ $primaryKey ] );
@@ -98,6 +111,9 @@ final class AdminResourceManager {
         return match ( $field[ "type" ] ?? "text" ) {
             "integer" => (int) $value,
             "boolean" => filter_var( $value, FILTER_VALIDATE_BOOL ) ? 1 : 0,
+            "select" => in_array( trim( (string) $value ), $field[ "options" ] ?? [ ], true )
+                ? trim( (string) $value )
+                : throw new InvalidArgumentException( "Invalid {$field["label"]} option" ),
             "url" => $value === ""
                 ? ""
                 : ( filter_var( $value, FILTER_VALIDATE_URL ) ?:

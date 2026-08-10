@@ -12,9 +12,6 @@ $(function () {
   var $titleBar = $player.find('.overlayTitle');
   var $grid = $root.find('.clipsGrid');
   var clips = [];
-  var rotationQueue = [];
-  var rotationIndex = 0;
-  var playedSession = {};
   var rotateHandle = null;
   var rotateDeadline = 0;
   var rotateRemainingMs = null;
@@ -302,103 +299,72 @@ $(function () {
 
   function markPlayed(clip) {
     if (!clip || !clip.id) return;
-    playedSession[clip.id] = true;
-    if (clip.isFavorite) {
-      var pc = parseInt(clip.playCount || 0, 10);
-      if (isNaN(pc) || pc < 0) pc = 0;
-      clip.playCount = pc + 1;
-      // Fire and forget; failure is harmless.
-      if (window.navigator && navigator.sendBeacon) {
-        try {
-          var data = new FormData();
-          data.append('clipId', clip.id);
-          navigator.sendBeacon('/api/clips/clipsPlay.php', data);
-        } catch (e) { /* ignore */ }
-      } else if (window.fetch) {
-        fetch('/api/clips/clipsPlay.php?clipId=' + encodeURIComponent(clip.id), { method: 'GET', keepalive: true })
-          .catch(function () { /* ignore */ });
-      }
+    var pc = parseInt(clip.playCount || 0, 10);
+    if (isNaN(pc) || pc < 0) pc = 0;
+    clip.playCount = pc + 1;
+    // Fire and forget; failure is harmless to playback.
+    if (window.navigator && navigator.sendBeacon) {
+      try {
+        var data = new FormData();
+        data.append('clipId', clip.id);
+        navigator.sendBeacon('/api/clips/clipsPlay.php', data);
+      } catch (e) { /* ignore */ }
+    } else if (window.fetch) {
+      fetch('/api/clips/clipsPlay.php?clipId=' + encodeURIComponent(clip.id), { method: 'GET', keepalive: true })
+        .catch(function () { /* ignore */ });
     }
   }
 
-  function buildPriorityQueue(sourceClips) {
-    var pool = (sourceClips || []).slice();
-    if (!pool.length) return [];
+  function randomSubset(source, count) {
+    var shuffled = source.slice();
+    for (var i = 0; i < count && i < shuffled.length; i += 1) {
+      var swapIndex = i + Math.floor(Math.random() * (shuffled.length - i));
+      var current = shuffled[i];
+      shuffled[i] = shuffled[swapIndex];
+      shuffled[swapIndex] = current;
+    }
+    return shuffled.slice(0, count);
+  }
 
-    // Enabled only (API may still include disabled when asked)
+  function chooseNextClip() {
+    var pool = clips.slice();
     pool = pool.filter(function (c) { return c.enabled !== false && c.enabled !== 0; });
-    if (!pool.length) return [];
+    if (!pool.length) return null;
 
-    var favorites = [];
-    var nonFavs = [];
-    pool.forEach(function (c) {
-      if (c.isFavorite) favorites.push(c);
-      else nonFavs.push(c);
+    var counts = pool.map(function (clip) {
+      var count = parseInt(clip.playCount || 0, 10);
+      return isNaN(count) || count < 0 ? 0 : count;
     });
+    var positiveCounts = counts.filter(function (count) { return count > 0; });
+    var establishedMinimum = positiveCounts.length ? Math.min.apply(Math, positiveCounts) : 0;
 
-    favorites.sort(function (a, b) {
-      var pa = parseInt(a.playCount || 0, 10);
-      var pb = parseInt(b.playCount || 0, 10);
-      if (isNaN(pa) || pa < 0) pa = 0;
-      if (isNaN(pb) || pb < 0) pb = 0;
-      if (pa !== pb) return pa - pb; // lowest playCount first
-      var da = a.createdAt || '';
-      var db = b.createdAt || '';
-      if (da === db) return 0;
-      return da < db ? 1 : -1; // newer first
-    });
-
-    var recent = nonFavs.slice().sort(function (a, b) {
-      var da = a.createdAt || '';
-      var db = b.createdAt || '';
-      if (da === db) return 0;
-      return da < db ? 1 : -1; // newer first
-    });
-
-    var mostWatched = nonFavs.slice().sort(function (a, b) {
-      var va = parseInt(a.viewCount || 0, 10);
-      var vb = parseInt(b.viewCount || 0, 10);
-      if (isNaN(va) || va < 0) va = 0;
-      if (isNaN(vb) || vb < 0) vb = 0;
-      if (va === vb) return 0;
-      return vb - va; // highest first
-    });
-
-    var seen = {};
-    var queue = [];
-    function pushList(list) {
-      list.forEach(function (c) {
-        if (!c || !c.id) return;
-        if (seen[c.id]) return;
-        seen[c.id] = true;
-        queue.push(c);
+    // A newly approved zero that trails the established minimum by more than
+    // five joins that existing minimum rank. Existing counts are never lowered.
+    if (counts.indexOf(0) !== -1 && establishedMinimum > 5) {
+      pool.forEach(function (clip) {
+        var count = parseInt(clip.playCount || 0, 10);
+        if (isNaN(count) || count < 0) count = 0;
+        if (count === 0) clip.playCount = establishedMinimum;
       });
     }
 
-    // Favorites (by playCount), then newest, then most watched.
-    pushList(favorites);
-    pushList(recent);
-    pushList(mostWatched);
-    return queue;
-  }
+    // A rank is a distinct play-count value. Include every clip tied within
+    // the five lowest ranks, so the candidate pool can be larger than five.
+    var rankedCounts = pool.map(function (clip) {
+      return parseInt(clip.playCount || 0, 10) || 0;
+    }).filter(function (count, index, all) {
+      return all.indexOf(count) === index;
+    }).sort(function (a, b) { return a - b; }).slice(0, 5);
 
-  function rebuildRotationQueue() {
-    if (!clips.length) {
-      rotationQueue = [];
-      rotationIndex = 0;
-      return;
-    }
-    // Prefer clips that have not yet been played this session.
-    var unplayed = clips.filter(function (c) {
-      return !playedSession[c.id] && c.enabled !== false && c.enabled !== 0;
+    var candidates = pool.filter(function (clip) {
+      var count = parseInt(clip.playCount || 0, 10) || 0;
+      return rankedCounts.indexOf(count) !== -1;
     });
-    var source = unplayed.length ? unplayed : clips.slice();
-    if (!unplayed.length) {
-      // New cycle: allow repeats again.
-      playedSession = {};
-    }
-    rotationQueue = buildPriorityQueue(source);
-    rotationIndex = 0;
+    if (!candidates.length) return null;
+
+    // Large tied pools use the requested double draw: random five, then one.
+    var finalPool = candidates.length > 8 ? randomSubset(candidates, 5) : candidates;
+    return finalPool[Math.floor(Math.random() * finalPool.length)];
   }
 
   function stopRotation() {
@@ -426,13 +392,8 @@ $(function () {
 
     rotateNext = function () {
       if (rotationStopped || !clips.length) return;
-      if (!rotationQueue.length || rotationIndex >= rotationQueue.length) {
-        rebuildRotationQueue();
-      }
-      if (!rotationQueue.length) return;
-
-      var clip = rotationQueue[rotationIndex];
-      rotationIndex += 1;
+      var clip = chooseNextClip();
+      if (!clip) return;
       markPlayed(clip);
       setPlayerForClip(clip);
 
@@ -462,7 +423,6 @@ $(function () {
     $.getJSON('/api/clips/clipsApi.php', params).done(function (resp) {
       if (!resp || !resp.ok || !resp.clips || !resp.clips.length) {
         clips = [];
-        rotationQueue = [];
         renderGrid();
         if ($player.length) {
           $player.find('.overlayFallback').text('No clips found yet.');
@@ -482,15 +442,13 @@ $(function () {
       if (!clips.length) return;
 
       if (!autoplayEnabled) {
-        // Autoplay disabled: always show just the first clip
-        // (both on the site and in the overlay), letting the
-        // viewer manually pick others from the grid.
-        setPlayerForClip(clips[0]);
+        // Even without rotation, use the balanced selection rules for the
+        // initially displayed clip. Viewers can still choose a grid card.
+        setPlayerForClip(chooseNextClip() || clips[0]);
       } else {
         // Autoplay enabled (default): rotate through clips
         // back-to-back until stopped, for both the site and
         // the overlay.
-        rebuildRotationQueue();
         startRotation();
       }
     }).fail(function () {

@@ -196,7 +196,7 @@
     .card                                               { box-sizing: border-box; }
     .title                                              { font-size: clamp(30px, 10vw, 40px); }
     .uiTable                                            { min-width: 440px; }
-    .cardList                                           { grid-template-columns: 1fr 1fr; }
+    .cardList                                           { grid-template-columns: 1fr; }
     .pagination                                         { width: 100%; }
     .gameSelect                                         { margin-inline: 12px; }
     .filtersGrid                                        { gap: 8px; }
@@ -550,21 +550,51 @@
 }
 
 @media (max-width: 850px) {
-    .adminApp  { display: block; }
-    .adminMain { padding: 16px; }
+    html.adminDocument {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        padding-bottom: 0 !important;
+    }
+
+    body.adminBody {
+        overflow: visible;
+        height: auto;
+        min-height: 100dvh;
+    }
+
+    .adminApp {
+        display: block;
+        overflow: visible;
+        height: auto;
+        min-height: 100dvh;
+    }
+
+    .adminMain {
+        overflow: visible;
+        padding: 16px;
+    }
 
     .adminSubtitle,
     .adminIdentity small { display: none; }
 
     .adminHeader {
+        position: sticky;
+        top: 0;
+        display: flex;
         height: auto;
         min-height: 64px;
         padding: 10px 14px;
     }
 
+    .adminHeaderContext {
+        display: none;
+    }
+
     .adminSidebar {
         display: flex;
         overflow-x: auto;
+        overflow-y: hidden;
         gap: 10px;
         border-right: 0;
         border-bottom: 1px solid var(--admin-border);

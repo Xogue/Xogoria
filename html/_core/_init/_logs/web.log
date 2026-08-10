@@ -49,3 +49,4 @@
 {"timestamp":"2026-08-08T19:34:32-05:00","level":"info","channel":"web","message":"Clip audio normalized","context":{"clipId":"GlamorousWealthyStingrayCurseLit-Z66TCwd3nqFR1dx9","targetLoudness":-16,"targetTruePeak":-1.5,"targetRange":11}}
 {"timestamp":"2026-08-08T19:35:46-05:00","level":"info","channel":"web","message":"Clip audio normalized","context":{"clipId":"LovelyInquisitiveEagleRedCoat-CyYxyU5ma9vAzV9C","targetLoudness":-16,"targetTruePeak":-1.5,"targetRange":11}}
 {"timestamp":"2026-08-08T19:36:40-05:00","level":"info","channel":"web","message":"Clip audio normalized","context":{"clipId":"OptimisticBloodySheepKappaWealth-0_Q6XF_LsjwKgidT","targetLoudness":-16,"targetTruePeak":-1.5,"targetRange":11}}
+{"timestamp":"2026-08-09T00:12:29-05:00","level":"warning","channel":"web","message":"Admin access denied","context":{"user_id":""}}

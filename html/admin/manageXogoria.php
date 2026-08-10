@@ -47,7 +47,7 @@
     ];
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en" class="adminDocument">
     <head>
         <?php require XOG_ROOT . "/includes/partials/head.php"; ?>
         <title>Xogoria Admin</title>
@@ -57,9 +57,13 @@
     <body class="adminBody">
         <div class="adminApp" id="adminApp">
             <header class="adminHeader">
-                <div>
+                <div class="adminHeaderBrand">
                     <a class="adminBrand" href="/about.php">Xogoria</a>
                     <span class="adminSubtitle">Control Center</span>
+                </div>
+                <div class="adminHeaderContext" aria-live="polite">
+                    <strong id="adminContextTitle">Admin</strong>
+                    <span id="adminContextSubtitle">Choose a section to manage.</span>
                 </div>
                 <div class="adminIdentity">
                     <span><?= $escape( $user->getDisplayName( ) ?: $user->getLoginName( ) ) ?></span>
@@ -84,6 +88,7 @@
                     <button class="adminNavItem" type="button" data-admin-target="community">Community page</button>
                     <button class="adminNavItem" type="button" data-admin-target="clips">Clip review</button>
                     <button class="adminNavItem" type="button" data-admin-target="config">Configuration</button>
+                    <a class="adminNavLink" href="/admin/commandCaptures.php">Streamer.bot captures</a>
                 </div>
                 <div class="adminNavGroup">
                     <div class="adminNavLabel">Open site</div>
@@ -98,38 +103,71 @@
                 <div class="adminNotice" id="adminNotice" role="status" aria-live="polite" hidden></div>
 
                 <?php foreach ( $resourceDefinitions as $resourceKey => $definition ): ?>
+                    <?php
+                        $visibleFields = array_filter(
+                            $definition[ "fields" ],
+                            static fn( array $field ): bool => empty( $field[ "hidden" ] )
+                        );
+                    ?>
                     <section class="adminSection" data-admin-section="<?= $escape( $resourceKey ) ?>" hidden>
                         <div class="adminSectionHeader">
                             <div>
                                 <h1><?= $escape( $definition[ "label" ] ) ?></h1>
                                 <p><?= $escape( $definition[ "description" ] ?? "" ) ?></p>
                             </div>
-                            <button type="button" class="adminButton" data-add-resource="<?= $escape( $resourceKey ) ?>">Add new</button>
+                            <div class="adminTableTools">
+                                <label class="adminTableSearch">
+                                    <span class="adminVisuallyHidden">Search <?= $escape( $definition[ "label" ] ) ?></span>
+                                    <input type="search" placeholder="Search <?= $escape( strtolower( $definition[ "label" ] ) ) ?>" data-resource-search="<?= $escape( $resourceKey ) ?>">
+                                </label>
+                                <?php if ( ( $definition[ "allowAdd" ] ?? true ) !== false ): ?>
+                                    <button type="button" class="adminButton" data-add-resource="<?= $escape( $resourceKey ) ?>">Add new</button>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <?php if ( isset( $loadErrors[ $resourceKey ] ) ): ?>
                             <div class="adminInlineError"><?= $escape( $loadErrors[ $resourceKey ] ) ?></div>
                         <?php endif; ?>
+                        <?php
+                            $hasLongField = array_filter(
+                                $visibleFields,
+                                static fn( array $field ): bool => ( $field[ "type" ] ?? "text" ) === "textarea"
+                            ) !== [ ];
+                        ?>
                         <div class="adminTableWrap">
-                            <table class="adminDataTable" data-resource-table="<?= $escape( $resourceKey ) ?>">
+                            <table class="adminDataTable<?= $hasLongField ? " adminDataTable--hasLongField" : "" ?>" data-resource-table="<?= $escape( $resourceKey ) ?>">
                                 <thead><tr>
-                                    <?php foreach ( $definition[ "fields" ] as $field ): ?><th><?= $escape( $field[ "label" ] ) ?></th><?php endforeach; ?>
-                                    <th>Actions</th>
+                                    <?php foreach ( $visibleFields as $fieldName => $field ):
+                                        $fieldType = $field[ "type" ] ?? "text";
+                                        $fieldClass = $fieldType === "textarea" ? "long" : preg_replace( '/[^a-z0-9_-]/i', '', $fieldType ); ?>
+                                        <th class="adminField adminField--<?= $escape( $fieldClass ) ?>" data-column="<?= $escape( $fieldName ) ?>" aria-sort="none">
+                                            <button type="button" class="adminSortButton" data-sort-column="<?= $escape( $fieldName ) ?>">
+                                                <span><?= $escape( $field[ "label" ] ) ?></span><span class="adminSortIndicator" aria-hidden="true"></span>
+                                            </button>
+                                        </th>
+                                    <?php endforeach; ?>
+                                    <th class="adminActionsColumn">Actions</th>
                                 </tr></thead>
                                 <tbody>
                                     <?php foreach ( $resourceRows[ $resourceKey ] as $row ): ?>
                                         <tr data-resource-row data-original-key="<?= $escape( $row[ $definition[ "primaryKey" ] ] ?? "" ) ?>">
                                             <?php
-                                                foreach ( $definition[ "fields" ] as $fieldName => $field ):
+                                                foreach ( $visibleFields as $fieldName => $field ):
                                                     $value = $row[ $fieldName ] ?? "";
-                                                    $type = $field[ "type" ] ?? "text"; ?>
-                                                    <td data-field="<?= $escape( $fieldName ) ?>">
+                                                    $type = $field[ "type" ] ?? "text";
+                                                    $fieldClass = $type === "textarea" ? "long" : preg_replace( '/[^a-z0-9_-]/i', '', $type ); ?>
+                                                    <td class="adminField adminField--<?= $escape( $fieldClass ) ?>" data-field="<?= $escape( $fieldName ) ?>">
                                                         <?php if ( $type === "textarea" ): ?>
                                                             <textarea disabled><?= $escape( $value ) ?></textarea>
                                                         <?php elseif ( $type === "boolean" ): ?>
-                                                            <input type="checkbox" <?= !empty( $value ) ? "checked" : "" ?> disabled>
+                                                            <label class="adminBooleanControl<?= !empty( $value ) ? " is-on" : "" ?>" data-boolean-control>
+                                                                <input type="checkbox" aria-label="<?= $escape( $field[ "label" ] ) ?>" <?= !empty( $value ) ? "checked" : "" ?> disabled>
+                                                                <span class="adminBooleanSwitch" aria-hidden="true"></span>
+                                                                <span class="adminBooleanValue" data-boolean-value><?= !empty( $value ) ? "Yes" : "No" ?></span>
+                                                            </label>
                                                         <?php elseif ( $type === "select" ): ?>
                                                             <select disabled><?php foreach ( $field[ "options" ] ?? [ ] as $option ): ?>
-                                                                <option value="<?= $escape( $option ) ?>" <?= (string) $value === (string) $option ? "selected" : "" ?>><?= $escape( $option ) ?></option>
+                                                                <option value="<?= $escape( $option ) ?>" <?= strcasecmp( (string) $value, (string) $option ) === 0 ? "selected" : "" ?>><?= $escape( $option ) ?></option>
                                                                 <?php endforeach; ?></select>
                                                         <?php else: ?>
                                                             <input type="<?= $escape( $type ) ?>" value="<?= $escape( $value ) ?>" <?= !empty( $field[ "immutable" ] ) ? "data-immutable" : "" ?> disabled>
@@ -138,10 +176,14 @@
                                                 <?php endforeach; ?>
                                             <td class="adminRowActions">
                                                 <button type="button" class="adminIconButton" data-edit-row>Edit</button>
+                                                <button type="button" class="adminIconButton" data-cancel-edit hidden>Cancel edit</button>
                                                 <button type="button" class="adminIconButton adminDangerText" data-delete-row>Delete</button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
+                                    <tr class="adminEmptyRow" data-empty-row hidden>
+                                        <td colspan="<?= count( $visibleFields ) + 1 ?>">No matching records.</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -149,7 +191,7 @@
                 <?php endforeach; ?>
 
                 <section class="adminSection" data-admin-section="clips" hidden>
-                    <div class="adminSectionHeader"><div><h1>Clip review</h1><p>Approve clips for stream screens, ignore them, or record deletion requests.</p></div></div>
+                    <div class="adminSectionHeader adminSectionHeaderTitleOnly"><div><h1>Clip review</h1><p>Approve clips for stream screens, ignore them, or record deletion requests.</p></div></div>
                     <?php require __DIR__ . "/sections/clips.php"; ?>
                 </section>
 
@@ -213,16 +255,33 @@
                 </section>
 
                 <section class="adminSection" data-admin-section="config" hidden>
-                    <div class="adminSectionHeader"><div><h1>Configuration</h1><p>Validated JSON editors for active application configuration. Every save creates a timestamped backup.</p></div></div>
+                    <div class="adminSectionHeader adminSectionHeaderTitleOnly"><div><h1>Configuration</h1><p>Validated JSON editors for active application configuration. Every save creates a timestamped backup.</p></div></div>
                     <?php if ( isset( $loadErrors[ "config" ] ) ): ?><div class="adminInlineError"><?= $escape( $loadErrors[ "config" ] ) ?></div><?php endif; ?>
-                    <div class="adminConfigGrid">
-                        <?php foreach ( $configFiles as $configKey => $config ): ?>
-                            <article class="adminConfigCard" data-config-card="<?= $escape( $configKey ) ?>">
-                                <div class="adminConfigHeader"><h2><?= $escape( $config[ "label" ] ) ?></h2><button type="button" class="adminButton" data-save-config>Save</button></div>
-                                <textarea class="adminJsonEditor" spellcheck="false"><?= $escape( json_encode( $config[ "data" ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ) ?></textarea>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php if ( $configFiles !== [ ] ): ?>
+                        <div class="adminConfigWorkspace">
+                            <div class="adminConfigPicker">
+                                <label for="adminConfigSelect">
+                                    <span>Configuration file</span>
+                                    <select id="adminConfigSelect">
+                                        <?php foreach ( $configFiles as $configKey => $config ): ?>
+                                            <option value="<?= $escape( $configKey ) ?>"><?= $escape( $config[ "label" ] ) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </label>
+                                <p>Choose a file, then edit and save it in the workspace below.</p>
+                            </div>
+                            <div class="adminConfigGrid">
+                                <?php $firstConfig = true; ?>
+                                <?php foreach ( $configFiles as $configKey => $config ): ?>
+                                    <article class="adminConfigCard" data-config-card="<?= $escape( $configKey ) ?>"<?= $firstConfig ? "" : " hidden" ?>>
+                                        <div class="adminConfigHeader"><h2><?= $escape( $config[ "label" ] ) ?></h2><button type="button" class="adminButton" data-save-config>Save</button></div>
+                                        <textarea class="adminJsonEditor" spellcheck="false" aria-label="<?= $escape( $config[ "label" ] ) ?> JSON editor"><?= $escape( json_encode( $config[ "data" ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ) ?></textarea>
+                                    </article>
+                                    <?php $firstConfig = false; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </section>
             </main>
         </div>

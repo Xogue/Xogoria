@@ -10,6 +10,7 @@ $deploymentClassFallbacks = [
     ResponseLibrary::class => __DIR__ . "/_status/ResponseLibrary.php",
     CurlResponse::class => dirname( __DIR__ ) . "/tools/CurlResponse.php",
     ClipAudioNormalizer::class => dirname( __DIR__ ) . "/services/ClipAudioNormalizer.php",
+    CommandCaptureManager::class => dirname( __DIR__ ) . "/managers/CommandCaptureManager.php",
 ];
 foreach ( $deploymentClassFallbacks as $className => $classPath ) {
     if ( !class_exists( $className, false ) ) {
@@ -120,6 +121,13 @@ final class ServiceFactory {
         return $this->service(
             __FUNCTION__,
             fn( ) => new AdminConfigManager( new JsonHandler( ), $this->logger( Logger::CHANNEL_WEB ) ),
+        );
+    }
+
+    public function commandCaptureManager( ): CommandCaptureManager {
+        return $this->service(
+            __FUNCTION__,
+            fn( ) => new CommandCaptureManager( $this->logger( Logger::CHANNEL_API ) ),
         );
     }
 

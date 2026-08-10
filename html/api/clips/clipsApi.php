@@ -8,6 +8,7 @@ $range = strtolower( (string) ( $_GET[ "range" ] ?? "month" ) );
 $limit = max( 1, min( 100, (int) ( $_GET[ "limit" ] ?? 50 ) ) );
 
 try {
+    $services->clipManager( )->alignNewApprovedPlayCounts( );
     $catalog = $services->clipReviewManager( )->catalog( $limit );
     $merged = $catalog[ "clips" ];
     if ( !empty( $catalog[ "warning" ] ) ) {

@@ -4,13 +4,16 @@
         "description": "Twitch identities, roles, and Airo Gem balances.",
         "table": "users",
         "primaryKey": "platformUserId",
+        "allowAdd": false,
         "fields": {
             "platform": { "label": "Platform", "type": "text", "required": true },
             "platformUserId": {
                 "label": "User ID",
                 "type": "text",
                 "required": true,
-                "immutable": true
+                "immutable": true,
+                "hidden": true,
+                "editable": false
             },
             "username": { "label": "Username", "type": "text", "required": true },
             "displayName": { "label": "Display name", "type": "text" },
@@ -32,13 +35,25 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
             "name": { "label": "Name", "type": "text", "required": true },
             "description": { "label": "Description", "type": "textarea" },
-            "category": { "label": "Category", "type": "text" },
-            "perms": { "label": "Permissions", "type": "text" },
-            "enabled": { "label": "Enabled", "type": "boolean" }
+            "category": {
+                "label": "Category",
+                "type": "select",
+                "options": ["Utility", "Playful", "Supportive", "Other"],
+                "defaultOnAdd": "Other"
+            },
+            "perms": {
+                "label": "Permissions",
+                "type": "select",
+                "options": ["Everyone", "VIPs", "Mods"],
+                "defaultOnAdd": "Everyone"
+            },
+            "enabled": { "label": "Enabled", "type": "boolean", "defaultOnAdd": true }
         }
     },
     "quotes": {
@@ -51,12 +66,13 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "editable": false
             },
             "text": { "label": "Quote", "type": "textarea", "required": true },
-            "speaker": { "label": "Speaker", "type": "text" },
-            "game": { "label": "Game", "type": "text" },
-            "date": { "label": "Date", "type": "date" },
+            "speaker": { "label": "Speaker", "type": "text", "defaultOnAdd": "Xogue" },
+            "game": { "label": "Game", "type": "text", "defaultOnAdd": "Minecraft" },
+            "date": { "label": "Date", "type": "date", "defaultOnAdd": "@today", "editableOnAdd": false },
             "favorite": { "label": "Favorite", "type": "boolean" }
         }
     },
@@ -70,7 +86,9 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
             "requirement": {
                 "label": "Requirement",
@@ -90,9 +108,11 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
-            "gameName": { "label": "Game", "type": "text", "required": true },
+            "gameName": { "label": "Game Name", "type": "text", "required": true },
             "customName": { "label": "Custom name", "type": "text", "required": true }
         }
     },
@@ -106,7 +126,9 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
             "chapterNumber": {
                 "label": "Chapter",
@@ -127,7 +149,9 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
             "chapterId": {
                 "label": "Chapter ID",
@@ -149,7 +173,9 @@
                 "label": "ID",
                 "type": "integer",
                 "immutable": true,
-                "generated": true
+                "generated": true,
+                "hidden": true,
+                "editable": false
             },
             "chapterId": {
                 "label": "Chapter ID",

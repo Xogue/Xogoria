@@ -1,6 +1,7 @@
 <?php
 require_once dirname( __DIR__ ) . "/../includes/session.php";
-$clipManager = new ServiceFactory( )->clipManager( );
+$services = new ServiceFactory( );
+$clipManager = $services->clipManager( );
 
 $method = $_SERVER[ "REQUEST_METHOD" ] ?? "GET";
 $input = $method === "POST" ? $_POST : $_GET;
@@ -13,7 +14,15 @@ if ( $clipId === "" ) {
 
 // Increment play count; intentionally unauthenticated
 try {
-    $clipManager->increasePlayCount( $clipId );
+    if ( !$clipManager->increasePlayCount( $clipId ) ) {
+        ApiController::error( "The clip play could not be recorded.", 500 );
+    }
+    $clipManager->alignNewApprovedPlayCounts( );
+    ApiController::sendJson( [ "success" => true, "ok" => true ] );
 } catch ( Throwable $e ) {
-    // swallow errors to avoid breaking overlay
- }
+    $services->logger( Logger::CHANNEL_API )->exception( $e, [
+        "endpoint" => "clipsPlay",
+        "clipId" => $clipId,
+    ] );
+    ApiController::error( "The clip play could not be recorded.", 500 );
+}

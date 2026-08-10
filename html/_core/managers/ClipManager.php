@@ -88,10 +88,54 @@ final class ClipManager {
 
     public function increasePlayCount( string $clipId ): bool {
         return $this->database->execute(
-            "UPDATE " . self::TABLE . " SET playCount = playCount + 1 WHERE twitchString = ?",
+            "UPDATE " . self::TABLE . " SET playCount = COALESCE(playCount, 0) + 1 WHERE twitchString = ? AND status = 1 AND enabled = 1",
             "s",
             [ $clipId ],
         );
+    }
+
+    public function alignNewApprovedPlayCounts( ): bool {
+        $rows = $this->database->selectFromJson(
+            "SELECT playCount FROM " . self::TABLE . " WHERE status = 1 AND enabled = 1",
+            "",
+            [ ],
+        );
+        if ( $rows === [ ] ) {
+            return true;
+        }
+
+        $counts = array_map(
+            static fn( array $row ): int => max( 0, (int) ( $row[ "playCount" ] ?? 0 ) ),
+            $rows,
+        );
+        if ( !in_array( 0, $counts, true ) ) {
+            return true;
+        }
+
+        $establishedCounts = array_values( array_filter(
+            $counts,
+            static fn( int $count ): bool => $count > 0,
+        ) );
+        if ( $establishedCounts === [ ] ) {
+            return true;
+        }
+
+        $establishedMinimum = min( $establishedCounts );
+        if ( $establishedMinimum <= 5 ) {
+            return true;
+        }
+
+        $success = $this->database->execute(
+            "UPDATE " . self::TABLE . " SET playCount = ? WHERE status = 1 AND enabled = 1 AND COALESCE(playCount, 0) = 0",
+            "i",
+            [ $establishedMinimum ],
+        );
+        if ( !$success ) {
+            $this->logger->error( "New approved clip play counts could not be aligned", [
+                "establishedMinimumPlayCount" => $establishedMinimum,
+            ] );
+        }
+        return $success;
     }
 
     public function setLocalFileUrl( string $clipId, string $url ): bool {

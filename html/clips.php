@@ -3,6 +3,9 @@
 
     $cssAssets = [ "fonts", "variables", "ui", "header", "nav", "clips", "compatibility" ];
     $jsAssets = [ "jquery", "ui", "brbClips" ];
+
+    $overlayParam = strtolower( trim( (string) ( $_GET[ "overlay" ] ?? "" ) ) );
+    $isObsOverlay = in_array( $overlayParam, [ "1", "true", "on", "yes", "brb", "clips", "brb_clips" ], true );
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +17,7 @@
             $assetManager->useJS( $jsAssets );
         ?>
     </head>
-    <body>
+    <body<?= $isObsOverlay ? ' class="overlay-brb_clips"' : "" ?>>
         <?php
             require XOG_ROOT . "/includes/partials/header.php";
             require XOG_ROOT . "/includes/partials/nav.php";
