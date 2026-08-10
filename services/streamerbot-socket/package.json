@@ -1,0 +1,17 @@
+{
+  "name": "xogoria-streamerbot-socket",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Authenticated WebSocket transport between Streamer.bot and Xogoria.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}

@@ -1,0 +1,27 @@
+[Unit]
+Description=Xogoria Streamer.bot WebSocket service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=xogoria-socket
+Group=xogoria-socket
+WorkingDirectory=/opt/xogoria/streamerbot-socket
+EnvironmentFile=/etc/xogoria/streamerbot-socket.env
+ExecStart=/usr/bin/node /opt/xogoria/streamerbot-socket/server.js
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target
