@@ -27,7 +27,6 @@ final class ServiceFactory {
     public function assetManager( )     : AssetManager      { return $this->service( __FUNCTION__, fn( ) => new AssetManager( ) ); }
     public function adminController( )  : AdminController   { return $this->service( __FUNCTION__, fn( ) => new AdminController( $this ) ); }
     public function gameManager( )      : GameManager       { return $this->service( __FUNCTION__, fn( ) => new GameManager( $this->templateManager( ) ) ); }
-    public function loreManager( )      : LoreManager       { return $this->service( __FUNCTION__, fn( ) => new LoreManager( $this->templateManager( ) ) ); }
     public function configManager( )    : ConfigManager     { return $this->service( __FUNCTION__, fn( ) => new ConfigManager( $this->gameManager( ) ) ); }
     public function mySqlManager( )     : MySqlManager      { return $this->service( __FUNCTION__, fn( ) => new MySqlManager( $this->configManager( ) ) ); }
     public function twitchController( ) : TwitchController  { return $this->service( __FUNCTION__, fn( ) => new TwitchController( $this->dataController( ) ) ); }
@@ -59,7 +58,6 @@ final class ServiceFactory {
             fn( ) => new DataController(
                 $this->mySqlManager( ),
                 $this->configManager( ),
-                $this->loreManager( ),
             ),
         );
     }
@@ -191,7 +189,7 @@ final class ServiceFactory {
 
     public function createWorker( string $request ): ?WorkerInterface {
         return match ( $request ) {
-            "collection" => new CollectionWorker( $this->mySqlManager( ) ),
+            "quote" => new QuoteWorker( $this->mySqlManager( ) ),
             "currency" => new CurrencyWorker(
                 $this->contextManager( )->getUser( ),
                 $this->mySqlManager( ),

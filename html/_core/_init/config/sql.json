@@ -1,23 +1,11 @@
 {
     "allCommands": "SELECT id, name, description, category, perms, enabled FROM collectCommands WHERE enabled = 1 ORDER BY name ASC",
-    "allMonsters": "SELECT id, gameName, customName FROM collectMonsterNames ORDER BY id ASC",
-    "allObjectives": "SELECT id, requirement, active FROM collectObjectives ORDER BY id ASC",
     "allQuotes": "SELECT id, text, speaker, game, date, favorite FROM collectQuotes ORDER BY id ASC",
 
-    "allChapters": "SELECT id AS chapterId, chapterNumber, title AS chapterTitle, body AS chapterText FROM legendsChapters ORDER BY chapterNumber ASC",
-    "allChapterAudio": "SELECT chapterId, id, url, label, sortOrder FROM legendsAudio ORDER BY chapterId ASC, sortOrder ASC, id ASC",
-    "allChapterStreams": "SELECT chapterId, id, url, date, sortOrder FROM legendsStreams ORDER BY chapterId ASC, sortOrder ASC, id ASC",
-
     "randomQuote": "SELECT text FROM collectQuotes ORDER BY RAND() LIMIT 1",
-    "randomMonster": "SELECT gameName, customName FROM collectMonsterNames ORDER BY RAND() LIMIT 1",
-    "randomObjective": "SELECT requirement FROM collectObjectives WHERE active = 1 ORDER BY RAND() LIMIT 1",
 
     "quoteById": "SELECT text FROM collectQuotes WHERE id = ? LIMIT 1",
-    "monsterById": "SELECT gameName, customName FROM collectMonsterNames WHERE id = ? LIMIT 1",
-    "objectiveById": "SELECT requirement FROM collectObjectives WHERE id = ? LIMIT 1",
 
-    "searchQuoteByText": "SELECT text FROM collectQuotes WHERE text LIKE ? LIMIT 1",
-    "searchMonsterByName": "SELECT gameName, customName FROM collectMonsterNames WHERE gameName LIKE ? LIMIT 1",
-    "searchObjectiveByRequirement": "SELECT requirement FROM collectObjectives WHERE requirement LIKE ? AND active = 1 LIMIT 1"
+    "searchQuoteByText": "SELECT text FROM collectQuotes WHERE text LIKE ? LIMIT 1"
 
 }

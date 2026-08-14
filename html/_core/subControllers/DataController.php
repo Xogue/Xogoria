@@ -11,7 +11,6 @@ class DataController {
     public function __construct(
         private MySqlManager $mySqlManager,
         private ConfigManager $configManager,
-        private LoreManager $loreManager,
     ) {
         $this->requestData = new RequestData( );
         $this->sessionData = new SessionData( );
@@ -44,12 +43,5 @@ class DataController {
     public function getUserContext( ) {
         $inputContext = $this->getInputDataContext( );
         return $this->userContext ??= new UserContext( $inputContext, $this->mySqlManager );
-    }
-
-    public function buildLore( ) {
-        $loreChapters = $this->mySqlManager->fetchData( "allChapters" );
-        $loreAudio = $this->mySqlManager->fetchData( "allAudio" );
-        $loreStreams = $this->mySqlManager->fetchData( "allStreams" );
-        $this->loreManager->buildStory( $loreChapters, $loreAudio, $loreStreams );
     }
 }

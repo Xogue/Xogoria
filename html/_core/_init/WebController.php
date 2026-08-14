@@ -15,7 +15,6 @@ final class WebController {
     public function getUserContext( )       : UserContext       { return $this->services->contextManager( )->getUser( ); }
     public function getMySqlManager( )      : MySqlManager      { return $this->services->mySqlManager( ); }
     public function getCollectionManager( ) : CollectionManager { return $this->services->collectionManager( ); }
-    public function getLoreManager( )       : LoreManager       { return $this->services->loreManager( ); }
     public function getGameManager( )       : GameManager       { return $this->services->gameManager( ); }
     public function getAssetManager( )      : AssetManager      { return $this->services->assetManager( ); }
     public function getRestrictedWords( )  : array             { return $this->services->configManager( )->getConfigStore( )->getRestrictedWords( ); }

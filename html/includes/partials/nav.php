@@ -20,8 +20,7 @@
 <div id="navbar"></div>
 <div id="navlinks">
     <span class="navlink <?php echo $current === "about" ? "active" : ""; ?>"><a href="/about.php">About</a></span>
-    <span class="navlink <?php echo $current === "lore" ? "active" : ""; ?>"><a href="/lore.php">Lore</a></span>
-    <span class="navlink <?php echo $current === "collections" ? "active" : ""; ?>"><a href="/collections.php">Collections</a></span>
+    <span class="navlink <?php echo $current === "quotes" ? "active" : ""; ?>"><a href="/quotes.php">Quotes</a></span>
     <span class="navlink <?php echo $current === "commands" ? "active" : ""; ?>"><a href="/commands.php">Commands</a></span>
     <span class="navlink <?php echo $current === "features" ? "active" : ""; ?>"><a href="/features.php">Features</a></span>
     <?php if ( $isAdminNav ): ?>

@@ -7,12 +7,6 @@ final class ResponseLibrary {
     public const R_API__INVALID_REQUEST = 'API102R';
     public const R_API__MISSING_REQUEST = 'API100R';
     public const R_API__UNAUTHORIZED = 'API101R';
-    public const R_COLLECTION__INVALID_ACTION = 'COL105R';
-    public const R_COLLECTION__MISSING_ARGUMENT = 'COL103R';
-    public const R_COLLECTION__MONSTER_FOUND = 'COL100R';
-    public const R_COLLECTION__NOT_FOUND = 'COL104R';
-    public const R_COLLECTION__OBJECTIVE_FOUND = 'COL101R';
-    public const R_COLLECTION__QUOTE_FOUND = 'COL102R';
     public const R_CONFIGURE__GAME_CHANGED = 'CFG100R';
     public const R_CONFIGURE__INVALID_ACTION = 'CFG103R';
     public const R_CONFIGURE__INVALID_CONFIGURATION = 'CFG102R';
@@ -20,6 +14,7 @@ final class ResponseLibrary {
     public const R_CURRENCY__BALANCE_CHECK = 'C101R';
     public const R_CURRENCY__BALANCE_SET = 'C102R';
     public const R_CURRENCY__GEMS_ADD = 'C100R';
+    public const R_CURRENCY__GEMS_ADDED = 'C108R';
     public const R_CURRENCY__GEMS_DEDUCTED = 'C103R';
     public const R_CURRENCY__INSUFFICIENT_FUNDS = 'C107R';
     public const R_CURRENCY__INVALID_ACTION = 'C105R';
@@ -41,4 +36,8 @@ final class ResponseLibrary {
     public const R_INTERACTION__POWER_SPAWN_COMPLETED = 'I114R';
     public const R_INTERACTION__RESTRICTED_TEXT = 'I111R';
     public const R_INTERACTION__WRONG_GAME = 'I102R';
+    public const R_QUOTE__FOUND = 'Q100R';
+    public const R_QUOTE__INVALID_ACTION = 'Q103R';
+    public const R_QUOTE__MISSING_ARGUMENT = 'Q101R';
+    public const R_QUOTE__NOT_FOUND = 'Q102R';
 }

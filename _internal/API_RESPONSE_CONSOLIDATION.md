@@ -13,7 +13,7 @@ The public `xogoriaApi.php` response is normalized by `ApiResponseNormalizer`. E
 
 The obsolete `WorkerInterface::createWorkerResult()` method and its four identical implementations were removed. They had no callers. Simple interactions and power spawning now share `InteractionWorker::chargeAndSend()`, so balance validation, charging, relay failure handling, refunds, and successful balance metadata have one implementation.
 
-Collection results are reduced from a database-shaped one-row list to the selected row itself. For example, `value` for a quote is now `{ "text": "..." }`, while `meta.quote` contains the immediately usable chat value.
+Quote results are reduced from a database-shaped one-row list to the selected row itself. `value` is `{ "text": "..." }`, while `meta.quote` contains the immediately usable chat value.
 
 ## Editing or adding a response
 
@@ -24,15 +24,15 @@ Collection results are reduced from a database-shaped one-row list to the select
 5. Return `WorkerResult::success(...)` or `WorkerResult::failureCode(...)` from the worker using that generated constant and all required metadata.
 6. Add a smoke assertion that normalizes the outcome and verifies both the code and fully rendered message.
 
-## Potential future consolidation: typed collection repository
+## Potential future consolidation: typed quote repository
 
-`MySqlManager::fetchData()` and `fetchDataByDetail()` are string-key dispatchers over another string-key dispatcher in `runQueryFromJson()`. `CollectionWorker` then has to understand database row field names such as `requirement`, `text`, `gameName`, and `customName`. A typed `CollectionRepository` could expose methods such as `findQuote(string $term): ?array`, `randomObjective(): ?array`, and `findMonsterName(string $gameName): ?array`.
+`MySqlManager::fetchData()` and `fetchDataByDetail()` are string-key dispatchers over another string-key dispatcher in `runQueryFromJson()`. `QuoteWorker` then has to understand database row fields such as `text`. A typed `QuoteRepository` could expose methods such as `findQuote(string $term): ?array` and `randomQuote(): ?array`.
 
-That change would remove both `match` blocks from `MySqlManager`, prevent invalid keyword/query combinations, and make return types explicit. It was not done here because `MySqlManager::fetchData()` also serves page-building calls for complete command, lore, quote, objective, and monster collections. Splitting it safely requires cataloging those non-API consumers and deciding whether each repository returns database rows or domain objects. Mixing those decisions into the response overhaul would create a broad migration with little immediate benefit to Streamer.bot.
+That change would remove both `match` blocks from `MySqlManager`, prevent invalid keyword/query combinations, and make return types explicit. It was not done here because `MySqlManager::fetchData()` also serves page-building calls for complete command and quote catalogs. Splitting it safely requires cataloging those non-API consumers and deciding whether each repository returns database rows or domain objects. Mixing those decisions into the response overhaul would create a broad migration with little immediate benefit to Streamer.bot.
 
 ## Potential future consolidation: worker priming contracts
 
-Every worker implements `prime(WorkerContext, InputDataContext)`, but currency and collection workers only use `InputDataContext`; configure and interaction use both. The unused argument is currently harmless and keeps dispatch uniform. Possible alternatives are constructor injection of request-scoped contexts, or two interfaces (one for input-only workers and one for game-aware workers).
+Every worker implements `prime(WorkerContext, InputDataContext)`, but currency and quote workers only use `InputDataContext`; configure and interaction use both. The unused argument is currently harmless and keeps dispatch uniform. Possible alternatives are constructor injection of request-scoped contexts, or two interfaces (one for input-only workers and one for game-aware workers).
 
 This was not changed because either alternative pushes conditional construction logic into `ServiceFactory`/`ApiController`, which may cost more complexity than it removes with only four workers. Revisit this if more input-only workers are added or if worker instances become immutable.
 

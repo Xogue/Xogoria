@@ -91,54 +91,46 @@
             "{totalGems}": "totalGems"
         }
     },
-
-    "SECTION3": { "-----------------------": "COLLECTION RESPONSES" },
-    "COL100R": {
-        "constantName": "R_COLLECTION__MONSTER_FOUND",
+    "C108R": {
+        "constantName": "R_CURRENCY__GEMS_ADDED",
         "success": true,
         "httpStatus": 200,
-        "messageTemplate": "The name chosen for {gameName} is {customName}.",
+        "messageTemplate": "Added {addedGems} gems. The new total is {totalGems}.",
         "replaceMap": {
-            "{gameName}": "gameName",
-            "{customName}": "customName"
+            "{addedGems}": "addedGems",
+            "{totalGems}": "totalGems"
         }
     },
-    "COL101R": {
-        "constantName": "R_COLLECTION__OBJECTIVE_FOUND",
-        "success": true,
-        "httpStatus": 200,
-        "messageTemplate": "Your objective is: {objective}",
-        "replaceMap": { "{objective}": "objective" }
-    },
-    "COL102R": {
-        "constantName": "R_COLLECTION__QUOTE_FOUND",
+
+    "SECTION3": { "-----------------------": "QUOTE RESPONSES" },
+    "Q100R": {
+        "constantName": "R_QUOTE__FOUND",
         "success": true,
         "httpStatus": 200,
         "messageTemplate": "{quote}",
         "replaceMap": { "{quote}": "quote" }
     },
-    "COL103R": {
-        "constantName": "R_COLLECTION__MISSING_ARGUMENT",
+    "Q101R": {
+        "constantName": "R_QUOTE__MISSING_ARGUMENT",
         "success": false,
         "httpStatus": 400,
-        "messageTemplate": "Provide a search term, numeric ID, or 'random' for the {collection} command.",
-        "replaceMap": { "{collection}": "collection" }
+        "messageTemplate": "Provide a search term, numeric ID, or 'random' for the quote command.",
+        "replaceMap": {}
     },
-    "COL104R": {
-        "constantName": "R_COLLECTION__NOT_FOUND",
+    "Q102R": {
+        "constantName": "R_QUOTE__NOT_FOUND",
         "success": false,
         "httpStatus": 404,
-        "messageTemplate": "No {collection} matched '{search}'.",
+        "messageTemplate": "No quote matched '{search}'.",
         "replaceMap": {
-            "{collection}": "collection",
             "{search}": "search"
         }
     },
-    "COL105R": {
-        "constantName": "R_COLLECTION__INVALID_ACTION",
+    "Q103R": {
+        "constantName": "R_QUOTE__INVALID_ACTION",
         "success": false,
         "httpStatus": 400,
-        "messageTemplate": "The collection action '{action}' is not supported.",
+        "messageTemplate": "The quote action '{action}' is not supported.",
         "replaceMap": { "{action}": "action" }
     },
 

@@ -24,7 +24,7 @@
             require $navFilepath;
         ?>
         <div id="uiPageBanner">
-            <div class="uiPageTitle">Xogoria's Features</div>
+            <div class="uiPageTitle">Features</div>
         </div>
 
         <div id="uiSubBanner">

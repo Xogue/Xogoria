@@ -49,8 +49,7 @@
     $escape = static fn( mixed $value ): string => htmlspecialchars( (string) $value, ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8" );
     $groups = [
     "People" => [ "users" ],
-    "Collections" => [ "commands", "quotes", "objectives", "monsters" ],
-    "Lore" => [ "chapters", "audio", "streams" ],
+    "Content" => [ "commands", "quotes" ],
     ];
 ?>
 <!doctype html>
@@ -107,7 +106,7 @@
                     <a class="adminNavLink" href="/interact.php" target="_blank">Interaction panel</a>
                     <a class="adminNavLink" href="/clips.php" target="_blank">Clip collection</a>
                     <a class="adminNavLink" href="/community.php" target="_blank">Community page</a>
-                    <a class="adminNavLink" href="/collections.php" target="_blank">Collections</a>
+                    <a class="adminNavLink" href="/quotes.php" target="_blank">Quotes</a>
                 </div>
             </aside>
 

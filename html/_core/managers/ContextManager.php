@@ -33,9 +33,7 @@ class ContextManager {
     public function getUrlApiKey( ) { return $this->getInputData( )->getUrlApiKey( ); }
     // Currency Worker
     public function getAmount( ) { return $this->getInputData( )->getAmount( ); }
-    // Collection Worker
-    public function getMonster( ) { return $this->getInputData( )->getMonster( ); }
-    public function getObjective( ) { return $this->getInputData( )->getObjective( ); }
+    // Quote Worker
     public function getQuote( ) { return $this->getInputData( )->getQuote( ); }
     // DELEGATION METHODS: User
     public function userLoggedIn( ) { return $this->getUser( )->userLoggedIn( ); }

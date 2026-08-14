@@ -15,7 +15,7 @@
     $mySqlManager = $webController->getMySqlManager( );
     $commands = $mySqlManager->fetchData( "allCommands" );
 
-    // COMPILE LOCAL COLLECTIONS
+    // COMPILE COMMANDS
     $collectionManager = $webController->getCollectionManager( );
     $collectionManager->insertCommands( $commands );
 
@@ -37,7 +37,7 @@
             require $navFilepath;
         ?>
         <div id="uiPageBanner">
-            <div class="uiPageTitle">Xogoria's Commands</div>
+            <div class="uiPageTitle">Commands</div>
         </div>
 
         <div id="commandsFilters">

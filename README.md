@@ -1,6 +1,6 @@
 # Xogoria
 
-Xogoria is the website and stream-interaction platform for the Xogoria community. It combines a public content site, Twitch authentication, viewer-funded game interactions, stream collections, clip review, lore, a Redis-backed sound queue, and an administrator control center in one PHP application.
+Xogoria is the website and stream-interaction platform for the Xogoria community. It combines a public content site, Twitch authentication, viewer-funded game interactions, stream quotes, clip review, a Redis-backed sound queue, and an administrator control center in one PHP application.
 
 The project is written for PHP 8.4 and uses a deliberately small application architecture built around controllers, request contexts, workers, managers, and service composition. Public web requests render server-side PHP pages; API requests return structured JSON.
 
@@ -36,8 +36,7 @@ The project is written for PHP 8.4 and uses a deliberately small application arc
 - About and channel information
 - Stream feature documentation
 - Searchable command collection
-- Quote, objective, and custom monster-name collections
-- Expandable lore chapters with audio and stream links
+- Searchable stream quotes
 - Twitch clip collection for the website and stream overlays
 - Shared navigation, authentication state, and live-stream banner
 
@@ -54,7 +53,7 @@ The project is written for PHP 8.4 and uses a deliberately small application arc
 
 - Role-gated administrator control center
 - CSRF-protected mutations
-- Allowlisted CRUD for users, commands, quotes, objectives, monster names, and lore records
+- Allowlisted CRUD for users, commands, and quotes
 - JSON editors for core, Twitch, Minecraft, and Hytale configuration
 - Timestamped configuration backups
 - Clip lifecycle management: pending, approved, ignored, and deletion requested
@@ -147,7 +146,7 @@ Xogoria/
 |   |-- _core/                    Active application classes
 |   |   |-- _init/                Controllers, factory, config, and logging
 |   |   |-- bridges/              MySQL, Twitch, and external providers
-|   |   |-- collections/          Typed collection containers
+|   |   |-- catalogs/             Typed command and quote containers
 |   |   |-- contexts/             Request-scoped application data
 |   |   |-- dataCollection/       Request and session readers
 |   |   |-- elements/             Domain objects
@@ -159,7 +158,7 @@ Xogoria/
 |   |-- api/                      JSON API entry points
 |   |-- assets/                   CSS, JavaScript, fonts, images, and audio
 |   |-- includes/                 Bootstrap, session, and shared page parts
-|   |-- libs/templates/           HTML templates for games and collections
+|   |-- libs/templates/           HTML templates for games and site content
 |   `-- *.php                     Public page entry points
 |-- private/                      Untracked secrets
 |-- tests/                        Smoke checks
@@ -358,11 +357,6 @@ The active code references these tables:
 | `users` | Twitch identity, display name, role, and Airo Gem balance |
 | `collectCommands` | Public stream commands |
 | `collectQuotes` | Collected stream quotes |
-| `collectObjectives` | Gameplay objectives |
-| `collectMonsterNames` | Custom monster names |
-| `legendsChapters` | Lore chapter content |
-| `legendsAudio` | Audio linked to lore chapters |
-| `legendsStreams` | recordings linked to lore chapters |
 | `streamClips` | Clip review state, display metadata, and play counts |
 
 The exact fields used by admin-managed resources are defined in:
@@ -393,7 +387,7 @@ Non-secret configuration lives in `html/_core/_init/config`.
 |---|---|
 | `core.json` | Active game and interaction profile |
 | `twitch.json` | Twitch endpoint URLs and OAuth callback paths |
-| `sql.json` | Named collection and lore queries |
+| `sql.json` | Named collection queries |
 | `adminResources.json` | Admin CRUD allowlist and field-rendering schema |
 | `gameConfigs/minecraft.json` | Minecraft interaction types, actions, and profiles |
 | `gameConfigs/hytale.json` | Hytale interaction types, actions, and profiles |
@@ -464,7 +458,7 @@ The `request` field selects a worker:
 
 | Request | Worker | Responsibility |
 |---|---|---|
-| `collection` | `CollectionWorker` | Retrieve collection values |
+| `quote` | `QuoteWorker` | Retrieve stream quotes |
 | `currency` | `CurrencyWorker` | Balance operations |
 | `interaction` | `InteractionWorker` | Validate and execute game interactions |
 | `configure` | `ConfigureWorker` | Change active game/profile for authorized users |
@@ -590,7 +584,7 @@ The smoke test checks core object construction, request-scoped service reuse, ad
 
 At minimum, verify:
 
-- About, Features, Lore, Collections, Commands, Clips, and Interact pages render.
+- About, Features, Quotes, Commands, Clips, and Interact pages render.
 - Static assets return 200 with the expected content types.
 - Twitch login, callback, local user synchronization, and logout work.
 - Admin access is denied for ordinary users.

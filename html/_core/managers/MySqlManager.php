@@ -127,15 +127,8 @@ class MySqlManager {
     public function fetchData( string $keyword ) {
         return match ( $keyword ) {
             "allCommands" => $this->getAllCommands( ),
-            "allMonsters" => $this->getAllMonsters( ),
-            "allObjectives" => $this->getAllObjectives( ),
             "allQuotes" => $this->getAllQuotes( ),
-            "allChapters" => $this->getLoreChapters( ),
-            "allAudio" => $this->getLoreAudio( ),
-            "allStreams" => $this->getLoreStreams( ),
             "randomQuote" => $this->getRandQuote( ),
-            "randomMonster" => $this->getRandMonster( ),
-            "randomObjective" => $this->getRandObjective( ),
             default => null,
         };
     }
@@ -144,15 +137,11 @@ class MySqlManager {
         if ( $this->isInt( $detail ) ) {
             return match ( $keyword ) {
                 "quote" => $this->getQuoteById( $detail ),
-                "monster" => $this->getMonsterById( $detail ),
-                "objective" => $this->getObjectiveById( $detail ),
                 default => null,
             };
         } else {
             return match ( $keyword ) {
                 "quote" => $this->searchQuoteByText( $detail ),
-                "monster" => $this->searchMonsterByName( $detail ),
-                "objective" => $this->searchObjectiveByRequirement( $detail ),
                 default => null,
             };
         }
@@ -160,22 +149,11 @@ class MySqlManager {
 
     // PRIVATE FUNCTIONS
     private function getAllCommands( ) { return $this->runQueryFromJson( "allCommands", "", [ ] ); }
-    private function getAllMonsters( ) { return $this->runQueryFromJson( "allMonsters", "", [ ] ); }
-    private function getAllObjectives( ) { return $this->runQueryFromJson( "allObjectives", "", [ ] ); }
     private function getAllQuotes( ) { return $this->runQueryFromJson( "allQuotes", "", [ ] ); }
-    private function getLoreChapters( ) { return $this->runQueryFromJson( "allChapters", "", [ ] ); }
-    private function getLoreAudio( ) { return $this->runQueryFromJson( "allChapterAudio", "", [ ] ); }
-    private function getLoreStreams( ) { return $this->runQueryFromJson( "allChapterStreams", "", [ ] ); }
     private function getRandQuote( ) { return $this->runQueryFromJson( "randomQuote", "", [ ] ); }
-    private function getRandMonster( ) { return $this->runQueryFromJson( "randomMonster", "", [ ] ); }
-    private function getRandObjective( ) { return $this->runQueryFromJson( "randomObjective", "", [ ] ); }
 
     private function getQuoteById( int $id ) { return $this->runQueryFromJson( "quoteById", "i", [ $id ] ); }
-    private function getMonsterById( int $id ) { return $this->runQueryFromJson( "monsterById", "i", [ $id ] ); }
-    private function getObjectiveById( int $id ) { return $this->runQueryFromJson( "objectiveById", "i", [ $id ] ); }
     private function searchQuoteByText( string $text ) { return $this->runQueryFromJson( "searchQuoteByText", "s", [ "%{$text}%" ] ); }
-    private function searchMonsterByName( string $name ) { return $this->runQueryFromJson( "searchMonsterByName", "s", [ "%{$name}%" ] ); }
-    private function searchObjectiveByRequirement( string $requirement ) { return $this->runQueryFromJson( "searchObjectiveByRequirement", "s", [ "%{$requirement}%" ] ); }
     private function isInt( mixed $value ) { return filter_var( $value, FILTER_VALIDATE_INT ) !== false; }
 
     private function runQueryFromJson( string $query, string $types, array $params ) {

@@ -74,11 +74,11 @@ $currencyResult = WorkerResult::success( ResponseLibrary::R_CURRENCY__GEMS_ADD, 
     "foundGems" => 4,
     "totalGems" => 14,
 ] );
-$normalized = $normalizer->normalize( $currencyResult, "currency", "", "addToUser" );
+$normalized = $normalizer->normalize( $currencyResult, "currency", "", "digGems" );
 assert( array_keys( $normalized ) === [ "success", "code", "message", "value", "request", "meta" ] );
 assert( $normalized[ "code" ] === "C100R" );
 assert( $normalized[ "message" ] === "You found 4 gems! Your new total is 14." );
-assert( $normalized[ "request" ] === [ "name" => "currency", "type" => "", "action" => "addToUser" ] );
+assert( $normalized[ "request" ] === [ "name" => "currency", "type" => "", "action" => "digGems" ] );
 assert( $normalized[ "meta" ]->foundGems === 4 );
 assert( $normalizer->getHttpStatus( $currencyResult ) === 200 );
 
@@ -161,7 +161,7 @@ for ( $randomTest = 0; $randomTest < 20; $randomTest++ ) {
     $_SERVER[ "REQUEST_METHOD" ] = "GET";
     $_GET = [
         "request" => "currency",
-        "action" => "addToUser",
+        "action" => "digGems",
         "amount" => -2147483648,
     ];
     $_SESSION = [ ];
@@ -175,18 +175,30 @@ for ( $randomTest = 0; $randomTest < 20; $randomTest++ ) {
     assert( str_contains( $normalizer->normalize( $randomAward )[ "message" ], "Your new total is" ) );
 }
 
-$collectionDatabase = new class extends MySqlManager {
+$_GET = [
+    "request" => "currency",
+    "action" => "addToUser",
+    "amount" => 4,
+];
+$currencyInput = new InputDataContext( new RequestData( ), new SessionData( ) );
+$currencyWorker = new CurrencyWorker( $currencyUser, $currencyBank );
+$currencyWorker->prime( $workerContext, $currencyInput );
+$addedGems = $currencyWorker->process( );
+assert( $addedGems->getCode( ) === ResponseLibrary::R_CURRENCY__GEMS_ADDED );
+assert( $normalizer->normalize( $addedGems )[ "message" ] === "Added 4 gems. The new total is 14." );
+
+$quoteDatabase = new class extends MySqlManager {
     public function __construct( ) { }
     public function fetchData( string $keyword ): array {
         assert( $keyword === "randomQuote" );
         return [ [ "text" => "A normalized quote." ] ];
     }
 };
-$_GET = [ "request" => "collection", "action" => "quote", "quote" => "random" ];
-$collectionInput = new InputDataContext( new RequestData( ), new SessionData( ) );
-$collectionWorker = new CollectionWorker( $collectionDatabase );
-$collectionWorker->prime( $workerContext, $collectionInput );
-$quoteResult = $collectionWorker->process( );
+$_GET = [ "request" => "quote", "action" => "quote", "quote" => "random" ];
+$quoteInput = new InputDataContext( new RequestData( ), new SessionData( ) );
+$quoteWorker = new QuoteWorker( $quoteDatabase );
+$quoteWorker->prime( $workerContext, $quoteInput );
+$quoteResult = $quoteWorker->process( );
 assert( $quoteResult->getValue( ) === [ "text" => "A normalized quote." ] );
 assert( $normalizer->normalize( $quoteResult )[ "message" ] === "A normalized quote." );
 

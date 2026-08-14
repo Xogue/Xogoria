@@ -17,8 +17,6 @@ class RequestData {
     public function getAction( )     : string { return (string) ( $this->get( "action" ) ?? "" ); }
     public function getAmount( )     : int    { return (int) ( $this->get( "amount" ) ?? 0 ); }
     public function getRequest( )    : string { return (string) ( $this->get( "request" ) ?? "" ); }
-    public function getMonster( )    : string { return (string) ( $this->get( "monster" ) ?? "" ); }
-    public function getObjective( )  : string { return (string) ( $this->get( "objective" ) ?? "" ); }
     public function getQuote( )      : string { return (string) ( $this->get( "quote" ) ?? "" ); }
     public function getDuration( )   : int    { return (int) ( $this->get( "duration" ) ?? 0 ); }
     public function getCost( )       : int    { return (int) ( $this->get( "cost" ) ?? 0 ); }

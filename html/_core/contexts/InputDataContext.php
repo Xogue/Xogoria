@@ -24,9 +24,7 @@ class InputDataContext {
     public function getMobs( )     : array  { return $this->requestData->getMobs( ); }
     // CURRENCY WORKER
     public function getAmount( ): int { return $this->requestData->getAmount( ); }
-    // COLLECTION WORKER
-    public function getMonster( )  : string { return $this->requestData->getMonster( ); }
-    public function getObjective( ): string { return $this->requestData->getObjective( ); }
+    // QUOTE WORKER
     public function getQuote( )    : string { return $this->requestData->getQuote( ); }
 
     public function getUserId( ): string {

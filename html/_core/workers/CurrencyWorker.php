@@ -22,7 +22,8 @@ class CurrencyWorker implements WorkerInterface {
         }
         $action = $this->inputDataContext->getAction();
         $requestedAmount = $this->inputDataContext->getAmount();
-        $isRandomAward = $action === 'addToUser' && $requestedAmount === self::RANDOM_AWARD_TRIGGER;
+        $isRandomAward = in_array($action, [ 'addToUser', 'digGems' ], true)
+            && $requestedAmount === self::RANDOM_AWARD_TRIGGER;
         $amount = $isRandomAward
             ? random_int(self::RANDOM_AWARD_MIN, self::RANDOM_AWARD_MAX)
             : $requestedAmount;
@@ -38,6 +39,7 @@ class CurrencyWorker implements WorkerInterface {
             'checkBalance' => $this->balanceResult($commonMeta),
             'setUserBalance' => $this->setBalanceResult($amount, $commonMeta),
             'addToUser' => $this->addBalanceResult($amount, $commonMeta),
+            'digGems' => $this->addBalanceResult($amount, $commonMeta, true),
             'deductCost' => $this->deductBalanceResult($amount, $commonMeta),
             default => WorkerResult::failureCode(
                 ResponseLibrary::R_CURRENCY__INVALID_ACTION,
@@ -93,7 +95,7 @@ class CurrencyWorker implements WorkerInterface {
         );
     }
 
-    private function addBalanceResult(int $amount, array $meta): WorkerResult {
+    private function addBalanceResult(int $amount, array $meta, bool $isDig = false): WorkerResult {
         $previousBalance = $this->user->getGemBalance();
         $newBalance = $this->addToUser($amount);
         if ($newBalance === false) {
@@ -103,11 +105,15 @@ class CurrencyWorker implements WorkerInterface {
                 500,
             );
         }
+        $addedGems = $newBalance - $previousBalance;
         return WorkerResult::success(
-            ResponseLibrary::R_CURRENCY__GEMS_ADD,
+            $isDig
+                ? ResponseLibrary::R_CURRENCY__GEMS_ADD
+                : ResponseLibrary::R_CURRENCY__GEMS_ADDED,
             $newBalance,
             $meta + [
-                'foundGems' => $newBalance - $previousBalance,
+                'addedGems' => $addedGems,
+                'foundGems' => $addedGems,
                 'totalGems' => $newBalance,
             ],
         );

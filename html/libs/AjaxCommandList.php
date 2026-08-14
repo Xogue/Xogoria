@@ -17,7 +17,7 @@ if ( $perms != "everyone" ) {
 $mySqlManager = $webController->getMySqlManager( );
 $commands = $mySqlManager->fetchData( "allCommands" );
 
-// COMPILE LOCAL COLLECTIONS
+// COMPILE COMMANDS
 $collectionManager = $webController->getCollectionManager( );
 $collectionManager->insertCommands( $commands );
 
