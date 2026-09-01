@@ -686,13 +686,3 @@ Continue ignoring:
 Prefer root-anchored ignore rules when a filename also occurs inside dependencies. For example, ignoring `/composer.json` affects only the repository root, while ignoring `composer.json` can also hide or expose manifests nested under `vendor/` depending on later changes.
 
 Before the first public push, review the entire Git history as well as the current files for secrets. Removing a secret from the latest commit does not remove it from history; rotate any credential that has ever been committed or shared.
-
-## License
-
-No license file is currently included. Without an explicit license, copyright is retained by the repository owner and others do not automatically receive permission to copy, modify, or distribute the project.
-
-<<<<<<< HEAD
-Add a `LICENSE` file before inviting reuse or outside contributions. Choose a license that matches whether Xogoria is intended to be an open-source project, source-available reference, or private production application.
-=======
-Add a `LICENSE` file before inviting reuse or outside contributions. Choose a license that matches whether Xogoria is intended to be an open-source project, source-available reference, or private production application.
->>>>>>> 56ebe460e0b615ddfd6341b3e611996fd0aca173
